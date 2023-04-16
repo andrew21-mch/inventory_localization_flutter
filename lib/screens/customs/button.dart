@@ -3,8 +3,10 @@ import 'package:ilocate/styles/colors.dart';
 
 class CustomButton extends StatelessWidget {
   final String? placeholder;
+  final VoidCallback? method;
 
-  const CustomButton({Key? key, this.placeholder}) : super(key: key);
+  const CustomButton({Key? key, this.placeholder, this.method})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +22,7 @@ class CustomButton extends StatelessWidget {
               minimumSize: const Size(150, 36),
               shadowColor: Colors.grey.withOpacity(0.8),
             ),
-            onPressed: () {
-              print(placeholder);
-            },
+            onPressed: method,
             child: Text(placeholder!),
           )),
     );

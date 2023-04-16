@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ilocate/responsive.dart';
+import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/components/clippath.dart';
 import 'package:ilocate/screens/dashboard/page_list_tile.dart';
 import 'package:ilocate/screens/dashboard/split_view_example_flutter/home.dart';
@@ -47,7 +49,11 @@ class AppMenu extends ConsumerWidget {
               selectedPageName: selectedPageName,
               pageName: pageName,
               onPressed: () => _selectPage(context, ref, pageName),
-            )
+            ),
+          PageListTile(
+              selectedPageName: 'Logout',
+              pageName: 'Logout',
+              onPressed: () => Navigator.popAndPushNamed(context, login))
         ],
       ),
     );
@@ -62,5 +68,9 @@ class AppMenu extends ConsumerWidget {
         Navigator.of(context).pop();
       }
     }
+  }
+
+  logout() {
+    print('you clicked me');
   }
 }

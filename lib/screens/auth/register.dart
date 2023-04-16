@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/components/clippath.dart';
 import 'package:ilocate/screens/customs/textfield.dart';
 import 'package:ilocate/styles/colors.dart';
@@ -26,14 +27,14 @@ class Register extends StatelessWidget {
                       const ClipPathWidget(),
                       Column(children: [
                         Container(
-                            padding: const EdgeInsets.all(5.0),
+                            padding: const EdgeInsets.all(20.0),
                             child: Center(
-                              child: Image.asset('assets/images/logo.png',
-                                  width: 150,
-                                  height: 150,
-                                  color: ilocateYellow,
-                                  fit: BoxFit.cover),
-                            )),
+                                child: Text(
+                              'Register',
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(fontSize: 24, color: ilocateYellow),
+                            ))),
                         const CustomeTextField(
                           placeholder: 'Name',
                           prefixIcon: Icon(
@@ -83,9 +84,13 @@ class Register extends StatelessWidget {
                         ),
                         const Padding(
                             padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
-                        const CustomButton(
+                        CustomButton(
                           placeholder: 'Register',
+                          method: () {
+                            Navigator.pushNamed(context, login);
+                          },
                         ),
+                        const Padding(padding: EdgeInsets.all(32))
                       ])
                     ])))));
   }

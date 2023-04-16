@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/screens/dashboard/items_table.dart';
@@ -11,7 +9,7 @@ class AuthHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = 'John Doe';
+    const name = 'John Doe';
     final isMobile = MediaQuery.of(context).size.width < 600;
 
     final cardWidth = isMobile
@@ -151,7 +149,7 @@ class AuthHome extends StatelessWidget {
                 padding: const EdgeInsets.all(32.0),
                 child: Text('Welcome to your dashboard $name!',
                     // colors
-                    style: const TextStyle(color: Colors.amber)),
+                    style: TextStyle(color: ilocateAmber)),
               ),
             ),
             const SearchBar(), const DataTableWidget()
