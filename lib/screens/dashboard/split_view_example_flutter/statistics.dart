@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/screens/dashboard/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
+import 'package:ilocate/styles/colors.dart';
 
 class Statistics extends StatelessWidget {
   const Statistics({Key? key});
@@ -30,6 +31,7 @@ class Statistics extends StatelessWidget {
                   Icon(
                     Icons.money,
                     size: 64,
+                    color: Colors.green,
                   ),
                   SizedBox(height: 16),
                   Text('Total Sales'),

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ilocate/screens/dashboard/split_view.dart';
 import 'package:ilocate/screens/dashboard/split_view_example_flutter/appmenu.dart';
 
+import '../../routes/routes.dart';
+
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
@@ -12,6 +14,7 @@ class DashboardScreen extends ConsumerWidget {
     // 3. watch selectedPageBuilderProvider
     final selectedPageBuilder = ref.watch(selectedPageBuilderProvider);
     return MaterialApp(
+      onGenerateRoute: CustomeRoute.allRoutes,
       color: Colors.white,
       home: SplitView(
         menu: const AppMenu(),
