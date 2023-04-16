@@ -15,6 +15,11 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
+    final cardWidth = isMobile
+        ? MediaQuery.of(context).size.width
+        : (MediaQuery.of(context).size.width - 80) / 3;
     return MaterialApp(
         home: Scaffold(
             resizeToAvoidBottomInset: false,
@@ -27,13 +32,14 @@ class Login extends StatelessWidget {
                       const ClipPathWidget(),
                       Column(children: [
                         Container(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: EdgeInsets.all(isMobile ? 32 : 20),
                             child: Center(
                                 child: Text(
                               'Login',
                               textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(fontSize: 24, color: ilocateYellow),
+                              style: TextStyle(
+                                  fontSize: isMobile ? 32 : 28,
+                                  color: ilocateYellow),
                             ))),
                         const CustomeTextField(
                           placeholder: 'Input your email',
@@ -70,14 +76,14 @@ class Login extends StatelessWidget {
                           ),
                         ),
                         const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
+                            padding: EdgeInsets.fromLTRB(0, 28, 0, 0)),
                         CustomButton(
                           placeholder: 'Login',
                           method: () {
                             Navigator.pushNamed(context, dashboard);
                           },
                         ),
-                        const Padding(padding: EdgeInsets.all(32))
+                        // const Padding(padding: EdgeInsets.all(32))
                       ])
                     ])))));
   }

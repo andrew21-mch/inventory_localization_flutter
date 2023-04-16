@@ -10,7 +10,7 @@ class CustomSearchButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: ilocateAmber,
+        primary: ilocateYellow,
         onPrimary: Color.fromARGB(255, 253, 252, 252),
         // minimumSize: const Size(150, 36),
         shadowColor: Colors.grey.withOpacity(0.8),

@@ -23,7 +23,10 @@ class CustomButton extends StatelessWidget {
               shadowColor: Colors.grey.withOpacity(0.8),
             ),
             onPressed: method,
-            child: Text(placeholder!),
+            child: Text(
+              placeholder!,
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            ),
           )),
     );
   }

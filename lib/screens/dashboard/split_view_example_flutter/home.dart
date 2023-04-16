@@ -149,7 +149,7 @@ class AuthHome extends StatelessWidget {
                 padding: const EdgeInsets.all(32.0),
                 child: Text('Welcome to your dashboard $name!',
                     // colors
-                    style: TextStyle(color: ilocateAmber)),
+                    style: TextStyle(color: ilocateYellow)),
               ),
             ),
             const SearchBar(), const DataTableWidget()
