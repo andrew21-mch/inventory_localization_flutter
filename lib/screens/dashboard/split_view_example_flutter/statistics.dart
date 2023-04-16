@@ -85,18 +85,12 @@ class Statistics extends StatelessWidget {
 
     if (isMobile) {
       return PageScaffold(
-        title: 'Statistics Page',
-        body: Column(
+        title: 'Dashboard',
+        body: ListView(
+          scrollDirection: Axis.vertical,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ...cards,
-              ],
-            ),
-            SearchBar(),
-            SizedBox(height: 16),
-            DataTableWidget(),
+            ...cards,
+            const DataTableWidget(),
           ],
         ),
       );
@@ -104,10 +98,9 @@ class Statistics extends StatelessWidget {
       return PageScaffold(
         title: 'Statistics Page',
         body: SizedBox(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            // crossAxisAlignment: CrossAxisAlignment.start,
+          // width: double.infinity,
+          child: ListView(
+            // mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -117,9 +110,9 @@ class Statistics extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Row(
-                children: [
+                children: const [
                   Expanded(
-                    child: const SearchBar(),
+                    child: SearchBar(),
                   ),
                 ],
               ),

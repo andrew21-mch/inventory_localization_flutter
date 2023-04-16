@@ -85,17 +85,11 @@ class Stocks extends StatelessWidget {
 
     if (isMobile) {
       return PageScaffold(
-        title: 'Stocks Page',
-        body: Column(
+        title: 'Stocks',
+        body: ListView(
+          scrollDirection: Axis.vertical,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ...cards,
-              ],
-            ),
-            const SearchBar(),
-            const SizedBox(height: 16),
+            ...cards,
             const DataTableWidget(),
           ],
         ),
@@ -104,10 +98,9 @@ class Stocks extends StatelessWidget {
       return PageScaffold(
         title: 'Stocks Page',
         body: SizedBox(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            // crossAxisAlignment: CrossAxisAlignment.start,
+          // width: double.infinity,
+          child: ListView(
+            // mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

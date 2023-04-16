@@ -139,7 +139,6 @@ class AuthHome extends StatelessWidget {
         title: 'Dashboard',
         body: ListView(
           scrollDirection: Axis.vertical,
-          shrinkWrap: true,
           children: [
             ...cards,
           ],
@@ -148,27 +147,24 @@ class AuthHome extends StatelessWidget {
     } else {
       return PageScaffold(
         title: 'Dashboard',
-        body: SizedBox(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ...cards,
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ...cards2,
-                ],
-              ),
-              const SearchBar(),
-              const DataTableWidget()
-            ],
-          ),
+        body: ListView(
+          scrollDirection: Axis.vertical,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ...cards,
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ...cards2,
+              ],
+            ),
+            const SearchBar(),
+            const DataTableWidget()
+          ],
         ),
       );
     }
