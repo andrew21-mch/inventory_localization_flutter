@@ -1,13 +1,17 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/screens/dashboard/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
+import 'package:ilocate/styles/colors.dart';
 
 class AuthHome extends StatelessWidget {
   const AuthHome({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final name = 'John Doe';
     final isMobile = MediaQuery.of(context).size.width < 600;
 
     final cardWidth = isMobile
@@ -27,7 +31,7 @@ class AuthHome extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.people, size: 64),
+                  Icon(Icons.money_off_csred, size: 64),
                   SizedBox(height: 16),
                   Text('XAF 400, 000'),
                   SizedBox(height: 8),
@@ -50,7 +54,7 @@ class AuthHome extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.bar_chart, size: 64),
+                  Icon(Icons.money, size: 64),
                   SizedBox(height: 16),
                   Text('XAF 400, 000'),
                   SizedBox(height: 8),
@@ -140,7 +144,17 @@ class AuthHome extends StatelessWidget {
         body: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            ...cards,
+            // welcome card
+            Card(
+              margin: const EdgeInsets.all(16),
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Text('Welcome to your dashboard $name!',
+                    // colors
+                    style: const TextStyle(color: Colors.amber)),
+              ),
+            ),
+            const SearchBar(), const DataTableWidget()
           ],
         ),
       );

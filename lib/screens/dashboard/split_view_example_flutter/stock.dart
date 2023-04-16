@@ -26,9 +26,13 @@ class Stocks extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.people, size: 64),
+                  Icon(
+                    Icons.arrow_upward,
+                    size: 64,
+                    color: Colors.green,
+                  ),
                   SizedBox(height: 16),
-                  Text('Users'),
+                  Text('Items in Stock'),
                   SizedBox(height: 8),
                   Text('1000'),
                 ],
@@ -48,11 +52,11 @@ class Stocks extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.bar_chart, size: 64),
+                  Icon(Icons.arrow_downward_sharp, size: 64, color: Colors.red),
                   SizedBox(height: 16),
-                  Text('Sales'),
+                  Text('Out of Stock'),
                   SizedBox(height: 8),
-                  Text('\$10,000'),
+                  Text('200'),
                 ],
               ),
             ),

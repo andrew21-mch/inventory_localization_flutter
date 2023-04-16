@@ -26,9 +26,13 @@ class Statistics extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.people, size: 64),
+                  //  icon for money coin
+                  Icon(
+                    Icons.money,
+                    size: 64,
+                  ),
                   SizedBox(height: 16),
-                  Text('Users'),
+                  Text('Total Sales'),
                   SizedBox(height: 8),
                   Text('1000'),
                 ],
@@ -48,9 +52,18 @@ class Statistics extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.bar_chart, size: 64),
+                  Icon(
+                    Icons.attach_money,
+                    size: 64,
+                  ),
+                  Icon(
+                    // mix 2 icons
+                    Icons.arrow_downward_sharp,
+                    size: 16,
+                    color: Colors.red,
+                  ),
                   SizedBox(height: 16),
-                  Text('Sales'),
+                  Text('Total Expenditure'),
                   SizedBox(height: 8),
                   Text('\$10,000'),
                 ],
@@ -70,7 +83,17 @@ class Statistics extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.attach_money, size: 64),
+                  Icon(
+                    // mix 2 icons
+                    Icons.attach_money,
+                    size: 64,
+                    color: Colors.green,
+                  ),
+                  Icon(
+                    Icons.arrow_upward,
+                    size: 16,
+                    color: Colors.green,
+                  ),
                   SizedBox(height: 16),
                   Text('Profit'),
                   SizedBox(height: 8),
@@ -85,7 +108,7 @@ class Statistics extends StatelessWidget {
 
     if (isMobile) {
       return PageScaffold(
-        title: 'Dashboard',
+        title: 'Statistics',
         body: ListView(
           scrollDirection: Axis.vertical,
           children: [

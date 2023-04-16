@@ -12,18 +12,18 @@ class DataTableWidget extends StatelessWidget {
     return DataTable(
       // set a width for each column
       columnSpacing: isMobile ? 0 : 240,
-      columns: [
-        const DataColumn(
+      columns: const [
+        DataColumn(
           label: Text('Item'),
         ),
-        const DataColumn(
+        DataColumn(
           label: Text('Name'),
         ),
-        const DataColumn(
+        DataColumn(
           label: Text('Status'),
         ),
         DataColumn(
-          label: isMobile ? const SizedBox.shrink() : const Text('Action'),
+          label: Text('Action'),
         ),
       ],
       rows: const [
