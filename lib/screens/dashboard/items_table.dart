@@ -14,7 +14,8 @@ class DataTableWidget extends StatelessWidget {
         child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: DataTable(
-              columnSpacing: isMobile ? 50 : 240,
+              columnSpacing:
+                  isMobile ? 60 : (MediaQuery.of(context).size.width / 3) - 160,
               headingRowColor: MaterialStateColor.resolveWith(
                 (states) => ilocateYellow,
               ),
