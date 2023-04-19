@@ -6,5 +6,5 @@ import 'package:ilocate/screens/auth/register.dart';
 import 'package:ilocate/splash/splash.dart';
 
 void main() {
-  runApp(const ProviderScope(child: Splash()));
+  runApp(const ProviderScope(child: DashboardScreen()));
 }
