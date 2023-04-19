@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ilocate/screens/dashboard/split_view.dart';
-import 'package:ilocate/screens/dashboard/split_view_example_flutter/appmenu.dart';
+import 'package:ilocate/screens/dashboard/nav_item_pages/appmenu.dart';
 
 import '../../routes/routes.dart';
 

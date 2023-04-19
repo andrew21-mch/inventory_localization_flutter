@@ -29,9 +29,11 @@ class _MyFormState extends State<MyForm> {
           builder: (context) => AlertDialog(
             scrollable: true,
             title: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text('Add Component',
                     style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
                         color: ilocateYellow,
                         fontSize: 20,
                         fontWeight: FontWeight.bold)),

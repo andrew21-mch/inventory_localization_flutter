@@ -22,7 +22,7 @@ class _LedFormState extends State<LedForm> {
         : (MediaQuery.of(context).size.width - 80) / 3;
 
     return CustomButton(
-      placeholder: 'Add Item',
+      placeholder: 'Install LED',
       method: () {
         showDialog(
           context: context,
@@ -36,7 +36,11 @@ class _LedFormState extends State<LedForm> {
                         fontSize: 20,
                         fontWeight: FontWeight.bold)),
                 const SizedBox(width: 10),
-                const Icon(Icons.add_circle_outline)
+                const Icon(Icons.add_circle_outline),
+                const Icon(
+                  Icons.lightbulb,
+                  color: Colors.yellow,
+                )
               ],
             ),
             backgroundColor: ilocateLight,

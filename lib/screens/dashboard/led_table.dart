@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ilocate/screens/customs/custom_search_button.dart';
 import 'package:ilocate/styles/colors.dart';
 
-class DataTableWidget extends StatelessWidget {
-  const DataTableWidget({Key? key}) : super(key: key);
+class LedTableWidget extends StatelessWidget {
+  const LedTableWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +13,7 @@ class DataTableWidget extends StatelessWidget {
         child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: DataTable(
-              columnSpacing:
-                  isMobile ? 60 : (MediaQuery.of(context).size.width / 3) - 160,
+              columnSpacing: isMobile ? 50 : 260,
               headingRowColor: MaterialStateColor.resolveWith(
                 (states) => ilocateYellow,
               ),
@@ -22,7 +21,7 @@ class DataTableWidget extends StatelessWidget {
               columns: [
                 DataColumn(
                   label: Text(
-                    'ITEMID',
+                    'LEDID',
                     style: TextStyle(
                       color: ilocateWhite,
                     ),
@@ -30,7 +29,7 @@ class DataTableWidget extends StatelessWidget {
                 ),
                 DataColumn(
                   label: Text(
-                    'NAME',
+                    'SHELF NUMBER',
                     style: TextStyle(
                       color: ilocateWhite,
                     ),
@@ -38,7 +37,7 @@ class DataTableWidget extends StatelessWidget {
                 ),
                 DataColumn(
                   label: Text(
-                    'STATUS',
+                    'UNIQUE NUMBER',
                     style: TextStyle(
                       color: ilocateWhite,
                     ),
@@ -46,7 +45,7 @@ class DataTableWidget extends StatelessWidget {
                 ),
                 DataColumn(
                   label: Text(
-                    'ACTION',
+                    'Action',
                     style: TextStyle(
                       color: ilocateWhite,
                     ),
@@ -56,84 +55,48 @@ class DataTableWidget extends StatelessWidget {
               rows: const [
                 DataRow(
                   cells: [
-                    DataCell(Text('Item 1')),
-                    DataCell(Text('Name 1')),
-                    DataCell(Text('Status 1')),
+                    DataCell(Text('0001')),
+                    DataCell(Text('SHELF12')),
+                    DataCell(Text('LEDSH121')),
                     DataCell(
                       CustomSearchButton(
-                        placeholder: 'Find',
+                        placeholder: 'light',
                       ),
                     ),
                   ],
                 ),
                 DataRow(
                   cells: [
-                    DataCell(Text('Item 2')),
-                    DataCell(Text('Name 2')),
-                    DataCell(Text('Status 2')),
+                    DataCell(Text('0002')),
+                    DataCell(Text('SHELF13')),
+                    DataCell(Text('LEDSH122')),
                     DataCell(
                       CustomSearchButton(
-                        placeholder: 'Find',
+                        placeholder: 'light',
                       ),
                     ),
                   ],
                 ),
                 DataRow(
                   cells: [
-                    DataCell(Text('Item 3')),
-                    DataCell(Text('Name 3')),
-                    DataCell(Text('Status 3')),
+                    DataCell(Text('0003')),
+                    DataCell(Text('SHELF14')),
+                    DataCell(Text('LEDSH123')),
                     DataCell(
                       CustomSearchButton(
-                        placeholder: 'Find',
+                        placeholder: 'light',
                       ),
                     ),
                   ],
                 ),
                 DataRow(
                   cells: [
-                    DataCell(Text('Item 4')),
-                    DataCell(Text('Name 4')),
-                    DataCell(Text('Status 4')),
+                    DataCell(Text('0004')),
+                    DataCell(Text('SHELF15')),
+                    DataCell(Text('LEDSH124')),
                     DataCell(
                       CustomSearchButton(
-                        placeholder: 'Find',
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: [
-                    DataCell(Text('Item 5')),
-                    DataCell(Text('Name 5')),
-                    DataCell(Text('Status 5')),
-                    DataCell(
-                      CustomSearchButton(
-                        placeholder: 'Find',
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: [
-                    DataCell(Text('Item 6')),
-                    DataCell(Text('Name 6')),
-                    DataCell(Text('Status 6')),
-                    DataCell(
-                      CustomSearchButton(
-                        placeholder: 'Find',
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: [
-                    DataCell(Text('Item 7')),
-                    DataCell(Text('Name 7')),
-                    DataCell(Text('Status 7')),
-                    DataCell(
-                      CustomSearchButton(
-                        placeholder: 'Find',
+                        placeholder: 'light',
                       ),
                     ),
                   ],

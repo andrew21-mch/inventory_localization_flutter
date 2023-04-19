@@ -13,31 +13,33 @@ class Splash extends StatelessWidget {
         title: 'Ilocate',
         onGenerateRoute: CustomeRoute.allRoutes,
         home: Scaffold(
-            body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-                padding: const EdgeInsets.all(20.0),
-                child: Center(
-                  child: Image.asset('assets/images/logo.png',
-                      width: 200,
-                      height: 200,
-                      color: ilocateYellow,
-                      fit: BoxFit.cover),
-                )),
-            Container(
-                padding: const EdgeInsets.all(20.0),
-                child: Builder(
-                  builder: (context) => Center(
-                    child: CustomButton(
-                        placeholder: 'Register',
-                        method: () {
-                          Navigator.pushNamed(context, register);
-                        }),
-                  ),
-                )),
-          ],
-        )));
+            body: ListView(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Image.asset('assets/images/logo.png',
+                        width: 200,
+                        height: 200,
+                        color: ilocateYellow,
+                        fit: BoxFit.cover),
+                  )),
+              Container(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Builder(
+                    builder: (context) => Center(
+                      child: CustomButton(
+                          placeholder: 'Register',
+                          method: () {
+                            Navigator.pushNamed(context, register);
+                          }),
+                    ),
+                  )),
+            ],
+          )
+        ])));
   }
 }
