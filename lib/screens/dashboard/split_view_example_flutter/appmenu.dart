@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ilocate/responsive.dart';
 import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/components/clippath.dart';
+import 'package:ilocate/screens/dashboard/leds/led_page_view.dart';
 import 'package:ilocate/screens/dashboard/page_list_tile.dart';
 import 'package:ilocate/screens/dashboard/split_view_example_flutter/home.dart';
 import 'package:ilocate/screens/dashboard/split_view_example_flutter/statistics.dart';
@@ -13,6 +14,7 @@ final _availablePages = <String, WidgetBuilder>{
   'Home': (_) => const AuthHome(),
   'Stocks': (_) => const Stocks(),
   'Statistics': (_) => const Statistics(),
+  'LEDs': (_) => const Leds(),
 };
 
 final selectedPageNameProvider = StateProvider<String>((ref) {

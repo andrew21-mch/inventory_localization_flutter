@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ilocate/screens/add_item_form.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
-import 'package:ilocate/screens/customs/button.dart';
 import 'package:ilocate/screens/dashboard/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/styles/colors.dart';
@@ -147,12 +146,15 @@ class AuthHome extends StatelessWidget {
             Card(
               margin: const EdgeInsets.all(16),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 // padding: const EdgeInsets.all(32.0),
                 children: [
                   Text('Welcome to your dashboard $name!',
-                      style: TextStyle(color: ilocateYellow)),
+                      style: TextStyle(
+                          color: ilocateYellow,
+                          textBaseline: TextBaseline.alphabetic)),
                   Container(
-                    margin: EdgeInsets.fromLTRB(8, 64, 32, 32),
+                    margin: const EdgeInsets.fromLTRB(8, 64, 32, 32),
                     child: MyForm(),
                   )
                 ],
@@ -183,7 +185,7 @@ class AuthHome extends StatelessWidget {
             ),
             const SearchBar(),
             const DataTableWidget(),
-            Padding(padding: EdgeInsets.all(32)),
+            const Padding(padding: EdgeInsets.all(32)),
             const MyForm(),
           ],
         ),
