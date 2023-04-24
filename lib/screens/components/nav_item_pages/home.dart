@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/screens/add_item_form.dart';
+import 'package:ilocate/screens/modals/add_item_form.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/screens/dashboard/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
+import 'package:ilocate/screens/modals/restock_form.dart';
 import 'package:ilocate/styles/colors.dart';
 
 class AuthHome extends StatelessWidget {
@@ -155,7 +156,11 @@ class AuthHome extends StatelessWidget {
                           textBaseline: TextBaseline.alphabetic)),
                   Container(
                     margin: const EdgeInsets.fromLTRB(8, 64, 32, 32),
-                    child: MyForm(),
+                    child: const MyForm(),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(8, 64, 32, 32),
+                    child: const RestockForm(),
                   )
                 ],
               ),
@@ -189,7 +194,10 @@ class AuthHome extends StatelessWidget {
             Expanded(
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [MyForm()]),
+                  children: const [
+                    MyForm(),
+                    RestockForm(),
+                  ]),
             ),
             const Padding(padding: EdgeInsets.all(32)),
           ],

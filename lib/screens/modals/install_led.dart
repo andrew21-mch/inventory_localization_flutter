@@ -3,7 +3,7 @@ import 'package:ilocate/screens/customs/button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-import '../styles/colors.dart';
+import '../../styles/colors.dart';
 
 class LedForm extends StatefulWidget {
   const LedForm({Key? key}) : super(key: key);

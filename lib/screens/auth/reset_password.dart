@@ -6,8 +6,8 @@ import 'package:ilocate/screens/customs/textfield.dart';
 import 'package:ilocate/screens/dashboard/dashboard.dart';
 import 'package:ilocate/styles/colors.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class PasswordReset extends StatelessWidget {
+  const PasswordReset({super.key});
 
   get passwordController => null;
 
@@ -35,23 +35,16 @@ class Login extends StatelessWidget {
                             padding: EdgeInsets.all(isMobile ? 32 : 20),
                             child: Center(
                                 child: Text(
-                              'Login',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: isMobile ? 32 : 28,
-                                  color: ilocateYellow),
-                            ))),
+                                  'Reset password',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: isMobile ? 32 : 28,
+                                      color: ilocateYellow),
+                                ))),
                         const CustomeTextField(
-                          placeholder: 'Input your email',
+                          placeholder: 'Phone number',
                           prefixIcon: Icon(
-                            Icons.email,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        const CustomeTextField(
-                          placeholder: 'Input your password',
-                          prefixIcon: Icon(
-                            Icons.lock,
+                            Icons.phone,
                             color: Colors.black54,
                           ),
                         ),
@@ -62,11 +55,11 @@ class Login extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, restPassword);
+                                onPressed: () {
+                                  Navigator.pushNamed(context, dashboard);
                                 },
                                 child: const Text(
-                                  'Forgot Password',
+                                  'Login',
                                   style: TextStyle(
                                     color: Colors.blue,
                                   ),
@@ -78,7 +71,7 @@ class Login extends StatelessWidget {
                         const Padding(
                             padding: EdgeInsets.fromLTRB(0, 28, 0, 0)),
                         CustomButton(
-                          placeholder: 'Login',
+                          placeholder: 'Reset',
                           method: () {
                             Navigator.pushNamed(context, dashboard);
                           },

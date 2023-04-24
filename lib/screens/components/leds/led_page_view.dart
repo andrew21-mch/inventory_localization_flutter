@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/screens/dashboard/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
+import 'package:ilocate/screens/modals/install_led.dart';
+import 'led_screen.dart';
 
-class Stocks extends StatelessWidget {
-  const Stocks({Key? key});
+class Leds extends StatelessWidget {
+  const Leds({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +28,12 @@ class Stocks extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(
-                    Icons.arrow_upward,
-                    size: 64,
-                    color: Colors.green,
-                  ),
+                  //  icon for money coin
+                  Icon(Icons.lightbulb, size: 64, color: Colors.yellow),
                   SizedBox(height: 16),
-                  Text('Items in Stock'),
+                  Text('LEDs Installed'),
                   SizedBox(height: 8),
-                  Text('1000'),
+                  Text('20'),
                 ],
               ),
             ),
@@ -42,65 +41,29 @@ class Stocks extends StatelessWidget {
         ),
       ),
       // second card
-      Expanded(
-        child: Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.arrow_downward_sharp, size: 64, color: Colors.red),
-                  SizedBox(height: 16),
-                  Text('Out of Stock'),
-                  SizedBox(height: 8),
-                  Text('200'),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      // third card
-      Expanded(
-        child: Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.attach_money, size: 64),
-                  SizedBox(height: 16),
-                  Text('Profit'),
-                  SizedBox(height: 8),
-                  Text('\$5,000'),
-                ],
-              ),
-            ),
-          ),
-        ),
-      )
     ];
 
     if (isMobile) {
       return PageScaffold(
-        title: 'Stocks',
+        title: 'LEDs Page',
         body: ListView(
           scrollDirection: Axis.vertical,
           children: [
             ...cards,
-            const DataTableWidget(),
+            const SearchBar(),
+            const LedTableWidget(),
+            Expanded(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [LedForm()]),
+            ),
+            const SizedBox(height: 16),
           ],
         ),
       );
     } else {
       return PageScaffold(
-        title: 'Stocks Page',
+        title: 'LEDs Page',
         body: SizedBox(
           // width: double.infinity,
           child: ListView(
@@ -121,7 +84,13 @@ class Stocks extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              const DataTableWidget(),
+              Expanded(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: const [LedForm()]),
+              ),
+              const SizedBox(height: 16),
+              const LedTableWidget(),
             ],
           ),
         ),

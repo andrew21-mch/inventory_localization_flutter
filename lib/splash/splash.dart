@@ -13,13 +13,15 @@ class Splash extends StatelessWidget {
         title: 'Ilocate',
         onGenerateRoute: CustomeRoute.allRoutes,
         home: Scaffold(
-            body: ListView(children: [
+            body: ListView(
+
+                children: [
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            // crossAxisAlignment: CrossAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(64.0),
                   child: Center(
                     child: Image.asset('assets/images/logo.png',
                         width: 200,
@@ -28,11 +30,11 @@ class Splash extends StatelessWidget {
                         fit: BoxFit.cover),
                   )),
               Container(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(32.0),
                   child: Builder(
                     builder: (context) => Center(
                       child: CustomButton(
-                          placeholder: 'Register',
+                          placeholder: 'Get Started',
                           method: () {
                             Navigator.pushNamed(context, register);
                           }),

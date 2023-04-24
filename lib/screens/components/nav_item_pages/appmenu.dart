@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ilocate/responsive.dart';
 import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/components/clippath.dart';
-import 'package:ilocate/screens/dashboard/nav_item_pages/led_page_view.dart';
+import 'package:ilocate/screens/components/nav_item_pages/statistics.dart';
+import 'package:ilocate/screens/components/nav_item_pages/stock.dart';
 import 'package:ilocate/screens/dashboard/page_list_tile.dart';
-import 'package:ilocate/screens/dashboard/nav_item_pages/home.dart';
-import 'package:ilocate/screens/dashboard/nav_item_pages/statistics.dart';
-import 'package:ilocate/screens/dashboard/nav_item_pages/stock.dart';
 import 'package:ilocate/styles/colors.dart';
+
+import 'home.dart';
+import 'led_page_view.dart';
 
 final _availablePages = <String, WidgetBuilder>{
   'Home': (_) => const AuthHome(),
