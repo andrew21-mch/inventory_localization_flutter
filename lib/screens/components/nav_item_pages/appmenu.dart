@@ -5,6 +5,7 @@ import 'package:ilocate/screens/components/clippath.dart';
 import 'package:ilocate/screens/components/nav_item_pages/statistics.dart';
 import 'package:ilocate/screens/components/nav_item_pages/stock.dart';
 import 'package:ilocate/screens/dashboard/page_list_tile.dart';
+import 'package:ilocate/screens/modals/logout.dart';
 import 'package:ilocate/styles/colors.dart';
 
 import 'home.dart';
@@ -53,9 +54,18 @@ class AppMenu extends ConsumerWidget {
               onPressed: () => _selectPage(context, ref, pageName),
             ),
           PageListTile(
-              selectedPageName: 'Logout',
-              pageName: 'Logout',
-              onPressed: () => Navigator.popAndPushNamed(context, login))
+            selectedPageName: 'Logout',
+            pageName: 'Logout',
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return const LogoutModal();
+                },
+              );
+            },
+          )
+
         ],
       ),
     );
@@ -72,7 +82,4 @@ class AppMenu extends ConsumerWidget {
     }
   }
 
-  logout() {
-    print('you clicked me');
-  }
 }

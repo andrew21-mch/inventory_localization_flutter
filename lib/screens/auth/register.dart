@@ -1,20 +1,39 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ilocate/screens/customs/button.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ilocate/providers/authProvider.dart';
 import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/components/clippath.dart';
 import 'package:ilocate/screens/customs/textfield.dart';
 import 'package:ilocate/styles/colors.dart';
 
-import '../customs/button.dart';
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
 
-class Register extends StatelessWidget {
-  const Register({super.key});
+  @override
+  State<Register> createState() => _RegisterState();
+}
 
-  get passwordController => null;
+class _RegisterState extends State<Register> {
+  final formKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  get emailController => null;
+  clearInput() {
+    nameController.clear();
+    emailController.clear();
+    phoneController.clear();
+    passwordController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
     return MaterialApp(
         home: Scaffold(
             resizeToAvoidBottomInset: true,
@@ -23,11 +42,14 @@ class Register extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    child: Form(
+                      key: formKey,
+                        child:
+                            Column(mainAxisSize: MainAxisSize.min, children: [
                       const ClipPathWidget(),
                       Column(children: [
                         Container(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.all(32.0),
                             child: Center(
                                 child: Text(
                               'Register',
@@ -35,25 +57,37 @@ class Register extends StatelessWidget {
                               style:
                                   TextStyle(fontSize: 24, color: ilocateYellow),
                             ))),
-                        const CustomeTextField(
+                        CustomeTextField(
+                          passwordField: false,
                           placeholder: 'Name',
+                          controller: null,
                           prefixIcon: Icon(
                             Icons.person,
-                            color: Colors.black54,
+                            color: ilocateYellow,
                           ),
                         ),
-                        const CustomeTextField(
+                        CustomeTextField(
+                          passwordField: false,
                           placeholder: 'Input your email',
                           prefixIcon: Icon(
                             Icons.email,
-                            color: Colors.black54,
+                            color: ilocateYellow,
                           ),
                         ),
-                        const CustomeTextField(
+                        CustomeTextField(
+                          passwordField: false,
+                          placeholder: 'Input Phone Number',
+                          prefixIcon: Icon(
+                            Icons.phone,
+                            color: ilocateYellow,
+                          ),
+                        ),
+                        CustomeTextField(
+                          passwordField: true,
                           placeholder: 'Input your password',
                           prefixIcon: Icon(
                             Icons.lock,
-                            color: Colors.black54,
+                            color: ilocateYellow,
                           ),
                         ),
                         SizedBox(
@@ -70,7 +104,7 @@ class Register extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  //forgot password screen
+                                  Navigator.pushNamed(context, login);
                                 },
                                 child: const Text(
                                   'Login',
@@ -86,12 +120,19 @@ class Register extends StatelessWidget {
                             padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
                         CustomButton(
                           placeholder: 'Register',
+                          color: ilocateYellow,
                           method: () {
-                            Navigator.pushNamed(context, login);
+                            if(formKey.currentState!.validate()){
+                              Navigator.pushNamed(context, login);
+                            }else{
+                              if (kDebugMode) {
+                                print('Form is not valid');
+                              }
+                            }
                           },
                         ),
                         const Padding(padding: EdgeInsets.all(32))
                       ])
-                    ])))));
+                    ]))))));
   }
 }

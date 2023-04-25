@@ -15,7 +15,7 @@ class LedTableWidget extends StatelessWidget {
             child: DataTable(
               columnSpacing: isMobile ? 50 : 260,
               headingRowColor: MaterialStateColor.resolveWith(
-                (states) => ilocateYellow,
+                    (states) => ilocateYellow
               ),
               //   headingTextStyle: TextStyle(color: ilocateWhite),
               columns: [

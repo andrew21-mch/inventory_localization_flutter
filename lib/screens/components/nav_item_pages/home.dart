@@ -150,23 +150,27 @@ class AuthHome extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 // padding: const EdgeInsets.all(32.0),
                 children: [
-                  Text('Welcome to your dashboard $name!',
-                      style: TextStyle(
-                          color: ilocateYellow,
-                          textBaseline: TextBaseline.alphabetic)),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(0, 32, 16, 0),
+                    child:  Text('Welcome to your dashboard $name!',
+                        style: TextStyle(
+                            color: ilocateYellow,
+                            textBaseline: TextBaseline.alphabetic)),
+                  ),
                   Container(
                     margin: const EdgeInsets.fromLTRB(8, 64, 32, 32),
                     child: const MyForm(),
                   ),
                   Container(
-                    margin: const EdgeInsets.fromLTRB(8, 64, 32, 32),
+                    margin: const EdgeInsets.fromLTRB(8, 16, 32, 32),
                     child: const RestockForm(),
                   )
                 ],
               ),
             ),
-            const SearchBar(),
-            const DataTableWidget(),
+                   const SearchBar(),
+                   const DataTableWidget(),
+
           ],
         ),
       );
@@ -193,7 +197,7 @@ class AuthHome extends StatelessWidget {
             const Padding(padding: EdgeInsets.all(32)),
             Expanded(
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     MyForm(),
                     RestockForm(),

@@ -23,6 +23,8 @@ class _RestockFormState extends State<RestockForm> {
 
     return CustomButton(
       placeholder: 'Restock Items',
+      color: ilocateYellow,
+      width: isMobile ? 250: 400,
       method: () {
         showDialog(
           context: context,

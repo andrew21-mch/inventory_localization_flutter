@@ -23,6 +23,8 @@ class _MyFormState extends State<MyForm> {
 
     return CustomButton(
       placeholder: 'Add Item',
+      width: isMobile ? 250: 400,
+      color: ilocateYellow,
       method: () {
         showDialog(
           context: context,

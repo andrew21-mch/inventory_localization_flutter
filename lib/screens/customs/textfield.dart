@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomeTextField extends StatelessWidget {
+  final TextEditingController? controller;
   final String? placeholder;
   final Widget? prefixIcon;
+  final bool passwordField;
 
-  const CustomeTextField({Key? key, this.placeholder, this.prefixIcon})
+
+  const CustomeTextField({Key? key, this.placeholder, this.prefixIcon, required this.passwordField, this.controller})
       : super(key: key);
 
   @override
@@ -25,12 +28,25 @@ class CustomeTextField extends StatelessWidget {
             ),
           ],
         ),
-        child: TextField(
+        child: TextFormField(
+          obscureText: passwordField ? true: false,
+          controller: controller,
+          validator: (value) {
+            if (value!.isEmpty) {
+              // style the error message
+              var errorMessage = 'Please $placeholder';
+              return errorMessage;
+            }
+            return null;
+          },
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: placeholder,
             labelStyle: const TextStyle(color: Colors.black54),
             prefixIcon: prefixIcon,
+
+
+
           ),
         ),
       ),

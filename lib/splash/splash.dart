@@ -9,6 +9,7 @@ class Splash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
         title: 'Ilocate',
         onGenerateRoute: CustomeRoute.allRoutes,
@@ -21,7 +22,7 @@ class Splash extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                  padding: const EdgeInsets.all(64.0),
+                  padding: const EdgeInsets.all(72.0),
                   child: Center(
                     child: Image.asset('assets/images/logo.png',
                         width: 200,
@@ -35,6 +36,7 @@ class Splash extends StatelessWidget {
                     builder: (context) => Center(
                       child: CustomButton(
                           placeholder: 'Get Started',
+                          color: ilocateYellow,
                           method: () {
                             Navigator.pushNamed(context, register);
                           }),

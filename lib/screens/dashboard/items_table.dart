@@ -22,7 +22,7 @@ class DataTableWidget extends StatelessWidget {
               columns: [
                 DataColumn(
                   label: Text(
-                    'ITEMID',
+                    'ITEM_ID',
                     style: TextStyle(
                       color: ilocateWhite,
                     ),

@@ -23,6 +23,8 @@ class _LedFormState extends State<LedForm> {
 
     return CustomButton(
       placeholder: 'Install LED',
+      width: isMobile ? 250 : 400,
+      color: ilocateYellow,
       method: () {
         showDialog(
           context: context,

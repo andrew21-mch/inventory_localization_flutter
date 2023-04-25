@@ -87,6 +87,7 @@ class Leds extends StatelessWidget {
               const SizedBox(height: 16),
               Expanded(
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: const [LedForm()]),
               ),
