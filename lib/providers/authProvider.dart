@@ -7,28 +7,29 @@ import 'package:ilocate/constants/app_url.dart';
 import 'package:http/http.dart' as http;
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/auth/login.dart';
+import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/dashboard/dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-
 class AuthProvider extends ChangeNotifier {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   String _reqMessage = '';
   final String _failureMessage = '';
   bool _isLoading = false;
 
   String get reqMessage => _reqMessage;
+
   bool get isLoading => _isLoading;
+
   String get failureMessage => _failureMessage;
 
-  void register(
-      {
-        required String name,
-        required String email,
-        required String password,
-        required String passwordConfirmation,
-        required String phone}) async {
+  void register({required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+    required String phone}) async {
     _isLoading = true;
     notifyListeners();
     String url = AppUrl.register;
@@ -49,19 +50,15 @@ class AuthProvider extends ChangeNotifier {
         headers: headers, body: json.encode(body));
 
     try {
-      print(body);
       if (req.statusCode == 200 || req.statusCode == 201) {
         final res = json.decode(req.body);
         if (kDebugMode) {
           print(res);
         }
         _isLoading = false;
-        _reqMessage = res['status'];
+        _reqMessage = res['message'];
         notifyListeners();
-        Get.to(const Login(),
-            transition: Transition.fade,
-            curve: Curves.easeOut,
-            duration: const Duration(microseconds: 800));
+        Get.toNamed(dashboard);
       } else {
         final res = json.decode(req.body);
         _isLoading = false;
@@ -100,27 +97,84 @@ class AuthProvider extends ChangeNotifier {
         print(req.body);
         final res = json.decode(req.body);
         _isLoading = false;
-        _reqMessage = res['status'];
+        _reqMessage = res['message'];
         final token = res['access_token'];
         DatabaseProvider().saveToken(token);
         final id = res['user']['id'];
         DatabaseProvider().saveId(id);
-        if (kDebugMode) {
           print(id);
-        }
-        if (kDebugMode) {
           print(token);
-        }
+
         notifyListeners();
         Get.to(const DashboardScreen(),
             transition: Transition.fade,
             curve: Curves.easeOut,
             duration: const Duration(microseconds: 800));
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+          print(res);
       }
     } catch (e) {
       final res = json.decode(req.body);
       _isLoading = false;
-      _reqMessage = res['status'];
+      _reqMessage = res['message'];
+      notifyListeners();
+    }
+  }
+
+  void logout(BuildContext context) async {
+    final value = await _prefs;
+    value.clear();
+    Get.to(const Login(),
+        transition: Transition.fade,
+        curve: Curves.easeOut,
+        duration: const Duration(microseconds: 800));
+  }
+
+  void resetPassword({required String email}) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = AppUrl.resetPassword;
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8'
+    };
+    final body = {
+      'email': email,
+    };
+
+    http.Response req = await http.post(Uri.parse(url),
+        headers: headers, body: json.encode(body));
+
+    try {
+      if (req.statusCode == 200 || req.statusCode == 201) {
+        final res = json.decode(req.body);
+        if (kDebugMode) {
+          print(res);
+        }
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+        Get.to(const Login(),
+            transition: Transition.fade,
+            curve: Curves.easeOut,
+            duration: const Duration(microseconds: 800));
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        notifyListeners();
+        if (kDebugMode) {
+          print(res);
+        }
+      }
+    } catch (e) {
+      final res = json.decode(req.body);
+      _isLoading = false;
+      _reqMessage = res['message'];
       notifyListeners();
     }
   }
