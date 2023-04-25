@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:ilocate/screens/dashboard/split_view.dart';
 import '../../routes/routes.dart';
 import '../components/nav_item_pages/appmenu.dart';
@@ -11,7 +10,7 @@ class DashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedPageBuilder = ref.watch(selectedPageBuilderProvider);
-    return GetMaterialApp(
+    return MaterialApp(
       onGenerateRoute: CustomeRoute.allRoutes,
       color: Colors.white,
       home: SplitView(
