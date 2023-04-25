@@ -5,9 +5,10 @@ class CustomeTextField extends StatelessWidget {
   final String? placeholder;
   final Widget? prefixIcon;
   final bool passwordField;
+  final TextInputType? keyboardType;
 
 
-  const CustomeTextField({Key? key, this.placeholder, this.prefixIcon, required this.passwordField, this.controller})
+  const CustomeTextField({Key? key, this.placeholder, this.prefixIcon, required this.passwordField, this.controller, this.keyboardType})
       : super(key: key);
 
   @override
@@ -31,6 +32,7 @@ class CustomeTextField extends StatelessWidget {
         child: TextFormField(
           obscureText: passwordField ? true: false,
           controller: controller,
+          keyboardType: keyboardType,
           validator: (value) {
             if (value!.isEmpty) {
               // style the error message

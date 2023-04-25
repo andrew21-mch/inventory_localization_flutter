@@ -4,7 +4,6 @@ import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/components/clippath.dart';
 import 'package:ilocate/screens/customs/button.dart';
 import 'package:ilocate/screens/customs/textfield.dart';
-import 'package:ilocate/screens/dashboard/dashboard.dart';
 import 'package:ilocate/styles/colors.dart';
 
 class Login extends StatefulWidget {
@@ -64,7 +63,8 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                             const CustomeTextField(
-                              passwordField: false,
+                              passwordField: true,
+                              keyboardType: TextInputType.visiblePassword,
                               placeholder: 'Input your password',
                               prefixIcon: Icon(
                                 Icons.lock,
@@ -109,6 +109,11 @@ class _LoginState extends State<Login> {
                             ),
                             // const Padding(padding: EdgeInsets.all(32))
                           ])
-                        ]))))));
+                        ])
+                    )
+                )
+            )
+        )
+    );
   }
 }

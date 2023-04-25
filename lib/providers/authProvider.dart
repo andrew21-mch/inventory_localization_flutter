@@ -13,8 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class AuthProvider extends ChangeNotifier {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String _reqMessage = '';
   final String _failureMessage = '';
   bool _isLoading = false;
@@ -28,6 +27,7 @@ class AuthProvider extends ChangeNotifier {
         required String name,
         required String email,
         required String password,
+        required String passwordConfirmation,
         required String phone}) async {
     _isLoading = true;
     notifyListeners();
@@ -41,6 +41,7 @@ class AuthProvider extends ChangeNotifier {
       'name': name,
       'email': email,
       'password': password,
+      'password_confirmation': passwordConfirmation,
       'phone': phone,
     };
 
@@ -48,6 +49,7 @@ class AuthProvider extends ChangeNotifier {
         headers: headers, body: json.encode(body));
 
     try {
+      print(body);
       if (req.statusCode == 200 || req.statusCode == 201) {
         final res = json.decode(req.body);
         if (kDebugMode) {
@@ -71,7 +73,7 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       final res = json.decode(req.body);
       _isLoading = false;
-      _reqMessage = res['status'];
+      _reqMessage = res['message'];
       notifyListeners();
     }
   }
