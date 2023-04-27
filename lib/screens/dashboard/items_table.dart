@@ -1,144 +1,98 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/providers/itemProvider.dart';
 import 'package:ilocate/screens/customs/custom_search_button.dart';
 import 'package:ilocate/styles/colors.dart';
 
-class DataTableWidget extends StatelessWidget {
+class DataTableWidget extends StatefulWidget {
   const DataTableWidget({Key? key}) : super(key: key);
+
+  @override
+  _DataTableWidgetState createState() => _DataTableWidgetState();
+}
+
+class _DataTableWidgetState extends State<DataTableWidget> {
+  late Future<List<Map<String, dynamic>>> _itemsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _itemsFuture = ItemProvider().getItems();
+  }
 
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
 
-    return Expanded(
-        child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columnSpacing:
-                  isMobile ? 60 : (MediaQuery.of(context).size.width / 3) - 160,
-              headingRowColor: MaterialStateColor.resolveWith(
-                (states) => ilocateYellow,
+    return FutureBuilder<List<Map<String, dynamic>>>(
+        future: _itemsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            final items = snapshot.data!;
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columnSpacing: isMobile
+                    ? 60
+                    : (MediaQuery.of(context).size.width / 3) - 220,
+                headingRowColor: MaterialStateColor.resolveWith(
+                      (states) => ilocateYellow,
+                ),
+                //   headingTextStyle: TextStyle(color: ilocateWhite),
+                columns: [
+                  DataColumn(
+                    label: Text(
+                      'NAME',
+                      style: TextStyle(
+                        color: ilocateWhite,
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'DESCRIPTION',
+                      style: TextStyle(
+                        color: ilocateWhite,
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'STATUS',
+                      style: TextStyle(
+                        color: ilocateWhite,
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'ACTION',
+                      style: TextStyle(
+                        color: ilocateWhite,
+                      ),
+                    ),
+                  ),
+                ],
+                rows: items.map((item) {
+                  return DataRow(
+                    cells: [
+                      DataCell(Text(item['name'].toString())),
+                      DataCell(Text(item['description'].toString())),
+                      DataCell(Text(item['status'].toString())),
+                      const DataCell(
+                        CustomSearchButton(
+                          placeholder: 'Find',
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList(),
               ),
-              //   headingTextStyle: TextStyle(color: ilocateWhite),
-              columns: [
-                DataColumn(
-                  label: Text(
-                    'ITEM_ID',
-                    style: TextStyle(
-                      color: ilocateWhite,
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'NAME',
-                    style: TextStyle(
-                      color: ilocateWhite,
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'STATUS',
-                    style: TextStyle(
-                      color: ilocateWhite,
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'ACTION',
-                    style: TextStyle(
-                      color: ilocateWhite,
-                    ),
-                  ),
-                ),
-              ],
-              rows: const [
-                DataRow(
-                  cells: [
-                    DataCell(Text('Item 1')),
-                    DataCell(Text('Name 1')),
-                    DataCell(Text('Status 1')),
-                    DataCell(
-                      CustomSearchButton(
-                        placeholder: 'Find',
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: [
-                    DataCell(Text('Item 2')),
-                    DataCell(Text('Name 2')),
-                    DataCell(Text('Status 2')),
-                    DataCell(
-                      CustomSearchButton(
-                        placeholder: 'Find',
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: [
-                    DataCell(Text('Item 3')),
-                    DataCell(Text('Name 3')),
-                    DataCell(Text('Status 3')),
-                    DataCell(
-                      CustomSearchButton(
-                        placeholder: 'Find',
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: [
-                    DataCell(Text('Item 4')),
-                    DataCell(Text('Name 4')),
-                    DataCell(Text('Status 4')),
-                    DataCell(
-                      CustomSearchButton(
-                        placeholder: 'Find',
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: [
-                    DataCell(Text('Item 5')),
-                    DataCell(Text('Name 5')),
-                    DataCell(Text('Status 5')),
-                    DataCell(
-                      CustomSearchButton(
-                        placeholder: 'Find',
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: [
-                    DataCell(Text('Item 6')),
-                    DataCell(Text('Name 6')),
-                    DataCell(Text('Status 6')),
-                    DataCell(
-                      CustomSearchButton(
-                        placeholder: 'Find',
-                      ),
-                    ),
-                  ],
-                ),
-                DataRow(
-                  cells: [
-                    DataCell(Text('Item 7')),
-                    DataCell(Text('Name 7')),
-                    DataCell(Text('Status 7')),
-                    DataCell(
-                      CustomSearchButton(
-                        placeholder: 'Find',
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            )));
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        }
+    );
   }
 }

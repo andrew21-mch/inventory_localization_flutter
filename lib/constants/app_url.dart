@@ -5,4 +5,6 @@ class AppUrl {
   static const String register = '$baseUrl/register';
   static const String resetPassword = '$baseUrl/password/reset';
   static const String logout = '$baseUrl/logout';
+
+  static const String items = '$baseUrl/components';
 }
