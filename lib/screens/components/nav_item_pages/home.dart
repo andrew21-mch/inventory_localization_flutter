@@ -170,6 +170,7 @@ class AuthHome extends StatelessWidget {
             ),
                    const SearchBar(),
                    const DataTableWidget(),
+            const Padding(padding: EdgeInsets.all(32)),
 
           ],
         ),

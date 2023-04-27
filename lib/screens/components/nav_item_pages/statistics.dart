@@ -115,7 +115,10 @@ class Statistics extends StatelessWidget {
           scrollDirection: Axis.vertical,
           children: [
             ...cards,
+            const SizedBox(height: 16),
             const DataTableWidget(),
+            const SizedBox(height: 16),
+
           ],
         ),
       );
@@ -142,7 +145,9 @@ class Statistics extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
+              const Padding(padding: EdgeInsets.all(32)),
               const DataTableWidget(),
+
             ],
           ),
         ),

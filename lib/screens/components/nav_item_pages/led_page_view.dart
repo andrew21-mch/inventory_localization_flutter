@@ -93,6 +93,8 @@ class Leds extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               const LedTableWidget(),
+              const Padding(padding: EdgeInsets.all(32)),
+
             ],
           ),
         ),

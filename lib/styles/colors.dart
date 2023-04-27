@@ -6,3 +6,5 @@ Color ilocateWhite = const Color(0xFFFFFFFF);
 Color ilocateLight = const Color.fromARGB(255, 221, 218, 218);
 Color ilocateBlue = const Color(0xFF3B3B98);
 Color ilocateYellow = const Color.fromARGB(250, 47, 6, 80);
+Color ilocateRed = const Color.fromARGB(255, 255, 0, 0);
+Color ilocateGreen = const Color.fromARGB(255, 0, 255, 0);

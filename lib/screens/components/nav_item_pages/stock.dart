@@ -96,7 +96,9 @@ class Stocks extends StatelessWidget {
           children: [
             ...cards,
             const DataTableWidget(),
+            const SizedBox(height: 24),
             const RestockForm(),
+            const SizedBox(height: 24),
           ],
         ),
       );
