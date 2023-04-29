@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-class ItemProvider extends ChangeNotifier {
+class SalesProvider extends ChangeNotifier {
   late final BuildContext context;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -21,18 +22,13 @@ class ItemProvider extends ChangeNotifier {
 
   String get failureMessage => _failureMessage;
 
-  void addItem({required String name,
-    required String description,
-    required String price,
-    required String quantity,
-    required String cost,
-    required String location,
-    required int supplierId,
-
+  void addSales({
+    required int componentId,
+    required int quantity,
   }) async {
     _isLoading = true;
     notifyListeners();
-    String url = AppUrl.items;
+    String url = AppUrl.sales;
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -41,13 +37,8 @@ class ItemProvider extends ChangeNotifier {
           SharedPreferences prefs) => prefs.getString('token') ?? '')}'
     };
     final body = {
-      'name': name,
-      'description': description,
-      'price': price,
+      'component_id': componentId,
       'quantity': quantity,
-      'cost': cost,
-      'location': location,
-      'supplier_id': supplierId,
     };
 
     try {
@@ -82,72 +73,10 @@ class ItemProvider extends ChangeNotifier {
     }
   }
 
-  void updateItem({required String name,
-    required String description,
-    required String price,
-    required String quantity,
-    required String cost,
-    required String location,
-    required int supplierId,
-    required int id,
-
-  }) async {
+  Future<List<Map<String, dynamic>>> getSales() async {
     _isLoading = true;
     notifyListeners();
-    String url = '${AppUrl.items}/$id';
-
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Charset': 'utf-8',
-      'Authorization': 'Bearer ${await _prefs.then((
-          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
-    };
-    final body = {
-      'name': name,
-      'description': description,
-      'price': price,
-      'quantity': quantity,
-      'cost': cost,
-      'location': location,
-      'supplier_id': supplierId,
-    };
-
-    try {
-      http.Response req = await http.put(Uri.parse(url),
-          headers: headers, body: json.encode(body));
-
-      if (req.statusCode == 200 || req.statusCode == 201) {
-        final res = json.decode(req.body);
-        if (kDebugMode) {
-          print(res);
-        }
-        _isLoading = false;
-        _reqMessage = res['message'];
-        notifyListeners();
-      } else {
-        final res = json.decode(req.body);
-        _isLoading = false;
-        _reqMessage = res['message'];
-        notifyListeners();
-        if (kDebugMode) {
-          print(res);
-        }
-      }
-    } catch (e) {
-      final res = json.decode(e.toString());
-      _isLoading = false;
-      _reqMessage = res['message'];
-      notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> getItems() async {
-    _isLoading = true;
-    notifyListeners();
-    String url = AppUrl.items;
+    String url = AppUrl.sales;
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -161,7 +90,7 @@ class ItemProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-          print(res);
+        print(res);
 
         _isLoading = false;
         notifyListeners();
@@ -170,7 +99,7 @@ class ItemProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-          print(res);
+        print(res);
         notifyListeners();
 
         return [];
@@ -186,5 +115,6 @@ class ItemProvider extends ChangeNotifier {
       return [];
     }
   }
+
 
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/components/clippath.dart';
+import 'package:ilocate/screens/components/nav_item_pages/sales.dart';
 import 'package:ilocate/screens/components/nav_item_pages/statistics.dart';
 import 'package:ilocate/screens/components/nav_item_pages/stock.dart';
 import 'package:ilocate/screens/dashboard/page_list_tile.dart';
@@ -14,6 +15,7 @@ import 'led_page_view.dart';
 final _availablePages = <String, WidgetBuilder>{
   'Home': (_) => const AuthHome(),
   'Stocks': (_) => const Stocks(),
+  'Sales': (_) => const Sales(),
   'Statistics': (_) => const Statistics(),
   'LEDs': (_) => const Leds(),
 };
@@ -42,20 +44,42 @@ class AppMenu extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Menu'),
         backgroundColor: ilocateYellow,
-        // add profile icon to the to right
-      ),
-      body: ListView(
-        children: <Widget>[
-          const ClipPathWidget(),
-          for (var pageName in _availablePages.keys)
-            PageListTile(
-              selectedPageName: selectedPageName,
-              pageName: pageName,
-              onPressed: () => _selectPage(context, ref, pageName),
+        actions: [
+          Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
             ),
+            padding: const EdgeInsets.all(10),
+            child: Icon(
+              Icons.person,
+              color: ilocateYellow,
+            ),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                const ClipPathWidget(),
+                for (var pageName in _availablePages.keys)
+                  PageListTile(
+                    selectedPageName: selectedPageName,
+                    pageName: pageName,
+                    onPressed: () => _selectPage(context, ref, pageName),
+                  ),
+              ],
+            ),
+          ),
           PageListTile(
-            selectedPageName: 'Logout',
+            selectedPageName: selectedPageName,
             pageName: 'Logout',
+            icon: const Icon(Icons.logout),
+            iconTransform: Matrix4.rotationZ(
+              3.143,
+            ),
             onPressed: () {
               showDialog(
                 context: context,
@@ -64,7 +88,7 @@ class AppMenu extends ConsumerWidget {
                 },
               );
             },
-          )
+          ),
 
         ],
       ),
@@ -81,5 +105,5 @@ class AppMenu extends ConsumerWidget {
       }
     }
   }
-
 }
+

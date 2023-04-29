@@ -1,37 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/providers/salesProvider.dart';
 import 'package:ilocate/providers/statisticsProvider.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
+import 'package:ilocate/screens/customs/SalesLineChart.dart';
 import 'package:ilocate/screens/customs/StocksLineChart.dart';
 import 'package:ilocate/screens/dashboard/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
+import 'package:ilocate/screens/dashboard/sales_table.dart';
 import 'package:ilocate/styles/colors.dart';
 
-class Stocks extends StatefulWidget {
-  const Stocks({Key? key});
+class Sales extends StatefulWidget {
+  const Sales({Key? key});
 
   @override
-  _StocksState createState() => _StocksState();
+  _SalesState createState() => _SalesState();
 }
-class _StocksState extends State<Stocks> {
-  late Future<List<Map<String, dynamic>>> _statisticsFuture;
-  List<Map<String, dynamic>>? _statisticsData;
+class _SalesState extends State<Sales> {
+  List<Map<String, dynamic>>? _salesData;
   String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-    _loadStatisticsData();
+    _loadSalesData();
   }
 
-  Future<void> _loadStatisticsData() async {
+  Future<void> _loadSalesData() async {
     setState(() {
       _errorMessage = null;
-      _statisticsData = null;
+      _salesData = null;
     });
 
     try {
-      final data = await StatisticProvider().getGeneralStatistics();
-      _setStatisticsData(data);
+      final data = await SalesProvider().getSales();
+      _setSalesData(data);
     } catch (e) {
       setState(() {
         _errorMessage = 'Error loading statistics';
@@ -39,9 +41,9 @@ class _StocksState extends State<Stocks> {
     }
   }
 
-  void _setStatisticsData(List<Map<String, dynamic>> data) {
+  void _setSalesData(List<Map<String, dynamic>> data) {
     setState(() {
-      _statisticsData = data;
+      _salesData = data;
     });
   }
 
@@ -66,22 +68,22 @@ class _StocksState extends State<Stocks> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Stocks Stats', style: TextStyle(
+                  Text('Sales Stats', style: TextStyle(
                       fontSize: 24, fontWeight: FontWeight.bold,
-                    color: ilocateYellow
+                      color: ilocateYellow
                   )),
-                  if (_statisticsData != null)
+                  if (_salesData != null)
                     SizedBox(
                       height: 200, // Replace with desired height
-                      child: StocksLineChartWidget(
-                        _statisticsData![0]['data']['component_with_their_quantity'].map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
+                      child: SalessLineChartWidget(
+                        _salesData!.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
                         animate: true,
                       ),
                     )
                   else if (_errorMessage == null)
                     const SizedBox(
-                      height: 200,
-                      child: CircularProgressIndicator()
+                        height: 200,
+                        child: CircularProgressIndicator()
                     )
                   else
                     Text(
@@ -111,8 +113,8 @@ class _StocksState extends State<Stocks> {
                   const SizedBox(height: 16),
                   const Text('Total Items'),
                   const SizedBox(height: 8),
-                  if (_statisticsData != null)
-                    Text('${_statisticsData![0]['data']['total_components']}')
+                  if (_salesData != null)
+                    Text('X items')
                   else if (_errorMessage == null)
                     const CircularProgressIndicator()
                   else
@@ -130,7 +132,7 @@ class _StocksState extends State<Stocks> {
 
     if (isMobile) {
       return PageScaffold(
-        title: 'Stocks Page',
+        title: 'Sales Page',
         body: ListView(
           scrollDirection: Axis.vertical,
           children: [
@@ -143,7 +145,7 @@ class _StocksState extends State<Stocks> {
       );
     } else {
       return PageScaffold(
-        title: 'Stocks Page',
+        title: 'Sales Page',
         body: SizedBox(
           // width: double.infinity,
           child: ListView(
@@ -165,7 +167,7 @@ class _StocksState extends State<Stocks> {
               ),
               const SizedBox(height: 16),
               const Padding(padding: EdgeInsets.all(32)),
-              const DataTableWidget(),
+              const SalesTableWidget(),
             ],
           ),
         ),

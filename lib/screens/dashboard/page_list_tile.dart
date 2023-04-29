@@ -5,21 +5,36 @@ class PageListTile extends StatelessWidget {
     Key? key,
     this.selectedPageName,
     required this.pageName,
+    this.icon,
+    this.iconTransform,
     this.onPressed,
   }) : super(key: key);
   final String? selectedPageName;
   final String pageName;
+  final Widget? icon;
+  final Matrix4? iconTransform;
   final dynamic onPressed;
+
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      // show a check icon if the page is currently selected
-      // note: we use Opacity to ensure that all tiles have a leading widget
-      // and all the titles are left-aligned
-      leading: Opacity(
+    Widget leadingWidget;
+    if (icon != null) {
+      leadingWidget = iconTransform == null
+          ? icon!
+          : Transform(
+              transform: iconTransform!,
+              origin: const Offset(15,13),
+              child: icon!,
+            );
+    } else {
+      leadingWidget = Opacity(
         opacity: selectedPageName == pageName ? 1.0 : 0.0,
         child: const Icon(Icons.check),
-      ),
+      );
+    }
+
+    return ListTile(
+      leading: leadingWidget,
       title: Text(pageName),
       onTap: onPressed,
     );

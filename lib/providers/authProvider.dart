@@ -103,7 +103,6 @@ class AuthProvider extends ChangeNotifier {
 
     try {
       if (req.statusCode == 200 || req.statusCode == 201) {
-        print(req.body);
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
@@ -113,7 +112,9 @@ class AuthProvider extends ChangeNotifier {
         DatabaseProvider().saveId(id);
         if (kDebugMode) {
           print(id);
+          print(res['user']);
         }
+        DatabaseProvider().saveUserName(res['user']['name']);
         if (kDebugMode) {
           print(token);
         }
@@ -145,7 +146,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  void logout(BuildContext context) async {
+  Future<bool> logout(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
     String url = AppUrl.logout;
@@ -169,10 +170,8 @@ class AuthProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        if (kDebugMode) {
-          print(res);
-        }
         notifyListeners();
+        return true;
 
       } else {
         final res = json.decode(req.body);
@@ -182,12 +181,14 @@ class AuthProvider extends ChangeNotifier {
         if (kDebugMode) {
           print(res);
         }
+        return false;
       }
     } catch (e) {
       final res = json.decode(req.body);
       _isLoading = false;
       _reqMessage = res['message'];
       notifyListeners();
+      return false;
     }
   }
 

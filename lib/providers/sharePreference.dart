@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ilocate/models/User.dart';
 import 'package:ilocate/screens/auth/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +18,12 @@ class DatabaseProvider extends ChangeNotifier {
   void saveId(int id) async {
     SharedPreferences value = await _prefs;
     value.setInt('id', id);
+  }
+
+  //method to save the user object from the api
+  void saveUserName(String name) async {
+    SharedPreferences value = await _prefs;
+    value.setString('name', name);
   }
 
   Future<String> getToken() async {

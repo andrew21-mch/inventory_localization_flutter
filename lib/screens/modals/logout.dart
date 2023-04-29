@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:ilocate/main.dart';
+import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/auth/login.dart';
 import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/styles/colors.dart';
@@ -47,7 +48,9 @@ class _LogoutModalState extends State<LogoutModal> {
               Consumer<AuthProvider>(
                 builder: (context, auth, child) {
                   try {
-                    auth.logout(context);
+                    DatabaseProvider().logout(context);
+                  //  navigate back to login page
+                    return const Login();
                   } catch (e) {
                     print('Error logging out: $e');
                   }

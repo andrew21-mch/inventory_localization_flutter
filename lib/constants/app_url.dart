@@ -7,4 +7,8 @@ class AppUrl {
   static const String logout = '$baseUrl/logout';
 
   static const String items = '$baseUrl/components';
+
+  static const String sales = '$baseUrl/sales';
+
+  static const String statistics = '$baseUrl/statistics';
 }

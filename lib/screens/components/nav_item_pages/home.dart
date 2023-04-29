@@ -1,22 +1,166 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/screens/modals/add_item_form.dart';
+import 'package:ilocate/providers/salesProvider.dart';
+import 'package:ilocate/providers/statisticsProvider.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
+import 'package:ilocate/screens/customs/SalesLineChart.dart';
+import 'package:ilocate/screens/customs/StocksLineChart.dart';
 import 'package:ilocate/screens/dashboard/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
+import 'package:ilocate/screens/modals/add_item_form.dart';
 import 'package:ilocate/screens/modals/restock_form.dart';
 import 'package:ilocate/styles/colors.dart';
 
-class AuthHome extends StatelessWidget {
-  const AuthHome({super.key});
+class AuthHome extends StatefulWidget {
+  const AuthHome({Key? key});
+
+  @override
+  _AuthHomeState createState() => _AuthHomeState();
+}
+class _AuthHomeState extends State<AuthHome> {
+  List<Map<String, dynamic>>? _statisticsData;
+  List<Map<String, dynamic>>? _salesData;
+  String? _loggedInUserNickname;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _loggedInUserNickname = 'User';
+    _loadSalesData();
+    _loadStatisticsData();
+  }
+
+  Future<void> _loadStatisticsData() async {
+    setState(() {
+      _errorMessage = null;
+      _statisticsData = null;
+    });
+
+    try {
+      final data = await StatisticProvider().getGeneralStatistics();
+      _setStatisticsData(data);
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Error loading statistics';
+      });
+    }
+  }
+
+  Future<void> _loadSalesData() async {
+    setState(() {
+      _errorMessage = null;
+      _salesData = null;
+    });
+
+    try {
+      final data = await SalesProvider().getSales();
+      _setSalesData(data);
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Error loading statistics';
+      });
+    }
+  }
+
+  void _setStatisticsData(List<Map<String, dynamic>> data) {
+    setState(() {
+      _statisticsData = data;
+    });
+  }
+
+  void _setSalesData(List<Map<String, dynamic>> data) {
+    setState(() {
+      _salesData = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    const name = 'John Doe';
     final isMobile = MediaQuery.of(context).size.width < 600;
 
     final cardWidth = isMobile
         ? MediaQuery.of(context).size.width
         : (MediaQuery.of(context).size.width - 80) / 3;
+
+    final cards2 = [
+      // first card
+      Expanded(
+        flex: 2,
+        child: Card(
+          margin: const EdgeInsets.all(16),
+          child: SizedBox(
+            width: cardWidth,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Stocks Stats', style: TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold,
+                      color: ilocateYellow
+                  )),
+                  if (_statisticsData != null)
+                    SizedBox(
+                      height: 200, // Replace with desired height
+                      child: StocksLineChartWidget(
+                        _statisticsData![0]['data']['component_with_their_quantity'].map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
+                        animate: true,
+                      ),
+                    )
+                  else if (_errorMessage == null)
+                    const CircularProgressIndicator()
+                  else
+                    Text(
+                      _errorMessage!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+
+      // second card
+      // third card
+      Expanded(
+        flex: 2,
+        child: Card(
+          margin: const EdgeInsets.all(16),
+          child: SizedBox(
+            width: cardWidth,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Sales Stats', style: TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold,
+                      color: ilocateYellow
+                  )),
+                  if (_salesData != null && _salesData!.isNotEmpty) // check if _salesData is not null and has at least one item
+                    SizedBox(
+                      height: 200, // Replace with desired height
+                      child: SalessLineChartWidget(
+                        _salesData!.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
+                        animate: true,
+                      ),
+                    )
+                  else if (_errorMessage == null)
+                    const CircularProgressIndicator()
+                  else
+                    Text(
+                      _errorMessage!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                ],
+              ),
+
+            ),
+          ),
+        ),
+      ),
+    ];
 
     final cards = [
       // first card
@@ -31,7 +175,7 @@ class AuthHome extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.money_off_csred, size: 64),
+                  Icon(Icons.credit_card, size: 64, color: Colors.redAccent),
                   SizedBox(height: 16),
                   Text('XAF 400, 000'),
                   SizedBox(height: 8),
@@ -53,12 +197,15 @@ class AuthHome extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.money, size: 64),
-                  SizedBox(height: 16),
-                  Text('XAF 400, 000'),
-                  SizedBox(height: 8),
-                  Text('Total Income'),
+                children:  [
+                  if(_statisticsData != null)
+                    Icon(Icons.account_balance, size: 64, color: Colors.purpleAccent.shade700
+                      //rotate the ic
+                    ),
+                  const SizedBox(height: 16),
+                  Text('${_statisticsData![0]['data']['total_profit']}'),
+                  const SizedBox(height: 8),
+                  const Text('Total Profits'),
                 ],
               ),
             ),
@@ -77,7 +224,7 @@ class AuthHome extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.attach_money, size: 64),
+                  Icon(Icons.all_inbox, size: 64, color: Colors.green),
                   SizedBox(height: 16),
                   Text('127'),
                   SizedBox(height: 8),
@@ -91,54 +238,8 @@ class AuthHome extends StatelessWidget {
       // fourth card
     ];
 
-    final cards2 = [
-      Expanded(
-        flex: 2,
-        child: Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.pie_chart, size: 64),
-                  SizedBox(height: 16),
-                  Text('50%'),
-                  SizedBox(height: 8),
-                  Text('Sales and Purchases'),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      // fifth card
-      Expanded(
-        flex: 1,
-        child: Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.show_chart, size: 64),
-                  SizedBox(height: 16),
-                  Text('15%'),
-                  SizedBox(height: 8),
-                  Text('Revenue Growth'),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    ];
-    if (isMobile) {
+
+if (isMobile) {
       return PageScaffold(
         title: 'Dashboard',
         body: ListView(
@@ -148,11 +249,10 @@ class AuthHome extends StatelessWidget {
               margin: const EdgeInsets.all(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                // padding: const EdgeInsets.all(32.0),
                 children: [
                   Container(
                     margin: const EdgeInsets.fromLTRB(0, 32, 16, 0),
-                    child:  Text('Welcome to your dashboard $name!',
+                    child:  Text('Welcome to your dashboard $_loggedInUserNickname!',
                         style: TextStyle(
                             color: ilocateYellow,
                             textBaseline: TextBaseline.alphabetic)),
