@@ -111,10 +111,18 @@ class _SalesState extends State<Sales> {
                 children: [
                   const Icon(Icons.arrow_upward, size: 64, color: Colors.green),
                   const SizedBox(height: 16),
-                  const Text('Total Items'),
+                  const Text('Total Sales'),
                   const SizedBox(height: 8),
                   if (_salesData != null)
-                    Text('X items')
+                    SizedBox(
+                      height: 127,
+                      width: double.infinity,
+                      child: Center( child: Text(
+                        // get sum of all prices
+                        '${_salesData!.map<int>((item) => item['total_price']).reduce((value, element) => value + element)} XAF',
+                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      ),),
+                    )
                   else if (_errorMessage == null)
                     const CircularProgressIndicator()
                   else
@@ -138,7 +146,7 @@ class _SalesState extends State<Sales> {
           children: [
             ...cards,
             const SizedBox(height: 16),
-            const DataTableWidget(),
+            const SalesTableWidget(),
             const SizedBox(height: 16),
           ],
         ),

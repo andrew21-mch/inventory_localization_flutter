@@ -78,7 +78,7 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                 rows: items.map((item) {
                   return DataRow(
                     cells: [
-                      DataCell(Text(item['component_id'].toString())),
+                      DataCell(Text(item['component']['name'].toString())),
                       DataCell(
                           Text(item['quantity'].toString(), textAlign: TextAlign.center,)
                               ),
