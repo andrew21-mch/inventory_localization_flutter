@@ -46,10 +46,12 @@ class AuthProvider extends ChangeNotifier {
       'phone': phone,
     };
 
-    http.Response req = await http.post(Uri.parse(url),
-        headers: headers, body: json.encode(body));
 
     try {
+
+      http.Response req = await http.post(Uri.parse(url),
+          headers: headers, body: json.encode(body));
+
       if (req.statusCode == 200 || req.statusCode == 201) {
         final res = json.decode(req.body);
         if (kDebugMode) {
@@ -77,9 +79,9 @@ class AuthProvider extends ChangeNotifier {
         }
       }
     } catch (e) {
-      final res = json.decode(req.body);
+      final res = json.decode(e.toString());
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res + 'Check to make sure you connected to the same server as the server';
       notifyListeners();
     }
   }
@@ -139,9 +141,9 @@ class AuthProvider extends ChangeNotifier {
         }
       }
     } catch (e) {
-      final res = json.decode(req.body);
+      final res = json.decode(e.toString());
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res + 'Check to make sure you connected to the same server as the server';
       notifyListeners();
     }
   }

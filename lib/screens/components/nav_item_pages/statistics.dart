@@ -52,6 +52,13 @@ class _StatisticsState extends State<Statistics> {
 
     try {
       final data = await SalesProvider().getSales();
+      //check if data is empty
+      if (data.isEmpty) {
+        setState(() {
+          _errorMessage = 'No sales data';
+        });
+        return;
+      }
       _setSalesData(data);
     } catch (e) {
       setState(() {
@@ -97,7 +104,7 @@ class _StatisticsState extends State<Statistics> {
                       fontSize: 24, fontWeight: FontWeight.bold,
                       color: ilocateYellow
                   )),
-                  if (_statisticsData != null)
+                  if (_statisticsData != null && _errorMessage == null)
                     SizedBox(
                       height: 200, // Replace with desired height
                       child: StocksLineChartWidget(
@@ -105,7 +112,7 @@ class _StatisticsState extends State<Statistics> {
                         animate: true,
                       ),
                     )
-                  else if (_errorMessage == null)
+                  else if (_errorMessage == null || _statisticsData == null)
                     const CircularProgressIndicator()
                   else
                     Text(
@@ -136,7 +143,7 @@ class _StatisticsState extends State<Statistics> {
                       fontSize: 24, fontWeight: FontWeight.bold,
                       color: ilocateYellow
                   )),
-                  if (_salesData != null && _salesData!.isNotEmpty) // check if _salesData is not null and has at least one item
+                  if (_salesData != null) // check if _salesData is not null and has at least one item
                     SizedBox(
                       height: 200, // Replace with desired height
                       child: SalessLineChartWidget(
@@ -201,7 +208,11 @@ class _StatisticsState extends State<Statistics> {
                   //rotate the ic
                   ),
                   const SizedBox(height: 16),
-                  Text('${_statisticsData![0]['data']['total_profit']}'),
+                  if(_statisticsData != null)
+                  Text('${_statisticsData![0]['data']['total_profit']}')
+                  else
+                    const CircularProgressIndicator(),
+
                   const SizedBox(height: 8),
                   const Text('Total Profits'),
                 ],

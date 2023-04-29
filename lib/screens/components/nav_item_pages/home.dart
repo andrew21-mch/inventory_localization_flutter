@@ -203,7 +203,11 @@ class _AuthHomeState extends State<AuthHome> {
                       //rotate the ic
                     ),
                   const SizedBox(height: 16),
-                  Text('${_statisticsData![0]['data']['total_profit']}'),
+                  if(_statisticsData != null)
+                  Text('${_statisticsData![0]['data']['total_profit']}')
+                  else
+                    const CircularProgressIndicator(),
+
                   const SizedBox(height: 8),
                   const Text('Total Profits'),
                 ],
@@ -223,12 +227,15 @@ class _AuthHomeState extends State<AuthHome> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.all_inbox, size: 64, color: Colors.green),
-                  SizedBox(height: 16),
-                  Text('127'),
-                  SizedBox(height: 8),
-                  Text('Total Items'),
+                children:  [
+                  const Icon(Icons.all_inbox, size: 64, color: Colors.green),
+                  const SizedBox(height: 16),
+                  if(_statisticsData != null)
+                  Text('${_statisticsData![0]['data']['total_components']}')
+                  else
+                    const CircularProgressIndicator(),
+                  const SizedBox(height: 8),
+                  const Text('Total Items'),
                 ],
               ),
             ),
