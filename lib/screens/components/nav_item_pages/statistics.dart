@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/StocksLineChart.dart';
 import 'package:ilocate/providers/salesProvider.dart';
 import 'package:ilocate/providers/statisticsProvider.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
-import 'package:ilocate/screens/customs/SalesLineChart.dart';
-import 'package:ilocate/screens/customs/StocksLineChart.dart';
-import 'package:ilocate/screens/dashboard/items_table.dart';
+import 'package:ilocate/custom_widgets/SalesLineChart.dart';
+import 'package:ilocate/custom_widgets/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/screens/modals/add_item_form.dart';
 import 'package:ilocate/screens/modals/restock_form.dart';

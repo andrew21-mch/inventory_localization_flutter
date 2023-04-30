@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/screens/customs/custom_search_button.dart';
+import 'package:ilocate/custom_widgets/custom_search_button.dart';
 import 'package:ilocate/styles/colors.dart';
 
 class LedTableWidget extends StatelessWidget {

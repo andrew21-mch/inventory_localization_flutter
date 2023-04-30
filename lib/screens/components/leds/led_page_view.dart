@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
-import 'package:ilocate/screens/dashboard/items_table.dart';
+import 'package:ilocate/custom_widgets/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/screens/modals/install_led.dart';
 import 'led_screen.dart';
