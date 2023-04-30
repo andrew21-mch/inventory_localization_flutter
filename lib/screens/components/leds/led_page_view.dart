@@ -3,7 +3,7 @@ import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/custom_widgets/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/screens/modals/install_led.dart';
-import 'led_screen.dart';
+import 'led_table.dart';
 
 class Leds extends StatelessWidget {
   const Leds({super.key});
@@ -50,13 +50,9 @@ class Leds extends StatelessWidget {
           scrollDirection: Axis.vertical,
           children: [
             ...cards,
-            const SearchBar(),
+            // const SearchBar(),
             const LedTableWidget(),
-            Expanded(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [LedForm()]),
-            ),
+
             const SizedBox(height: 16),
           ],
         ),
@@ -76,13 +72,13 @@ class Leds extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              Row(
-                children: const [
-                  Expanded(
-                    child: SearchBar(),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: const [
+              //     Expanded(
+              //       child: SearchBar(),
+              //     ),
+              //   ],
+              // ),
               const SizedBox(height: 16),
               Expanded(
                 child: Row(

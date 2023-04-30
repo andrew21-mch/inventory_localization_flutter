@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ilocate/custom_widgets/StocksLineChart.dart';
 import 'package:ilocate/providers/salesProvider.dart';
+import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/providers/statisticsProvider.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/custom_widgets/SalesLineChart.dart';
@@ -16,6 +17,7 @@ class AuthHome extends StatefulWidget {
   @override
   _AuthHomeState createState() => _AuthHomeState();
 }
+
 class _AuthHomeState extends State<AuthHome> {
   List<Map<String, dynamic>>? _statisticsData;
   List<Map<String, dynamic>>? _salesData;
@@ -25,9 +27,9 @@ class _AuthHomeState extends State<AuthHome> {
   @override
   void initState() {
     super.initState();
-    _loggedInUserNickname = 'User';
     _loadSalesData();
     _loadStatisticsData();
+    _loadLoggedInUserName();
   }
 
   Future<void> _loadStatisticsData() async {
@@ -74,6 +76,17 @@ class _AuthHomeState extends State<AuthHome> {
     });
   }
 
+  void _setLoggedInUserName(String name) {
+    setState(() {
+      _loggedInUserNickname = name;
+    });
+  }
+
+  Future<void> _loadLoggedInUserName() async {
+    final name = await DatabaseProvider().getUserName();
+    _setLoggedInUserName(name);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
@@ -81,6 +94,34 @@ class _AuthHomeState extends State<AuthHome> {
     final cardWidth = isMobile
         ? MediaQuery.of(context).size.width
         : (MediaQuery.of(context).size.width - 80) / 3;
+
+    final cards = [
+      // first card
+      Expanded(
+        child: Card(
+          margin: const EdgeInsets.all(16),
+          child: SizedBox(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Welcome, $_loggedInUserNickname'),
+                        const SizedBox(height: 8),
+                        const Text('Here, you can view your statistics and manage your inventory.'),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ];
 
     final cards2 = [
       // first card
@@ -94,92 +135,18 @@ class _AuthHomeState extends State<AuthHome> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Stocks Stats', style: TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold,
-                      color: ilocateYellow
-                  )),
-                  if (_statisticsData != null)
-                    SizedBox(
-                      height: 200, // Replace with desired height
-                      child: StocksLineChartWidget(
-                        _statisticsData![0]['data']['component_with_their_quantity'].map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
-                        animate: true,
-                      ),
-                    )
-                  else if (_errorMessage == null)
-                    const CircularProgressIndicator()
+                children:  [
+                  const Icon(Icons.credit_card, size: 64, color: Colors.redAccent),
+                  const SizedBox(height: 16),
+                  if(_statisticsData != null)
+                    Text('${_statisticsData![0]['data']['total_profit']}' + ' XAF', style: TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold,
+                        color: ilocateYellow
+                    ))
                   else
-                    Text(
-                      _errorMessage!,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-
-      // second card
-      // third card
-      Expanded(
-        flex: 2,
-        child: Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Sales Stats', style: TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold,
-                      color: ilocateYellow
-                  )),
-                  if (_salesData != null && _salesData!.isNotEmpty) // check if _salesData is not null and has at least one item
-                    SizedBox(
-                      height: 200, // Replace with desired height
-                      child: SalessLineChartWidget(
-                        _salesData!.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
-                        animate: true,
-                      ),
-                    )
-                  else if (_errorMessage == null)
-                    const CircularProgressIndicator()
-                  else
-                    Text(
-                      _errorMessage!,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                ],
-              ),
-
-            ),
-          ),
-        ),
-      ),
-    ];
-
-    final cards = [
-      // first card
-      Expanded(
-        flex: 2,
-        child: Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.credit_card, size: 64, color: Colors.redAccent),
-                  SizedBox(height: 16),
-                  Text('XAF 400, 000'),
-                  SizedBox(height: 8),
-                  Text('Total Expenses'),
+                    const RefreshProgressIndicator(),
+                  const SizedBox(height: 8),
+                  const Text('Total Expenses'),
                 ],
               ),
             ),
@@ -204,9 +171,12 @@ class _AuthHomeState extends State<AuthHome> {
                     ),
                   const SizedBox(height: 16),
                   if(_statisticsData != null)
-                  Text('${_statisticsData![0]['data']['total_profit']}')
+                    Text('${_statisticsData![0]['data']['total_profit']}' + ' XAF', style: TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold,
+                        color: ilocateYellow
+                    ))
                   else
-                    const CircularProgressIndicator(),
+                    const RefreshProgressIndicator(),
 
                   const SizedBox(height: 8),
                   const Text('Total Profits'),
@@ -231,9 +201,12 @@ class _AuthHomeState extends State<AuthHome> {
                   const Icon(Icons.all_inbox, size: 64, color: Colors.green),
                   const SizedBox(height: 16),
                   if(_statisticsData != null)
-                  Text('${_statisticsData![0]['data']['total_components']}')
+                    Text('${_statisticsData![0]['data']['total_components']}', style: TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold,
+                        color: ilocateYellow
+                    ))
                   else
-                    const CircularProgressIndicator(),
+                    const RefreshProgressIndicator(),
                   const SizedBox(height: 8),
                   const Text('Total Items'),
                 ],
@@ -245,26 +218,36 @@ class _AuthHomeState extends State<AuthHome> {
       // fourth card
     ];
 
-
-if (isMobile) {
+    if (isMobile) {
       return PageScaffold(
         title: 'Dashboard',
         body: ListView(
           scrollDirection: Axis.vertical,
           children: [
             Card(
-              margin: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    margin: const EdgeInsets.fromLTRB(0, 32, 16, 0),
-                    child:  Text('Welcome to your dashboard $_loggedInUserNickname!',
+                    padding: const EdgeInsets.all(16),
+                    margin: const EdgeInsets.fromLTRB(8, 32, 32, 32),
+                    child: Text(
+                        'Welcome to your dashboard $_loggedInUserNickname!\nHere, you can view your statistics and manage your inventory.',
                         style: TextStyle(
-                            color: ilocateYellow,
+                            color: ilocateBlue,
                             textBaseline: TextBaseline.alphabetic)),
                   ),
+                ],
+              ),
+            ),
+            Card(
+              margin: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Container(
+
                     margin: const EdgeInsets.fromLTRB(8, 64, 32, 32),
                     child: const MyForm(),
                   ),
@@ -275,10 +258,8 @@ if (isMobile) {
                 ],
               ),
             ),
-                   const SearchBar(),
-                   const DataTableWidget(),
+            const DataTableWidget(),
             const Padding(padding: EdgeInsets.all(32)),
-
           ],
         ),
       );
@@ -300,7 +281,6 @@ if (isMobile) {
                 ...cards2,
               ],
             ),
-            const SearchBar(),
             const DataTableWidget(),
             const Padding(padding: EdgeInsets.all(32)),
             Expanded(

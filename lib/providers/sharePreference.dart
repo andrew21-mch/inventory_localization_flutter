@@ -26,6 +26,16 @@ class DatabaseProvider extends ChangeNotifier {
     value.setString('name', name);
   }
 
+  Future<String> getUserName() async {
+    SharedPreferences value = await _prefs;
+    if (value.containsKey('name')) {
+      String data = value.getString('name') as String;
+      return data;
+    } else {
+      return '';
+    }
+  }
+
   Future<String> getToken() async {
     SharedPreferences value = await _prefs;
     if (value.containsKey('token')) {

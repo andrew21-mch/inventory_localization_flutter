@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/screens/components/leds/led_table.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/custom_widgets/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/screens/modals/install_led.dart';
-
-import '../leds/led_screen.dart';
 
 class Leds extends StatelessWidget {
   const Leds({super.key});
@@ -51,7 +50,7 @@ class Leds extends StatelessWidget {
           scrollDirection: Axis.vertical,
           children: [
             ...cards,
-            const SearchBar(),
+            // const SearchBar(),
             const LedTableWidget(),
             Expanded(
               child: Row(
@@ -77,13 +76,6 @@ class Leds extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              Row(
-                children: const [
-                  Expanded(
-                    child: SearchBar(),
-                  ),
-                ],
-              ),
               const SizedBox(height: 16),
               Expanded(
                 child: Row(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ilocate/custom_widgets/StocksLineChart.dart';
+import 'package:ilocate/custom_widgets/out_of_stocks_table.dart';
+import 'package:ilocate/providers/itemProvider.dart';
 import 'package:ilocate/providers/statisticsProvider.dart';
-import 'package:ilocate/screens/components/search_bar.dart';
-import 'package:ilocate/custom_widgets/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/styles/colors.dart';
 
@@ -12,15 +12,17 @@ class Stocks extends StatefulWidget {
   @override
   _StocksState createState() => _StocksState();
 }
+
 class _StocksState extends State<Stocks> {
-  late Future<List<Map<String, dynamic>>> _statisticsFuture;
   List<Map<String, dynamic>>? _statisticsData;
+  List<Map<String, dynamic>>? _outOfStocksData;
   String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
     _loadStatisticsData();
+    _loadOutOfStocksData();
   }
 
   Future<void> _loadStatisticsData() async {
@@ -39,9 +41,31 @@ class _StocksState extends State<Stocks> {
     }
   }
 
+  Future<void> _loadOutOfStocksData() async {
+    setState(() {
+      _errorMessage = null;
+      _outOfStocksData = null;
+    });
+
+    try {
+      final data = await ItemProvider().getItemsOutOfStock();
+      _setOutOfStocksData(data);
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Error loading statistics';
+      });
+    }
+  }
+
   void _setStatisticsData(List<Map<String, dynamic>> data) {
     setState(() {
       _statisticsData = data;
+    });
+  }
+
+  void _setOutOfStocksData(List<Map<String, dynamic>> data) {
+    setState(() {
+      _outOfStocksData = data;
     });
   }
 
@@ -66,23 +90,26 @@ class _StocksState extends State<Stocks> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Stocks Stats', style: TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold,
-                    color: ilocateYellow
-                  )),
+                  Text('Stocks Stats',
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: ilocateYellow)),
                   if (_statisticsData != null)
                     SizedBox(
                       height: 200, // Replace with desired height
                       child: StocksLineChartWidget(
-                        _statisticsData![0]['data']['component_with_their_quantity'].map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
+                        _statisticsData![0]['data']
+                                ['component_with_their_quantity']
+                            .map<Map<String, dynamic>>(
+                                (item) => Map<String, dynamic>.from(item))
+                            .toList(),
                         animate: true,
                       ),
                     )
                   else if (_errorMessage == null)
                     const SizedBox(
-                      height: 200,
-                      child: CircularProgressIndicator()
-                    )
+                        height: 200, child: RefreshProgressIndicator())
                   else
                     Text(
                       _errorMessage!,
@@ -103,26 +130,36 @@ class _StocksState extends State<Stocks> {
           child: SizedBox(
             width: cardWidth,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.arrow_upward, size: 64, color: Colors.green),
-                  const SizedBox(height: 16),
-                  const Text('Total Items'),
-                  const SizedBox(height: 8),
-                  if (_statisticsData != null)
-                    Text('${_statisticsData![0]['data']['total_components']}')
-                  else if (_errorMessage == null)
-                    const CircularProgressIndicator()
-                  else
-                    Text(
-                      _errorMessage!,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                ],
-              ),
-            ),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                     Icon(Icons.warning_amber_sharp,
+                        size: 64, color: ilocateWarning),
+                    const SizedBox(height: 16),
+                    const Text('Total Sales'),
+                    const SizedBox(height: 8),
+                    if (_outOfStocksData != null)
+                      SizedBox(
+                        height: 127,
+                        width: double.infinity,
+                        child: Center(
+                          child: Text(
+                            _outOfStocksData!.length.toString(),
+                            style: const TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      )
+                    else if (_errorMessage == null)
+                      const RefreshProgressIndicator()
+                    else
+                      Text(
+                        _errorMessage!,
+                        style: const TextStyle(color: Colors.red),
+                      )
+                  ],
+                )),
           ),
         ),
       ),
@@ -136,7 +173,15 @@ class _StocksState extends State<Stocks> {
           children: [
             ...cards,
             const SizedBox(height: 16),
-            const DataTableWidget(),
+            Center(
+              child: Text('Items Out Of Stock',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      textBaseline: TextBaseline.ideographic,
+                      color: ilocateRed)),
+            ),
+            const OutOfStockTableWidget(),
             const SizedBox(height: 16),
           ],
         ),
@@ -156,16 +201,19 @@ class _StocksState extends State<Stocks> {
                 ],
               ),
               const SizedBox(height: 16),
-              Row(
-                children: const [
-                  Expanded(
-                    child: SearchBar(),
-                  ),
-                ],
-              ),
               const SizedBox(height: 16),
               const Padding(padding: EdgeInsets.all(32)),
-              const DataTableWidget(),
+              Column(
+                children: [
+                  Text('Items Out Of Stock',
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: ilocateRed)),
+                  const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
+                  const OutOfStockTableWidget(),
+                ],
+              )
             ],
           ),
         ),

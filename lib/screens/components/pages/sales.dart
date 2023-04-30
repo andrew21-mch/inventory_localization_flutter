@@ -3,7 +3,6 @@ import 'package:ilocate/providers/salesProvider.dart';
 import 'package:ilocate/providers/statisticsProvider.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/custom_widgets/SalesLineChart.dart';
-import 'package:ilocate/custom_widgets/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/custom_widgets/sales_table.dart';
 import 'package:ilocate/styles/colors.dart';
@@ -82,7 +81,7 @@ class _SalesState extends State<Sales> {
                   else if (_errorMessage == null)
                     const SizedBox(
                         height: 200,
-                        child: CircularProgressIndicator()
+                        child: RefreshProgressIndicator()
                     )
                   else
                     Text(
@@ -123,7 +122,7 @@ class _SalesState extends State<Sales> {
                       ),),
                     )
                   else if (_errorMessage == null)
-                    const CircularProgressIndicator()
+                    const RefreshProgressIndicator()
                   else
                     Text(
                       _errorMessage!,
@@ -165,13 +164,6 @@ class _SalesState extends State<Sales> {
                 ],
               ),
               const SizedBox(height: 16),
-              Row(
-                children: const [
-                  Expanded(
-                    child: SearchBar(),
-                  ),
-                ],
-              ),
               const SizedBox(height: 16),
               const Padding(padding: EdgeInsets.all(32)),
               const SalesTableWidget(),

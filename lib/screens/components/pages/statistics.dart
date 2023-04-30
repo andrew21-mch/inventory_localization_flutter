@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ilocate/custom_widgets/StocksLineChart.dart';
 import 'package:ilocate/providers/salesProvider.dart';
 import 'package:ilocate/providers/statisticsProvider.dart';
-import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/custom_widgets/SalesLineChart.dart';
 import 'package:ilocate/custom_widgets/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
@@ -113,7 +112,7 @@ class _StatisticsState extends State<Statistics> {
                       ),
                     )
                   else if (_errorMessage == null || _statisticsData == null)
-                    const CircularProgressIndicator()
+                    const RefreshProgressIndicator()
                   else
                     Text(
                       _errorMessage!,
@@ -152,7 +151,7 @@ class _StatisticsState extends State<Statistics> {
                       ),
                     )
                   else if (_errorMessage == null)
-                    const CircularProgressIndicator()
+                    const RefreshProgressIndicator()
                   else
                     Text(
                       _errorMessage!,
@@ -179,12 +178,18 @@ class _StatisticsState extends State<Statistics> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.credit_card, size: 64, color: Colors.redAccent),
-                  SizedBox(height: 16),
-                  Text('XAF 400, 000'),
-                  SizedBox(height: 8),
-                  Text('Total Expenses'),
+                children:  [
+                  const Icon(Icons.credit_card, size: 64, color: Colors.redAccent),
+                  const SizedBox(height: 16),
+                  if(_statisticsData != null)
+                    Text('${_statisticsData![0]['data']['total_profit']}' + ' XAF', style: TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold,
+                        color: ilocateYellow
+                    ))
+                  else
+                    const RefreshProgressIndicator(),
+                  const SizedBox(height: 8),
+                  const Text('Total Expenses'),
                 ],
               ),
             ),
@@ -209,9 +214,12 @@ class _StatisticsState extends State<Statistics> {
                   ),
                   const SizedBox(height: 16),
                   if(_statisticsData != null)
-                  Text('${_statisticsData![0]['data']['total_profit']}')
+                  Text('${_statisticsData![0]['data']['total_profit']}' + ' XAF', style: TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold,
+                      color: ilocateYellow
+                  ))
                   else
-                    const CircularProgressIndicator(),
+                    const RefreshProgressIndicator(),
 
                   const SizedBox(height: 8),
                   const Text('Total Profits'),
@@ -232,12 +240,18 @@ class _StatisticsState extends State<Statistics> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.all_inbox, size: 64, color: Colors.green),
-                  SizedBox(height: 16),
-                  Text('127'),
-                  SizedBox(height: 8),
-                  Text('Total Items'),
+                children:  [
+                  const Icon(Icons.all_inbox, size: 64, color: Colors.green),
+                  const SizedBox(height: 16),
+                  if(_statisticsData != null)
+                    Text('${_statisticsData![0]['data']['total_components']}', style: TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold,
+                        color: ilocateYellow
+                    ))
+                  else
+                    const RefreshProgressIndicator(),
+                  const SizedBox(height: 8),
+                  const Text('Total Items'),
                 ],
               ),
             ),
@@ -278,7 +292,6 @@ class _StatisticsState extends State<Statistics> {
                 ...cards2,
               ],
             ),
-            const SearchBar(),
             const DataTableWidget(),
             const Padding(padding: EdgeInsets.all(32)),
             Expanded(

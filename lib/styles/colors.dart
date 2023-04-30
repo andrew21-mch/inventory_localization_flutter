@@ -8,3 +8,6 @@ Color ilocateBlue = const Color(0xFF3B3B98);
 Color ilocateYellow = const Color.fromARGB(250, 47, 6, 80);
 Color ilocateRed = const Color.fromARGB(255, 255, 0, 0);
 Color ilocateGreen = const Color.fromARGB(255, 0, 255, 0);
+
+// color for warning and error ( not red )
+Color ilocateWarning = const Color.fromARGB(255, 255, 165, 0);

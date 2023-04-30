@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ilocate/providers/itemProvider.dart';
 import 'package:ilocate/providers/salesProvider.dart';
 import 'package:ilocate/custom_widgets/custom_search_button.dart';
+import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/styles/colors.dart';
 import 'package:intl/intl.dart';
 
@@ -31,7 +32,10 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
             final items = snapshot.data!;
-            return SingleChildScrollView(
+            return Column(
+            children: [
+              const SearchBar(),
+              SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columnSpacing: isMobile
@@ -113,6 +117,8 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                   );
                 }).toList(),
               ),
+            ),
+            ],
             );
           } else {
             return const Center(child: CircularProgressIndicator());
