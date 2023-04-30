@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ilocate/screens/dashboard/split_view.dart';
 import '../../routes/routes.dart';
-import '../components/nav_item_pages/appmenu.dart';
+import '../components/pages/appmenu.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
