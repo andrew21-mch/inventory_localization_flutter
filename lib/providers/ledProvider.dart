@@ -263,6 +263,8 @@ class LedProvider extends ChangeNotifier {
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
+        storeMessageToInMemory(res['message']);
+
         return true;
       } else {
         final res = json.decode(req.body);
@@ -270,6 +272,7 @@ class LedProvider extends ChangeNotifier {
         _reqMessage = res['message'];
         print(res);
         notifyListeners();
+        storeMessageToInMemory(res['message']);
 
         return false;
       }
@@ -281,6 +284,8 @@ class LedProvider extends ChangeNotifier {
       if (kDebugMode) {
         print(res);
       }
+      storeMessageToInMemory(res['message']);
+
       return false;
     }
   }
@@ -312,6 +317,7 @@ class LedProvider extends ChangeNotifier {
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
+        storeMessageToInMemory(res['message']);
         return true;
       } else {
         final res = json.decode(req.body);
@@ -321,6 +327,7 @@ class LedProvider extends ChangeNotifier {
         if (kDebugMode) {
           print(res);
         }
+        storeMessageToInMemory(res['message']);
         return false;
       }
     } catch (e) {
@@ -331,6 +338,7 @@ class LedProvider extends ChangeNotifier {
       if (kDebugMode) {
         print(res);
       }
+      storeMessageToInMemory(res['message']);
       return false;
     }
   }
@@ -338,5 +346,10 @@ class LedProvider extends ChangeNotifier {
     _reqMessage = '';
     _isLoading = false;
     notifyListeners();
+  }
+
+  getLedTotal() async {
+    var leds = await getLeds();
+    return leds.length ?? 0;
   }
 }

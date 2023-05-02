@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ilocate/custom_widgets/custom_search_button.dart';
 import 'package:ilocate/main.dart';
 import 'package:ilocate/providers/ledProvider.dart';
+import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/styles/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LedTableWidget extends StatefulWidget {
   const LedTableWidget({Key? key}) : super(key: key);
@@ -14,6 +16,31 @@ class LedTableWidget extends StatefulWidget {
 
 class _LedTableWidgetState extends State<LedTableWidget> {
   late Future<List<Map<String, dynamic>>> _itemsFuture;
+  String? message;
+
+  void _setMessage(String newMessage) {
+    setState(() {
+      message = newMessage;
+    });
+  }
+
+  void _loadMessage() async {
+    final message = await DatabaseProvider().getMessage();
+    _setMessage(message);
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message ?? 'Error loading message'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    });
+
+    //  clear message
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('message');
+  }
 
   @override
   void initState() {
@@ -137,12 +164,9 @@ class _LedTableWidgetState extends State<LedTableWidget> {
                                         setState(() {
                                           _itemsFuture = LedProvider().getLeds();
                                         });
+                                        _loadMessage();
                                       }else{
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Failed to delete'),
-                                        ),
-                                      );
+                                      _loadMessage();
                                       setState(() {
                                         _itemsFuture = LedProvider().getLeds();
                                       });

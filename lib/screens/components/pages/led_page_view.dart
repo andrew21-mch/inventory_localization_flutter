@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/providers/ledProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/components/leds/led_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
@@ -10,22 +11,32 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Leds extends StatefulWidget {
   const Leds({Key? key}) : super(key: key);
 
+
   @override
   _LedsState createState() => _LedsState();
 }
 
 class _LedsState extends State<Leds> {
   String? message;
+  late int ledTotal;
 
   @override
   void initState() {
     super.initState();
     _loadMessage();
+    _loadLedTotal();
   }
 
   void _setMessage(String newMessage) {
     setState(() {
       message = newMessage;
+    });
+  }
+
+  void _loadLedTotal() async {
+    final ledTotal = await LedProvider().getLedTotal();
+    setState(() {
+      this.ledTotal = ledTotal;
     });
   }
 
@@ -66,13 +77,20 @@ class _LedsState extends State<Leds> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   //  icon for money coin
-                  Icon(Icons.lightbulb, size: 64, color: Colors.yellow),
-                  SizedBox(height: 16),
-                  Text('LEDs Installed'),
-                  SizedBox(height: 8),
-                  Text('20'),
+                  const Icon(Icons.lightbulb, size: 64, color: Colors.yellow),
+                  const SizedBox(height: 16),
+                  const Text('LEDs Installed'),
+                  const SizedBox(height: 8),
+                  Text(
+                    '$ledTotal',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
+                    ),
+                  ),
                 ],
               ),
             ),
