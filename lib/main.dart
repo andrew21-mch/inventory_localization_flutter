@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:ilocate/providers/authProvider.dart';
+import 'package:ilocate/providers/ledProvider.dart';
+import 'package:ilocate/screens/dashboard/dashboard.dart';
 import 'package:ilocate/splash/splash.dart';
 
 import 'models/User.dart';
@@ -26,6 +28,7 @@ void main() {
 
 final authProvider = ChangeNotifierProvider((ref) => AuthProvider());
 final userProvider = ChangeNotifierProvider((ref) => UserModel());
+final ledProvider = ChangeNotifierProvider((ref) => LedProvider());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -40,11 +43,14 @@ class MyApp extends StatelessWidget {
         userProvider.overrideWithProvider(
           ChangeNotifierProvider((ref) => UserModel()),
         ),
+        ledProvider.overrideWithProvider(
+          ChangeNotifierProvider((ref) => LedProvider()),
+        ),
       ],
       child: const GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Ilocate',
-        home: Splash(),
+        home: DashboardScreen(),
       ),
     );
   }

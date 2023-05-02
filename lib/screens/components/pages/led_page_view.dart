@@ -1,12 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/components/leds/led_table.dart';
-import 'package:ilocate/screens/components/search_bar.dart';
-import 'package:ilocate/custom_widgets/items_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/screens/modals/install_led.dart';
+import 'package:ilocate/styles/colors.dart';
+import 'package:ilocate/utils/snackMessage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Leds extends StatelessWidget {
-  const Leds({super.key});
+class Leds extends StatefulWidget {
+  const Leds({Key? key}) : super(key: key);
+
+  @override
+  _LedsState createState() => _LedsState();
+}
+
+class _LedsState extends State<Leds> {
+  String? message;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMessage();
+  }
+
+  void _setMessage(String newMessage) {
+    setState(() {
+      message = newMessage;
+    });
+  }
+
+  void _loadMessage() async {
+    final message = await DatabaseProvider().getMessage();
+    _setMessage(message);
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message ?? 'Error loading message'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    });
+
+  //  clear message
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('message');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +118,13 @@ class Leds extends StatelessWidget {
               const SizedBox(height: 16),
               Expanded(
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: const [LedForm()]),
               ),
               const SizedBox(height: 16),
               const LedTableWidget(),
               const Padding(padding: EdgeInsets.all(32)),
-
             ],
           ),
         ),

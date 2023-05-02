@@ -9,6 +9,7 @@ class AppUrl {
   static const String items = '$baseUrl/components';
 
   static const String sales = '$baseUrl/sales';
+  static const String leds = '$baseUrl/leds';
 
   static const String statistics = '$baseUrl/statistics';
 

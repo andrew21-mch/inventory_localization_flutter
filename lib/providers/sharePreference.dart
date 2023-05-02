@@ -72,4 +72,20 @@ class DatabaseProvider extends ChangeNotifier {
         curve: Curves.easeOut,
         duration: const Duration(microseconds: 800));
   }
-}
+
+  void storeMessage({required String message}) {
+    SharedPreferences.getInstance().then((value) {
+      value.setString('message', message);
+    });
+  }
+
+  Future<String> getMessage() async {
+    SharedPreferences value = await _prefs;
+    if (value.containsKey('message')) {
+      String data = value.getString('message') as String;
+      return data;
+    } else {
+      return '';
+    }
+  }
+  }
