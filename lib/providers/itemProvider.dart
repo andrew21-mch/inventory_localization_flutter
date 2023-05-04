@@ -240,7 +240,7 @@ class ItemProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        // print(res);
+        print(res);
 
         _isLoading = false;
         notifyListeners();
