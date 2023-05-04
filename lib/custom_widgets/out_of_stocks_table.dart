@@ -40,7 +40,12 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
 
-    return Column(children: [
+    return Card(
+        shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+    ),
+    elevation: 0,
+    child: Column(children: [
       SearchBar(onSearch: _onSearch),
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -137,6 +142,7 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
           }).toList(),
         ),
       ),
-    ]);
+    ])
+    );
   }
 }

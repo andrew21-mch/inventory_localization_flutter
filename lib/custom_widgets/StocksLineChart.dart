@@ -27,8 +27,10 @@ class _StocksLineChartWidgetState extends State<StocksLineChartWidget> {
         data: widget.data,
         domainFn: (datum, index) => index as num,
         measureFn: (datum, index) => datum['quantity'] as int,
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        displayName: 'Quantity',
+        colorFn: (datum, index) {
+          final quantity = datum['quantity'] as int;
+          return quantity > 10 ? charts.MaterialPalette.green.shadeDefault : charts.MaterialPalette.blue.shadeDefault;
+        },        displayName: 'Quantity',
       )
     ];
   }

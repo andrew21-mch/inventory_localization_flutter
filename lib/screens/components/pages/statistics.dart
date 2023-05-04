@@ -145,7 +145,7 @@ class _StatisticsState extends State<Statistics> {
                   if (_salesData != null) // check if _salesData is not null and has at least one item
                     SizedBox(
                       height: 200, // Replace with desired height
-                      child: SalessLineChartWidget(
+                      child: SalessHistogramChartWidget(
                         _salesData!.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
                         animate: true,
                       ),

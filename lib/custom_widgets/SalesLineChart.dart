@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class SalessLineChartWidget extends StatefulWidget {
+class SalessHistogramChartWidget extends StatefulWidget {
   final List<Map<String, dynamic>> data;
   final bool animate;
 
-  SalessLineChartWidget(this.data, {required this.animate});
+  SalessHistogramChartWidget(this.data, {required this.animate});
 
   @override
-  _SalessLineChartWidgetState createState() => _SalessLineChartWidgetState();
+  _SalessHistogramChartWidgetState createState() =>
+      _SalessHistogramChartWidgetState();
 }
 
-class _SalessLineChartWidgetState extends State<SalessLineChartWidget> {
-  List<charts.Series<Map<String, dynamic>, num>> _seriesList = [];
+class _SalessHistogramChartWidgetState
+    extends State<SalessHistogramChartWidget> {
+  List<charts.Series<dynamic, String>> _seriesList = [];
 
   @override
   void initState() {
@@ -22,12 +24,22 @@ class _SalessLineChartWidgetState extends State<SalessLineChartWidget> {
 
   void _generateSeriesList() {
     _seriesList = [
-      charts.Series<Map<String, dynamic>, num>(
+      charts.Series<dynamic, String>(
         id: 'Quantity',
-        data: widget.data,
-        domainFn: (datum, index) => datum['id'] as num,
-        measureFn: (datum, index) => datum['quantity'] as int,
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        data: widget.data.map((datum) {
+          return MapEntry('id: ${datum['id']}', datum['quantity']);
+        }).toList(),
+        domainFn: (datum, index) => datum.key,
+        measureFn: (datum, index) => datum.value,
+        colorFn: (datum, index) {
+          if (datum.value < 2) {
+            return charts.MaterialPalette.red.shadeDefault.lighter;}
+            else if (datum.value > 5) {
+              return charts.MaterialPalette.green.shadeDefault.lighter;
+          } else {
+            return charts.MaterialPalette.blue.shadeDefault;
+          }
+        },
         displayName: 'Quantity',
       )
     ];
@@ -35,11 +47,11 @@ class _SalessLineChartWidgetState extends State<SalessLineChartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return charts.LineChart(
+    return charts.BarChart(
       _seriesList,
       animate: widget.animate,
-      defaultRenderer: charts.LineRendererConfig(
-        includePoints: true,
+      defaultRenderer: charts.BarRendererConfig(
+        cornerStrategy: const charts.ConstCornerStrategy(10),
       ),
       behaviors: [
         charts.ChartTitle('Item',
@@ -51,6 +63,9 @@ class _SalessLineChartWidgetState extends State<SalessLineChartWidget> {
             titleOutsideJustification:
             charts.OutsideJustification.middleDrawArea),
       ],
+      domainAxis: const charts.OrdinalAxisSpec(
+        renderSpec: charts.SmallTickRendererSpec(labelRotation: 60),
+      ),
     );
   }
 }

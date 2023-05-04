@@ -38,7 +38,13 @@ class _DataTableWidgetState extends State<DataTableWidget> {
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
 
-    return Column(
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      color: ilocateWhite,
+      elevation: 0,
+    child: Column(
       children: [
         SearchBar(onSearch: _onSearch),
         SingleChildScrollView(
@@ -134,6 +140,7 @@ class _DataTableWidgetState extends State<DataTableWidget> {
           ),
         )
       ],
+    )
     );
   }
 }

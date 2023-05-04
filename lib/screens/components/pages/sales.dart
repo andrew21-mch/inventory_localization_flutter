@@ -73,7 +73,7 @@ class _SalesState extends State<Sales> {
                   if (_salesData != null)
                     SizedBox(
                       height: 200, // Replace with desired height
-                      child: SalessLineChartWidget(
+                      child: SalessHistogramChartWidget(
                         _salesData!.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
                         animate: true,
                       ),

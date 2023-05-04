@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/custom_search_button.dart';
-import 'package:ilocate/main.dart';
 import 'package:ilocate/providers/ledProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
@@ -66,14 +64,20 @@ class _LedTableWidgetState extends State<LedTableWidget> {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
-    return Column(
+    return Card(
+        shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+    ),
+    elevation: 0,
+    child:
+      Column(
       children: [
         SearchBar(onSearch: _onSearch),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(
             columnSpacing:
-                isMobile ? 10 : (MediaQuery.of(context).size.width / 3) - 210,
+                isMobile ? 10 : (MediaQuery.of(context).size.width / 3) - 220,
             headingRowColor: MaterialStateColor.resolveWith(
               (states) => ilocateYellow,
             ),
@@ -192,6 +196,7 @@ class _LedTableWidgetState extends State<LedTableWidget> {
           ),
         )
       ],
+      ),
     );
   }
 }
