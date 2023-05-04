@@ -161,8 +161,6 @@ class ItemProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-          print(res);
-
         _isLoading = false;
         notifyListeners();
         return List<Map<String, dynamic>>.from(res['data']);
@@ -170,7 +168,6 @@ class ItemProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-          print(res);
         notifyListeners();
 
         return [];
@@ -180,9 +177,6 @@ class ItemProvider extends ChangeNotifier {
       _isLoading = false;
       _reqMessage = res['message'];
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return [];
     }
   }
@@ -205,7 +199,7 @@ class ItemProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        print(res);
+        // print(res);
 
         _isLoading = false;
         notifyListeners();
@@ -214,7 +208,7 @@ class ItemProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        print(res);
+        // print(res);
         notifyListeners();
 
         return [];
@@ -224,17 +218,15 @@ class ItemProvider extends ChangeNotifier {
       _isLoading = false;
       _reqMessage = res['message'];
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return [];
     }
   }
 
-  Future<List<Map<String, dynamic>>> seach() async {
+  Future<List<Map<String, dynamic>>> search(String query) async {
     _isLoading = true;
     notifyListeners();
-    String url = AppUrl.outOfStocks;
+    String url = '${AppUrl.items}/search/component?search=$query';
+    print(query);
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -248,7 +240,7 @@ class ItemProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        print(res);
+        // print(res);
 
         _isLoading = false;
         notifyListeners();

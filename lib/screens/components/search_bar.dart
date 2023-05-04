@@ -1,25 +1,45 @@
 import 'package:flutter/material.dart';
 
-class SearchBar extends StatelessWidget {
-  const SearchBar({Key? key}) : super(key: key);
+class SearchBar extends StatefulWidget {
+  final Function(String) onSearch;
+
+  const SearchBar({Key? key, required this.onSearch}) : super(key: key);
+
+  @override
+  _SearchBarState createState() => _SearchBarState();
+}
+
+class _SearchBarState extends State<SearchBar> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      // color: Colors.grey.shade300,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: TextField(
+        controller: _controller,
         decoration: InputDecoration(
           hintText: 'Search',
-          prefixIcon: const Icon(Icons.search),
+          prefixIcon: Icon(Icons.search),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(25.0),
           ),
-          contentPadding: EdgeInsets.zero,
-          filled: true,
-          fillColor: Colors.white,
         ),
+        onChanged: (value) {
+          widget.onSearch(value); // invoke the callback with the search query
+        },
       ),
     );
   }

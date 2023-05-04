@@ -243,7 +243,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  void NavigateToPage(BuildContext context, Widget page) {
+  void navigateToPage(BuildContext context, Widget page) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => page),

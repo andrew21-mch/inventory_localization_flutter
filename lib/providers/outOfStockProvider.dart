@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-class SalesProvider extends ChangeNotifier {
+class OutOfStockProvider extends ChangeNotifier {
   late final BuildContext context;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -22,61 +21,10 @@ class SalesProvider extends ChangeNotifier {
 
   String get failureMessage => _failureMessage;
 
-  void addSales({
-    required int componentId,
-    required int quantity,
-  }) async {
+  Future<List<Map<String, dynamic>>> getItemsOutOfStock() async {
     _isLoading = true;
     notifyListeners();
-    String url = AppUrl.sales;
-
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Charset': 'utf-8',
-      'Authorization': 'Bearer ${await _prefs.then((
-          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
-    };
-    final body = {
-      'component_id': componentId,
-      'quantity': quantity,
-    };
-
-    try {
-      http.Response req = await http.post(Uri.parse(url),
-          headers: headers, body: json.encode(body));
-
-      if (req.statusCode == 200 || req.statusCode == 201) {
-        final res = json.decode(req.body);
-        if (kDebugMode) {
-          print(res);
-        }
-        _isLoading = false;
-        _reqMessage = res['message'];
-        notifyListeners();
-      } else {
-        final res = json.decode(req.body);
-        _isLoading = false;
-        _reqMessage = res['message'];
-        notifyListeners();
-        if (kDebugMode) {
-          print(res);
-        }
-      }
-    } catch (e) {
-      final res = json.decode(e.toString());
-      _isLoading = false;
-      _reqMessage = res['message'];
-      notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> search(String query) async {
-    _isLoading = true;
-    notifyListeners();
-    String url = '${AppUrl.sales}/search/sales?search=$query';
+    String url = AppUrl.outOfStocks;
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -90,7 +38,7 @@ class SalesProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        print(res);
+        // print(res);
 
         _isLoading = false;
         notifyListeners();
@@ -99,7 +47,7 @@ class SalesProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        print(res);
+        // print(res);
         notifyListeners();
 
         return [];
@@ -109,17 +57,15 @@ class SalesProvider extends ChangeNotifier {
       _isLoading = false;
       _reqMessage = res['message'];
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return [];
     }
   }
 
-  Future<List<Map<String, dynamic>>> getSales() async {
+  Future<List<Map<String, dynamic>>> search(String query) async {
     _isLoading = true;
     notifyListeners();
-    String url = AppUrl.sales;
+    String url = '${AppUrl.outOfStocks}/search/out_of_stocks?search=$query';
+    print(query);
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -133,7 +79,7 @@ class SalesProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        print(res);
+        // print(res);
 
         _isLoading = false;
         notifyListeners();

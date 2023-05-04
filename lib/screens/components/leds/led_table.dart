@@ -16,6 +16,7 @@ class LedTableWidget extends StatefulWidget {
 
 class _LedTableWidgetState extends State<LedTableWidget> {
   late Future<List<Map<String, dynamic>>> _itemsFuture;
+  List<Map<String, dynamic>> _items = [];
   String? message;
 
   void _setMessage(String newMessage) {
@@ -45,150 +46,152 @@ class _LedTableWidgetState extends State<LedTableWidget> {
   @override
   void initState() {
     super.initState();
-    _itemsFuture = LedProvider().getLeds();
+    _loadItems();
+  }
+
+  void _loadItems() async {
+    final items = await LedProvider().getLeds();
+    setState(() {
+      _items = items;
+    });
+  }
+
+  void _onSearch(String query) async {
+    final searchResults = await LedProvider().search(query);
+    setState(() {
+      _items = searchResults;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
-
-    return FutureBuilder<List<Map<String, dynamic>>>(
-        future: _itemsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final items = snapshot.data!;
-            return Column(
-              children: [
-                const SearchBar(),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    columnSpacing: isMobile
-                        ? 10
-                        : (MediaQuery.of(context).size.width / 3) - 210,
-                    headingRowColor: MaterialStateColor.resolveWith(
-                          (states) => ilocateYellow,
-                    ),
-                    //   headingTextStyle: TextStyle(color: ilocateWhite),
-                    columns: [
-                      DataColumn(
-                        label: Text(
-                          'ID',
-                          style: TextStyle(
-                            color: ilocateWhite,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'SHELF',
-                          style: TextStyle(
-                            color: ilocateWhite,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'PIN_NUMBER',
-                          style: TextStyle(
-                            color: ilocateWhite,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'ACTION',
-                          style: TextStyle(
-                            color: ilocateWhite,
-                          ),
-                        ),
-                      ),
-                    ],
-                    rows: items.isEmpty ?
-                          const [
-                            DataRow(
-                              cells: [
-                                DataCell(Text('No Data')),
-                                DataCell(Text('No Data')),
-                                DataCell(Text('No Data')),
-                                DataCell(LinearProgressIndicator()),
-                              ],
-                            ),
-                          ]
-                        :
-                    items.map((item) {
-                      return DataRow(
-                        cells: [
-                          DataCell(Text(item!['id'].toString())),
-                          DataCell(
-                            SizedBox(
-                                width: isMobile ? 60 : 100,
-                                child: Text(item!['shelf_number'].toString(),
-                                    maxLines: 4,
-                                    softWrap: true,
-                                    style: const TextStyle())),
-                          ),
-                          DataCell(
-                            SizedBox(
-                                width: isMobile ? 60 : 100,
-                                child: Text(item!['led_unique_number'].toString(),
-                                    maxLines: 4,
-                                    softWrap: true,
-                                    style: const TextStyle())),
-                          ),
-                           DataCell(
-                            Row(
-                              children:  [
-                                IconButton(
-                                  icon: Icon(Icons.search,
-                                      color: ilocateYellow),
-                                  onPressed: () async {
-                                    LedProvider().testLed(item['id']).then((value) {
-                                      Navigator.pushNamed(context, '/leds/view', arguments: value);
-                                    });
-                                  },
-                                ),
-                                SizedBox(width: 10),
-                                IconButton(
-                                  icon: Icon(Icons.edit, color: ilocateGreen),
-                                  onPressed: () async {
-                                    Navigator.pushNamed(context, '/leds/edit', arguments: item);
-                                  },
-                                ),
-                                SizedBox(width: 10),
-                                IconButton(
-                                  icon: Icon(Icons.delete, color: ilocateRed),
-                                  onPressed: () async {
-                                    if(await LedProvider().deleteLed(item['id']))
-                                      {
-                                        setState(() {
-                                          _itemsFuture = LedProvider().getLeds();
-                                        });
-                                        _loadMessage();
-                                      }else{
-                                      _loadMessage();
-                                      setState(() {
-                                        _itemsFuture = LedProvider().getLeds();
-                                      });
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-                    }).toList(),
+    return Column(
+      children: [
+        SearchBar(onSearch: _onSearch),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            columnSpacing:
+                isMobile ? 10 : (MediaQuery.of(context).size.width / 3) - 210,
+            headingRowColor: MaterialStateColor.resolveWith(
+              (states) => ilocateYellow,
+            ),
+            //   headingTextStyle: TextStyle(color: ilocateWhite),
+            columns: [
+              DataColumn(
+                label: Text(
+                  'ID',
+                  style: TextStyle(
+                    color: ilocateWhite,
                   ),
-                )
-              ],
-            );
-          }
-          else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        });
+                ),
+              ),
+              DataColumn(
+                label: Text(
+                  'SHELF',
+                  style: TextStyle(
+                    color: ilocateWhite,
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Text(
+                  'PIN_NUMBER',
+                  style: TextStyle(
+                    color: ilocateWhite,
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Text(
+                  'ACTION',
+                  style: TextStyle(
+                    color: ilocateWhite,
+                  ),
+                ),
+              ),
+            ],
+            rows: _items.isEmpty
+                ? const [
+                    DataRow(
+                      cells: [
+                        DataCell(Text('No Data')),
+                        DataCell(Text('No Data')),
+                        DataCell(Text('No Data')),
+                        DataCell(LinearProgressIndicator()),
+                      ],
+                    ),
+                  ]
+                : _items.map((item) {
+                    return DataRow(
+                      cells: [
+                        DataCell(Text(item!['id'].toString())),
+                        DataCell(
+                          SizedBox(
+                              width: isMobile ? 60 : 100,
+                              child: Text(item!['shelf_number'].toString(),
+                                  maxLines: 4,
+                                  softWrap: true,
+                                  style: const TextStyle())),
+                        ),
+                        DataCell(
+                          SizedBox(
+                              width: isMobile ? 60 : 100,
+                              child: Text(item!['led_unique_number'].toString(),
+                                  maxLines: 4,
+                                  softWrap: true,
+                                  style: const TextStyle())),
+                        ),
+                        DataCell(
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.search, color: ilocateYellow),
+                                onPressed: () async {
+                                  LedProvider()
+                                      .testLed(item['id'])
+                                      .then((value) {
+                                    Navigator.pushNamed(context, '/leds/view',
+                                        arguments: value);
+                                  });
+                                },
+                              ),
+                              SizedBox(width: 10),
+                              IconButton(
+                                icon: Icon(Icons.edit, color: ilocateGreen),
+                                onPressed: () async {
+                                  Navigator.pushNamed(context, '/leds/edit',
+                                      arguments: item);
+                                },
+                              ),
+                              SizedBox(width: 10),
+                              IconButton(
+                                icon: Icon(Icons.delete, color: ilocateRed),
+                                onPressed: () async {
+                                  if (await LedProvider()
+                                      .deleteLed(item['id'])) {
+                                    setState(() {
+                                      _itemsFuture = LedProvider().getLeds();
+                                    });
+                                    _loadMessage();
+                                  } else {
+                                    _loadMessage();
+                                    setState(() {
+                                      _itemsFuture = LedProvider().getLeds();
+                                    });
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+          ),
+        )
+      ],
+    );
   }
 }

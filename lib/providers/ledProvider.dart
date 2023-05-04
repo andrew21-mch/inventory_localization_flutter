@@ -196,10 +196,10 @@ class LedProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<Map<String, dynamic>>> search() async {
+  Future<List<Map<String, dynamic>>> search(String query) async {
     _isLoading = true;
     notifyListeners();
-    String url = AppUrl.leds;
+    String url = '${AppUrl.leds}/search/leds/?search=$query';
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',

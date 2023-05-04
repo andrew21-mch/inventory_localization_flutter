@@ -15,26 +15,35 @@ class SalesTableWidget extends StatefulWidget {
 
 class _SalesTableWidgetState extends State<SalesTableWidget> {
   late Future<List<Map<String, dynamic>>> _itemsFuture;
+  List<Map<String, dynamic>> _sales = [];
 
   @override
   void initState() {
     super.initState();
-    _itemsFuture = SalesProvider().getSales();
+    _loadItems();
   }
+
+  void _loadItems() async {
+    final items = await SalesProvider().getSales();
+    setState(() {
+      _sales = items;
+    });
+  }
+
+  void _onSearch(String query) async {
+    final searchResults = await SalesProvider().search(query);
+    setState(() {
+      _sales = searchResults;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
-
-    return FutureBuilder<List<Map<String, dynamic>>>(
-        future: _itemsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.hasData) {
-            final items = snapshot.data!;
             return Column(
             children: [
-              const SearchBar(),
+              SearchBar(onSearch: _onSearch),
               SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
@@ -79,7 +88,7 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                     ),
                   ),
                 ],
-                rows: items.map((item) {
+                rows: _sales.map((item) {
                   return DataRow(
                     cells: [
                       DataCell(Text(item['component']['name'].toString())),
@@ -120,9 +129,5 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
             ),
             ],
             );
-          } else {
-            return const Center(child: CircularProgressIndicator());
           }
-        });
-  }
 }
