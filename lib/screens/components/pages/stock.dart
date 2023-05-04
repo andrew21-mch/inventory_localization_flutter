@@ -137,7 +137,11 @@ class _StocksState extends State<Stocks> {
                      Icon(Icons.warning_amber_sharp,
                         size: 64, color: ilocateWarning),
                     const SizedBox(height: 16),
-                    const Text('Total Sales'),
+                    Text('# Out Of Stock Items',
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: ilocateRed)),
                     const SizedBox(height: 8),
                     if (_outOfStocksData != null)
                       SizedBox(
@@ -146,8 +150,8 @@ class _StocksState extends State<Stocks> {
                         child: Center(
                           child: Text(
                             _outOfStocksData!.length.toString(),
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold, color: ilocateRed),
                           ),
                         ),
                       )
