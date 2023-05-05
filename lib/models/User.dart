@@ -19,6 +19,11 @@ class UserModel with ChangeNotifier {
     email = json['email'];
     password = json['phone'];
   }
+
+//  function to check if user is logged in
+  bool get isAuth {
+    return user != null;
+  }
 }
 
 class User {
@@ -34,6 +39,15 @@ class User {
     name = json['name'];
     email = json['email'];
     phone = json['phone'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'phone': phone,
+    };
   }
 
 }

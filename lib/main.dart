@@ -28,10 +28,39 @@ void main() {
 
 final authProvider = ChangeNotifierProvider((ref) => AuthProvider());
 final userProvider = ChangeNotifierProvider((ref) => UserModel());
-final ledProvider = ChangeNotifierProvider((ref) => LedProvider());
+// final ledProvider = ChangeNotifierProvider((ref) => LedProvider());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    checkAuth();
+  }
+
+  bool isAuth = false;
+
+  //method to check if user is logged in
+  void checkAuth() async {
+    final auth = AuthProvider().isAuthenticacted();
+    if (await auth) {
+      setState(() {
+        isAuth = true;
+      });
+    } else {
+      setState(() {
+        isAuth = false;
+      });
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +72,14 @@ class MyApp extends StatelessWidget {
         userProvider.overrideWithProvider(
           ChangeNotifierProvider((ref) => UserModel()),
         ),
-        ledProvider.overrideWithProvider(
-          ChangeNotifierProvider((ref) => LedProvider()),
-        ),
+        // ledProvider.overrideWithProvider(
+        //   ChangeNotifierProvider((ref) => LedProvider()),
+        // ),
       ],
-      child: const GetMaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Ilocate',
-        home: DashboardScreen(),
+        home: isAuth ? const DashboardScreen() : const Splash(),
       ),
     );
   }

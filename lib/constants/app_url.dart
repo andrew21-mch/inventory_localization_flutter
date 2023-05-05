@@ -14,4 +14,6 @@ class AppUrl {
   static const String statistics = '$baseUrl/statistics';
 
   static const String outOfStocks = '$baseUrl/out_of_stocks';
+
+  static const String users = '$baseUrl/users';
 }

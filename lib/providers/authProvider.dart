@@ -254,4 +254,14 @@ class AuthProvider extends ChangeNotifier {
     _reqMessage = '';
     notifyListeners();
   }
+
+
+  Future<bool> isAuthenticacted() async {
+    final token = await DatabaseProvider().getToken();
+    if (token == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
