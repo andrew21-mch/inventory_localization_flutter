@@ -18,7 +18,7 @@ class Leds extends StatefulWidget {
 
 class _LedsState extends State<Leds> {
   String? message;
-  late int ledTotal;
+  String? _totalLeds;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _LedsState extends State<Leds> {
   void _loadLedTotal() async {
     final ledTotal = await LedProvider().getLedTotal();
     setState(() {
-      this.ledTotal = ledTotal;
+      _totalLeds = ledTotal;
     });
   }
 
@@ -84,7 +84,7 @@ class _LedsState extends State<Leds> {
                   const Text('LEDs Installed'),
                   const SizedBox(height: 8),
                   Text(
-                    '$ledTotal',
+                    _totalLeds.toString(),
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,

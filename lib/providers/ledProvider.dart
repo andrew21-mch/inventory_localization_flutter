@@ -348,8 +348,8 @@ class LedProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getLedTotal() async {
+  Future<String>getLedTotal() async {
     var leds = await getLeds();
-    return leds.length ?? 0;
+    return leds.length.toString();
   }
 }
