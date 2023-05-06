@@ -12,6 +12,7 @@ class AppUrl {
   static const String leds = '$baseUrl/leds';
 
   static const String statistics = '$baseUrl/statistics';
+  static const String salesStatistics = '$baseUrl/statistics/sales';
 
   static const String outOfStocks = '$baseUrl/out_of_stocks';
 

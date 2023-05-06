@@ -18,6 +18,7 @@ class Statistics extends StatefulWidget {
 class _StatisticsState extends State<Statistics> {
   List<Map<String, dynamic>>? _statisticsData;
   List<Map<String, dynamic>>? _salesData;
+  List<Map<String, dynamic>>? _salesStatisticsData;
   String? _errorMessage;
 
   @override
@@ -25,6 +26,23 @@ class _StatisticsState extends State<Statistics> {
     super.initState();
     _loadSalesData();
     _loadStatisticsData();
+    _loadSalesStatisticsData();
+  }
+
+  Future<void> _loadSalesStatisticsData() async {
+    setState(() {
+      _errorMessage = null;
+      _salesData = null;
+    });
+
+    try {
+      final data = await StatisticProvider().getSalesStatistics();
+      _setSalesStatisticsData(data);
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Error loading statistics';
+      });
+    }
   }
 
   Future<void> _loadStatisticsData() async {
@@ -75,6 +93,12 @@ class _StatisticsState extends State<Statistics> {
   void _setSalesData(List<Map<String, dynamic>> data) {
     setState(() {
       _salesData = data;
+    });
+  }
+
+  void _setSalesStatisticsData(List<Map<String, dynamic>> data) {
+    setState(() {
+      _salesStatisticsData = data;
     });
   }
 
@@ -146,7 +170,7 @@ class _StatisticsState extends State<Statistics> {
                     SizedBox(
                       height: 200, // Replace with desired height
                       child: SalessHistogramChartWidget(
-                        _salesData!.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
+                        _salesStatisticsData!.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
                         animate: true,
                       ),
                     )

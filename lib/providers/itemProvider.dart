@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ilocate/constants/app_url.dart';
 import 'package:http/http.dart' as http;
+import 'package:ilocate/utils/snackMessage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -21,13 +22,13 @@ class ItemProvider extends ChangeNotifier {
 
   String get failureMessage => _failureMessage;
 
-  void addItem({required String name,
+  Future<bool> addItem({required String name,
     required String description,
     required String price,
     required String quantity,
     required String cost,
     required String location,
-    required int supplierId,
+    required String supplierId,
 
   }) async {
     _isLoading = true;
@@ -45,10 +46,11 @@ class ItemProvider extends ChangeNotifier {
       'description': description,
       'price': price,
       'quantity': quantity,
-      'cost': cost,
+      'price_per_unit': cost, // 'cost' is 'price_per_unit
       'location': location,
       'supplier_id': supplierId,
     };
+
 
     try {
       http.Response req = await http.post(Uri.parse(url),
@@ -62,6 +64,8 @@ class ItemProvider extends ChangeNotifier {
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
+        storeMessageToInMemory(res['message']);
+        return true;
       } else {
         final res = json.decode(req.body);
         _isLoading = false;
@@ -70,6 +74,8 @@ class ItemProvider extends ChangeNotifier {
         if (kDebugMode) {
           print(res);
         }
+        storeMessageToInMemory(res['message']);
+        return false;
       }
     } catch (e) {
       final res = json.decode(e.toString());
@@ -79,6 +85,8 @@ class ItemProvider extends ChangeNotifier {
       if (kDebugMode) {
         print(res);
       }
+      storeMessageToInMemory(res['message']);
+      return false;
     }
   }
 

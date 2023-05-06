@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ilocate/providers/salesProvider.dart';
 import 'package:ilocate/providers/statisticsProvider.dart';
-import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/custom_widgets/SalesLineChart.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/custom_widgets/sales_table.dart';
@@ -15,12 +14,15 @@ class Sales extends StatefulWidget {
 }
 class _SalesState extends State<Sales> {
   List<Map<String, dynamic>>? _salesData;
+  List<Map<String, dynamic>>? _statisticsData;
   String? _errorMessage;
+
 
   @override
   void initState() {
     super.initState();
     _loadSalesData();
+    _loadStatisticsData();
   }
 
   Future<void> _loadSalesData() async {
@@ -39,9 +41,32 @@ class _SalesState extends State<Sales> {
     }
   }
 
+  Future<void> _loadStatisticsData() async {
+    setState(() {
+      _errorMessage = null;
+      _statisticsData = null;
+    });
+
+    try {
+      final data = await StatisticProvider().getSalesStatistics();
+      _setStatisticsData(data);
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Error loading statistics';
+      });
+    }
+  }
+
+
   void _setSalesData(List<Map<String, dynamic>> data) {
     setState(() {
       _salesData = data;
+    });
+  }
+
+  void _setStatisticsData(List<Map<String, dynamic>> data) {
+    setState(() {
+      _statisticsData = data;
     });
   }
 
@@ -74,7 +99,7 @@ class _SalesState extends State<Sales> {
                     SizedBox(
                       height: 200, // Replace with desired height
                       child: SalessHistogramChartWidget(
-                        _salesData!.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
+                        _statisticsData!.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
                         animate: true,
                       ),
                     )
