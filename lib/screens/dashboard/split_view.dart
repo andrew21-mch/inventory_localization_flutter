@@ -27,13 +27,23 @@ class SplitView extends StatelessWidget {
             child: menu,
           ),
           Container(width: 0.5, color: Colors.black),
-          Expanded(child: content),
+          Expanded(
+            child: Builder(
+              builder: (BuildContext context) {
+                return content;
+              },
+            ),
+          ),
         ],
       );
     } else {
       // narrow screen: show content, menu inside drawer
       return Scaffold(
-        body: content,
+        body: Builder(
+          builder: (BuildContext context) {
+            return content;
+          },
+        ),
         drawer: SizedBox(
           width: menuWidth,
           child: Drawer(

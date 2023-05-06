@@ -54,7 +54,7 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
               child: DataTable(
                 columnSpacing: isMobile
                     ? 10
-                    : (MediaQuery.of(context).size.width / 3) - 220,
+                    : (MediaQuery.of(context).size.width / 3.3) - 220,
                 headingRowColor: MaterialStateColor.resolveWith(
                   (states) => ilocateYellow,
                 ),
@@ -107,17 +107,21 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                     : _sales.map((item) {
                         return DataRow(
                           cells: [
-                            DataCell(Text(item['component'] != null
+                            DataCell(
+                              SizedBox(
+                                width: isMobile ? 60 : 150,
+                                child:
+                                Text(item['component'] != null
                                 ? item['component']['name']
                                 : 'No Data')),
+                            ),
                             DataCell(Text(
                               item['quantity'].toString(),
                               textAlign: TextAlign.center,
                             )),
                             DataCell(
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
+                              SizedBox(
+                                width: isMobile ? 60 : 150,
                                 child: Text(
                                   '${item['total_price']} XAF',
                                   textAlign: TextAlign.center,

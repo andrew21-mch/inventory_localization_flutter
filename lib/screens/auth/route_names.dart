@@ -3,3 +3,7 @@ const login = '/login';
 const register = '/register';
 const splash = '/splash';
 const restPassword = '/reset_password';
+const home = '/home';
+const items = '/items';
+const addItems = '/add_items';
+const led = '/led';

@@ -88,4 +88,8 @@ class DatabaseProvider extends ChangeNotifier {
       return '';
     }
   }
+
+  void ReloadPage() {
+    notifyListeners();
+  }
   }

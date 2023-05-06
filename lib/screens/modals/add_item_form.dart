@@ -28,7 +28,7 @@ class _MyFormState extends State<MyForm> {
     });
   }
 
-  void _loadMessage() async {
+  void _loadMessageAndCloseModal() async {
     final message = await DatabaseProvider().getMessage();
     _setMessage(message);
 
@@ -36,7 +36,7 @@ class _MyFormState extends State<MyForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 2),
+          duration: const Duration(seconds: 3),
         ),
       );
     });
@@ -44,6 +44,8 @@ class _MyFormState extends State<MyForm> {
     //  clear message
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('message');
+
+    _closeModalAndNavigate();
   }
 
   final formKey = GlobalKey<FormState>();
@@ -82,6 +84,12 @@ class _MyFormState extends State<MyForm> {
     });
   }
 
+  _closeModalAndNavigate() {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        dashboard, (Route<dynamic> route) => false);
+
+  }
   @override
   void initState() {
     super.initState();
@@ -244,12 +252,11 @@ class _MyFormState extends State<MyForm> {
                             supplierId: selectedSupplier!,
                             location: _selectedLed!,
                           )) {
-                            _loadMessage();
-                            reloadPage(context);
+                            _loadMessageAndCloseModal();
+
                           } else {
-                            _loadMessage();
-                          //  reload page
-                            Navigator.pop(context);
+                            _loadMessageAndCloseModal();
+                            reloadPage(context);
                           }
                           clearInput();
                         } else {

@@ -51,7 +51,7 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
         scrollDirection: Axis.horizontal,
         child: DataTable(
           columnSpacing:
-              isMobile ? 10 : (MediaQuery.of(context).size.width / 3) - 220,
+              isMobile ? 10 : (MediaQuery.of(context).size.width / 3.9) - 220,
           headingRowColor: MaterialStateColor.resolveWith(
             (states) => ilocateYellow,
           ),
@@ -102,11 +102,16 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
             return DataRow(
               cells: [
                 DataCell(
-                  Text(item['component']!['name'].toString()),
+                  SizedBox(
+                      width: isMobile ? 60 : 100,
+                      child:
+                  Text(
+                      item['component']!['name'].toString()),
+                ),
                 ),
                 DataCell(
                   SizedBox(
-                      width: isMobile ? 60 : 100,
+                      width: isMobile ? 60 : 150,
                       child: Text(item['component']!['description'].toString(),
                           maxLines: 4,
                           softWrap: true,

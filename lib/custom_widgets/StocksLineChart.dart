@@ -13,11 +13,13 @@ class StocksLineChartWidget extends StatefulWidget {
 
 class _StocksLineChartWidgetState extends State<StocksLineChartWidget> {
   List<charts.Series<Map<String, dynamic>, num>> _seriesList = [];
+  int _maxValue = 0;
 
   @override
   void initState() {
     super.initState();
     _generateSeriesList();
+    _setMaxValue();
   }
 
   void _generateSeriesList() {
@@ -30,11 +32,21 @@ class _StocksLineChartWidgetState extends State<StocksLineChartWidget> {
         colorFn: (datum, index) {
           final quantity = datum['quantity'] as int;
           return quantity > 10 ? charts.MaterialPalette.green.shadeDefault : charts.MaterialPalette.blue.shadeDefault;
-        },        displayName: 'Quantity',
+        },
+        displayName: 'Quantity',
       )
     ];
   }
 
+  void _setMaxValue() {
+    final List<int> quantities = widget.data.map((datum) => datum['quantity'] as int).toList();
+    final int maxValue = quantities.reduce((value, element) => value > element ? value : element);
+    setState(() {
+      _maxValue = maxValue;
+    });
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
     return charts.LineChart(
@@ -53,6 +65,19 @@ class _StocksLineChartWidgetState extends State<StocksLineChartWidget> {
             titleOutsideJustification:
             charts.OutsideJustification.middleDrawArea),
       ],
+      domainAxis: charts.NumericAxisSpec(
+        tickProviderSpec: charts.BasicNumericTickProviderSpec(
+          desiredTickCount:  widget.data.length,
+        ),
+      ),
+      primaryMeasureAxis: const charts.NumericAxisSpec(
+        tickProviderSpec: charts.BasicNumericTickProviderSpec(
+          desiredTickCount: 5,
+        ),
+        renderSpec: charts.GridlineRendererSpec(
+          labelOffsetFromAxisPx: 12,
+        ),
+      ),
     );
   }
 }

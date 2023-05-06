@@ -274,5 +274,89 @@ class ItemProvider extends ChangeNotifier {
     }
   }
 
+//  delete
+  Future<bool> deleteItem(int id) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.items}/$id';
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization': 'Bearer ${await _prefs.then((
+          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    try {
+      http.Response req = await http.delete(Uri.parse(url), headers: headers);
+
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        storeMessageToInMemory(res['message']);
+        notifyListeners();
+        if (kDebugMode) {
+          print(res);
+        }
+        return true;
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        storeMessageToInMemory(res['errors'].toString());
+        notifyListeners();
+        if (kDebugMode) {
+          print(res);
+        }
+        return false;
+      }
+    } catch (e) {
+      final res = json.decode(e.toString());
+      _isLoading = false;
+      storeMessageToInMemory(res);
+      notifyListeners();
+      if (kDebugMode) {
+        print(res);
+      }
+      return false;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getItemsBySupplier(int id) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.items}/supplier/$id';
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization': 'Bearer ${await _prefs.then((
+          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    try {
+      http.Response req = await http.get(Uri.parse(url), headers: headers);
+
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        notifyListeners();
+        return List<Map<String, dynamic>>.from(res['data']);
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['error'];
+        notifyListeners();
+
+        return [];
+      }
+    } catch (e) {
+      final res = json.decode(e.toString());
+      _isLoading = false;
+      _reqMessage = res['message'];
+      notifyListeners();
+      return [];
+    }
+  }
+
 
 }
