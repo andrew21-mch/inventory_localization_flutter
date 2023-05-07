@@ -3,6 +3,7 @@ import 'package:ilocate/providers/itemProvider.dart';
 import 'package:ilocate/custom_widgets/custom_search_button.dart';
 import 'package:ilocate/providers/outOfStockProvider.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
+import 'package:ilocate/screens/modals/restock_form.dart';
 import 'package:ilocate/styles/colors.dart';
 
 class OutOfStockTableWidget extends StatefulWidget {
@@ -137,10 +138,13 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
                           softWrap: true,
                           style: const TextStyle())),
                 ),
-                const DataCell(
-                  CustomSearchButton(
-                    placeholder: 'Restock',
-                  ),
+                 DataCell(
+                   Container(
+                     padding: const EdgeInsets.all(10),
+                      width: 120,
+                      child:
+                      RestockForm(selectedItem: item['component']['id'].toString(), width: 200, placeholder: 'Restock',),
+                   ),
                 ),
               ],
             );

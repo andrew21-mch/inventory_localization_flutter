@@ -11,12 +11,22 @@ class DashboardScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedPageBuilder = ref.watch(selectedPageBuilderProvider);
     return MaterialApp(
-      onGenerateRoute: CustomeRoute.allRoutes,
+      onGenerateRoute: CustomRoute.allRoutes,
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (_) => const Scaffold(
+            body: Center(
+              child: Text('Page not found'),
+            ),
+          ),
+        );
+      },
       color: Colors.white,
       home: SplitView(
         menu: const AppMenu(),
         content: selectedPageBuilder(context),
       ),
     );
+
   }
 }

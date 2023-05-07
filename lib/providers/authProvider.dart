@@ -157,18 +157,16 @@ class AuthProvider extends ChangeNotifier {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Charset': 'utf-8',
-      'token': 'Bearer ${await DatabaseProvider().getToken()}'
+      'Authorization': 'Bearer ${await _prefs.then((
+          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
     };
     final body = {};
-
 
     http.Response req = await http.post(Uri.parse(url),
         headers: headers, body: json.encode(''));
 
-    print(req);
     try {
       if (req.statusCode == 200 || req.statusCode == 201) {
-        print(req.body);
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
@@ -180,9 +178,6 @@ class AuthProvider extends ChangeNotifier {
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
-        if (kDebugMode) {
-          print(res);
-        }
         return false;
       }
     } catch (e) {
@@ -196,7 +191,7 @@ class AuthProvider extends ChangeNotifier {
 
 
 
-  void resetPassword({required String email}) async {
+  void resetPassword({required String phone}) async {
     _isLoading = true;
     notifyListeners();
     String url = AppUrl.resetPassword;
@@ -206,7 +201,7 @@ class AuthProvider extends ChangeNotifier {
       'Charset': 'utf-8'
     };
     final body = {
-      'email': email,
+      'phone': phone,
     };
 
     http.Response req = await http.post(Uri.parse(url),
@@ -256,9 +251,9 @@ class AuthProvider extends ChangeNotifier {
   }
 
 
-  Future<bool> isAuthenticacted() async {
+  Future<bool> isAuthenticated() async {
     final token = await DatabaseProvider().getToken();
-    if (token == null) {
+    if (token == '') {
       return false;
     } else {
       return true;

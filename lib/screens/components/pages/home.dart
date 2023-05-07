@@ -253,7 +253,7 @@ class _AuthHomeState extends State<AuthHome> {
                   ),
                   Container(
                     margin: const EdgeInsets.fromLTRB(8, 16, 32, 32),
-                    child: const RestockForm(),
+                    child: const RestockForm(width: 200),
                   )
                 ],
               ),

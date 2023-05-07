@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ilocate/models/User.dart';
+import 'package:ilocate/providers/authProvider.dart';
 import 'package:ilocate/screens/auth/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,12 +10,16 @@ class DatabaseProvider extends ChangeNotifier {
 
   String _token = '';
   int? _id;
+
   String get token => _token;
+
   int? get id => _id;
+
   void saveToken(String token) async {
     SharedPreferences value = await _prefs;
     value.setString('token', token);
   }
+
   void saveId(int id) async {
     SharedPreferences value = await _prefs;
     value.setInt('id', id);
@@ -65,12 +70,14 @@ class DatabaseProvider extends ChangeNotifier {
   }
 
   void logout(BuildContext context) async {
+    AuthProvider authProvider = AuthProvider();
+    authProvider.logout(context);
     final value = await _prefs;
     value.clear();
-    Get.to(const Login(),
-        transition: Transition.fade,
+    Get.to(() => const Login(),
+        transition: Transition.fadeIn,
         curve: Curves.easeOut,
-        duration: const Duration(microseconds: 800));
+        duration: const Duration(microseconds: 2000000));
   }
 
   void storeMessage({required String message}) {
@@ -89,7 +96,5 @@ class DatabaseProvider extends ChangeNotifier {
     }
   }
 
-  void ReloadPage() {
-    notifyListeners();
-  }
-  }
+
+}

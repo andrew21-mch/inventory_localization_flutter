@@ -12,7 +12,7 @@ class Splash extends StatelessWidget {
 
     return MaterialApp(
         title: 'Ilocate',
-        onGenerateRoute: CustomeRoute.allRoutes,
+        onGenerateRoute: CustomRoute.allRoutes,
         home: Scaffold(
             body: ListView(
 

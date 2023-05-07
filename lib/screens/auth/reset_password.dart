@@ -1,11 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:ilocate/providers/authProvider.dart';
+import 'package:ilocate/screens/auth/login.dart';
 import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/components/clippath.dart';
 import 'package:ilocate/screens/customs/button.dart';
 import 'package:ilocate/screens/customs/textfield.dart';
 import 'package:ilocate/screens/dashboard/dashboard.dart';
 import 'package:ilocate/styles/colors.dart';
+import 'package:ilocate/utils/snackMessage.dart';
+import 'package:provider/provider.dart';
 
 class PasswordReset extends StatefulWidget {
   const PasswordReset({Key? key}) : super(key: key);
@@ -26,11 +32,9 @@ class _PasswordResetState extends State<PasswordReset> {
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
 
-    final cardWidth = isMobile
-        ? MediaQuery.of(context).size.width
-        : (MediaQuery.of(context).size.width - 80) / 3;
-    return MaterialApp(
-        home: Scaffold(
+    return ChangeNotifierProvider(
+        create: (_) => AuthProvider(),
+        child: Scaffold(
             resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
                 child: DecoratedBox(
@@ -54,6 +58,7 @@ class _PasswordResetState extends State<PasswordReset> {
                                       color: ilocateYellow),
                                 ))),
                             const CustomeTextField(
+                              keyboardType: TextInputType.phone,
                               passwordField: false,
                               placeholder: 'Phone number',
                               prefixIcon: Icon(
@@ -83,19 +88,47 @@ class _PasswordResetState extends State<PasswordReset> {
                             ),
                             const Padding(
                                 padding: EdgeInsets.fromLTRB(0, 28, 0, 0)),
-                            CustomButton(
-                              placeholder: 'Reset',
-                              color: ilocateYellow,
-                              method: () {
-                                if (formKey.currentState!.validate()) {
-                                  Navigator.pushNamed(context, dashboard);
-                                }
-                                else {
-                                  clearInput();
-                                  if (kDebugMode) {
-                                    print('logging in...');
+                            Consumer<AuthProvider>(
+                              builder: (context, auth, child) {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  if (auth.reqMessage != '') {
+                                    showMessage(
+                                      context: context,
+                                      message: auth.reqMessage,
+                                    );
+                                    auth.clear();
                                   }
-                                }
+                                });
+                                return CustomButton(
+                                  width: 400,
+                                  method: () {
+                                    //check if its valid phone number
+                                    if (phoneController.text.trim().length !=
+                                        9) {
+                                      showMessage(
+                                        type: 'error',
+                                        context: context,
+                                        message:
+                                            'Please enter a valid phone number',
+                                      );
+                                      return;
+                                    }
+                                    if (formKey.currentState!.validate()) {
+                                      auth.resetPassword(
+                                        phone: phoneController.text.trim(),
+                                      );
+                                    } else {
+                                      showMessage(
+                                        type: 'error',
+                                        context: context,
+                                        message: 'Please fill all fields',
+                                      );
+                                    }
+                                  },
+                                  color: ilocateYellow,
+                                  placeholder: 'Register',
+                                );
                               },
                             ),
                             // const Padding(padding: EdgeInsets.all(32))

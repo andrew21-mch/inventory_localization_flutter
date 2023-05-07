@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ilocate/constants/app_url.dart';
 import 'package:http/http.dart' as http;
+import 'package:ilocate/utils/snackMessage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -102,6 +103,53 @@ class OutOfStockProvider extends ChangeNotifier {
         print(res);
       }
       return [];
+    }
+  }
+
+  Future<bool> restock(String itemId, String  quantity) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = AppUrl.restock;
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization': 'Bearer ${await _prefs.then((
+          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    final body = {
+      'component_id': itemId,
+      'quantity': quantity,
+    };
+
+    print(body);
+    try {
+      http.Response req = await http.post(Uri.parse(url), headers: headers, body: json.encode(body));
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        notifyListeners();
+        print(res);
+        storeMessageToInMemory(res['message']);
+        return true;
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        print(res);
+        notifyListeners();
+        storeMessageToInMemory(_reqMessage);
+        return false;
+      }
+    } catch (e) {
+      final res = json.decode(e.toString());
+      _isLoading = false;
+      _reqMessage = res;
+      notifyListeners();
+      print(res);
+      storeMessageToInMemory(_reqMessage);
+      return false;
     }
   }
 

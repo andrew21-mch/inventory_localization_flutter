@@ -134,18 +134,20 @@ class _StocksState extends State<Stocks> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                     Icon(Icons.warning_amber_sharp,
-                        size: 64, color: ilocateWarning),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: Text('Running Out',
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: ilocateGreen)),
+                    ),
+                     Icon(Icons.running_with_errors,
+                        size: 64, color: ilocateRed),
                     const SizedBox(height: 16),
-                    Text('# Out Of Stock Items',
-                        style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: ilocateRed)),
-                    const SizedBox(height: 8),
                     if (_outOfStocksData != null)
                       SizedBox(
-                        height: 127,
+                        height: 105,
                         width: double.infinity,
                         child: Center(
                           child: Text(
@@ -205,8 +207,6 @@ class _StocksState extends State<Stocks> {
                 ],
               ),
               const SizedBox(height: 16),
-              const SizedBox(height: 16),
-              const Padding(padding: EdgeInsets.all(32)),
               Column(
                 children: [
                   Text('Items Out Of Stock',

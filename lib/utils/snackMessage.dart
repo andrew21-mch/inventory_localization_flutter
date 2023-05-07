@@ -6,7 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../styles/colors.dart';
 
-void showMessage({String? message, required BuildContext context}) {
+void showMessage(
+    {String? message, String? type, required BuildContext context}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
@@ -15,7 +16,8 @@ void showMessage({String? message, required BuildContext context}) {
           color: Colors.white,
         ),
       ),
-      backgroundColor: primaryColor,
+      duration: const Duration(seconds: 3),
+      backgroundColor: type == 'error' ? Colors.red : ilocateYellow,
     ),
   );
 }

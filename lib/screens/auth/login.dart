@@ -1,3 +1,7 @@
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:ilocate/screens/auth/register.dart';
+import 'package:ilocate/screens/auth/reset_password.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ilocate/screens/customs/button.dart';
@@ -83,14 +87,17 @@ class _LoginState extends State<Login> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             const Text(
-                              'Do not have an account?',
+                              'New User?',
                               style: TextStyle(
                                 color: Colors.black54,
                               ),
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, register);
+                                Get.to(
+                                  () => const Register(),
+                                  transition: Transition.rightToLeft,
+                                );
                               },
                               child: const Text(
                                 'Register',
@@ -102,7 +109,36 @@ class _LoginState extends State<Login> {
                           ],
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
+                      SizedBox(
+                        width: 400,
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                color: Colors.black54,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Get.to(
+                                  () => const PasswordReset(),
+                                  transition: Transition.rightToLeft,
+                                );
+                              },
+                              child: const Text(
+                                'Reset',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.fromLTRB(0, 16, 0, 0)),
                       Consumer<AuthProvider>(
                         builder: (context, auth, child) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -115,6 +151,7 @@ class _LoginState extends State<Login> {
                             }
                           });
                           return CustomButton(
+                            width: 400,
                             method: () {
                               if (formKey.currentState!.validate()) {
                                 auth.login(
@@ -124,6 +161,7 @@ class _LoginState extends State<Login> {
                                 clearInput();
                               } else {
                                 showMessage(
+                                  type: 'error',
                                   context: context,
                                   message: 'Please fill all fields',
                                 );
@@ -135,6 +173,9 @@ class _LoginState extends State<Login> {
                         },
                       ),
                     ],
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                   ),
                 ],
               ),

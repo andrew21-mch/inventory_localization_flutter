@@ -5,7 +5,7 @@ import 'package:ilocate/screens/auth/reset_password.dart';
 import 'package:ilocate/screens/dashboard/dashboard.dart';
 import 'package:ilocate/splash/splash.dart';
 
-class CustomeRoute {
+class CustomRoute {
   static Route<dynamic> allRoutes(RouteSettings settings) {
     switch (settings.name) {
       case '/login':

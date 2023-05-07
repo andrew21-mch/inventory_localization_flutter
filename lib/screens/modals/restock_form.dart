@@ -1,30 +1,107 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/providers/itemProvider.dart';
+import 'package:ilocate/providers/outOfStockProvider.dart';
+import 'package:ilocate/providers/sharePreference.dart';
+import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/customs/button.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../styles/colors.dart';
 
 class RestockForm extends StatefulWidget {
-  const RestockForm({Key? key}) : super(key: key);
+  final String? selectedItem;
+  final double? width;
+  final String? placeholder;
+  const RestockForm({Key? key, this.selectedItem, this.width, this.placeholder})
+      : super(key: key);
 
   @override
   _RestockFormState createState() => _RestockFormState();
 }
 
 class _RestockFormState extends State<RestockForm> {
+  List<Map<String, dynamic>> _items = [];
+  String? message;
+
+  void _setMessage(String newMessage) {
+    setState(() {
+      message = newMessage;
+    });
+  }
+
+  void _loadMessageAndCloseModal() async {
+    final message = await DatabaseProvider().getMessage();
+    _setMessage(message);
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message ?? 'Error loading message'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    });
+
+    //  clear message
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('message');
+
+    _closeModalAndNavigate();
+  }
+
+  final formKey = GlobalKey<FormState>();
+  TextEditingController itemController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
+
+  clearInput() {
+    itemController.clear();
+    quantityController.clear();
+  }
+
+  String? selectedItem;
+
+
+  Future<void> _loadItems() async {
+    final items = await ItemProvider().getItems();
+    setState(() {
+      _items = items;
+    });
+  }
+
+  _closeModalAndNavigate() {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        dashboard, (Route<dynamic> route) => false);
+
+  }
+
+  @override
+  void initState() {
+  super.initState();
+  selectedItem = widget.selectedItem;
+  _loadItems();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
 
-    final cardWidth = isMobile
-        ? MediaQuery.of(context).size.width
-        : (MediaQuery.of(context).size.width - 80) / 3;
-
-    return CustomButton(
-      placeholder: 'Restock Items',
+    return Form(
+        key: formKey,
+        child:
+      CustomButton(
+      placeholder: widget.placeholder ?? 'Restock Item',
       color: ilocateYellow,
-      width: isMobile ? 250: 400,
+      width: widget.width ?? 200,
       method: () {
         showDialog(
           context: context,
@@ -46,44 +123,50 @@ class _RestockFormState extends State<RestockForm> {
             backgroundColor: ilocateLight,
             content: SingleChildScrollView(
               child: SizedBox(
-                width: isMobile ? null : 600,
+                width: isMobile ? 200 : 600,
                 child: Column(
                   children: [
-                    DropdownButton<String>(
-                      // set a width
+                    DropdownButtonFormField(
+                      hint: const Text('Select Item'),
                       isExpanded: true,
-                      value: 'Supplier A',
+                      value: selectedItem,
                       icon: const Icon(Icons.arrow_downward),
                       iconSize: 24,
                       elevation: 16,
                       style: const TextStyle(color: Colors.deepPurple),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      onChanged: (String? newValue) {},
-                      items: <String>[
-                        'Supplier A',
-                        'Supplier B',
-                        'Supplier C',
-                        'Supplier D'
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedItem = newValue;
+                        });
+                      },
+                      items: _items.isNotEmpty
+                          ? _items.map((value) {
+                        return DropdownMenuItem(
+                          value: value['id'].toString(),
+                          child: Text(value['name'].toString()),
                         );
-                      }).toList(),
+                      }).toList()
+                          : [
+                        const DropdownMenuItem<String>(
+                          value: 'loading',
+                          child: Text('Loading suppliers...'),
+                        ),
+                      ],
                     ),
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextFormField(
+                      controller: quantityController,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter quantity';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
                         hintText: 'Quantity',
                       ),
                     ),
 
-                    // ElevatedButton(
-                    //   onPressed: getImage,
-                    //   child: const Text('Pick Image'),
-                    // ),
                   ],
                 ),
               ),
@@ -98,7 +181,25 @@ class _RestockFormState extends State<RestockForm> {
                 const Text('Cancel', style: TextStyle(color: Colors.white)),
               ),
               TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () async {
+                    if (formKey.currentState!.validate() && selectedItem != null) {
+                      var itemId = selectedItem;
+                      var quantity = quantityController.text;
+                      if(await OutOfStockProvider().restock(itemId!, quantity!)){
+                        _loadItems();
+                        selectedItem = null;
+                        _loadMessageAndCloseModal();
+                        clearInput();
+                      }else{
+                        _loadItems();
+                        selectedItem = null;
+                        clearInput();
+                        _loadMessageAndCloseModal();
+                      }
+                    } else {
+                      _loadMessageAndCloseModal();
+                    }
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(ilocateYellow),
                   ),
@@ -108,6 +209,7 @@ class _RestockFormState extends State<RestockForm> {
           ),
         );
       },
+      )
     );
   }
 }

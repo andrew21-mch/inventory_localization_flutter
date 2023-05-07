@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:ilocate/providers/authProvider.dart';
 import 'package:ilocate/providers/ledProvider.dart';
+import 'package:ilocate/routes/routes.dart';
 import 'package:ilocate/screens/dashboard/dashboard.dart';
 import 'package:ilocate/splash/splash.dart';
 
@@ -48,7 +49,7 @@ class _MyAppState extends State<MyApp> {
 
   //method to check if user is logged in
   void checkAuth() async {
-    final auth = AuthProvider().isAuthenticacted();
+    final auth = AuthProvider().isAuthenticated();
     if (await auth) {
       setState(() {
         isAuth = true;
@@ -72,12 +73,9 @@ class _MyAppState extends State<MyApp> {
         userProvider.overrideWithProvider(
           ChangeNotifierProvider((ref) => UserModel()),
         ),
-        // ledProvider.overrideWithProvider(
-        //   ChangeNotifierProvider((ref) => LedProvider()),
-        // ),
       ],
       child: GetMaterialApp(
-        debugShowCheckedModeBanner: false,
+        onGenerateRoute: CustomRoute.allRoutes,
         title: 'Ilocate',
         home: isAuth ? const DashboardScreen() : const Splash(),
       ),

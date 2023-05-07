@@ -6,34 +6,44 @@ class CustomButton extends StatelessWidget {
   final VoidCallback? method;
   final Color? color;
   final double? width;
+  final IconData? icon;
 
-  const CustomButton({Key? key, this.placeholder, this.method, this.color, this.width})
+  const CustomButton({Key? key, this.placeholder, this.method, this.color, this.width, this.icon})
       : super(key: key);
 
 
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 600;
 
     return SizedBox(
-      width:  width ?? 400,
+      width:  width ?? 500,
       child: Container(
           height: 50,
           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: isMobile ? color : ilocateYellow,
-              onPrimary: Colors.black,
               minimumSize: const Size(150, 36),
               shadowColor: Colors.grey.withOpacity(0.8),
+              backgroundColor: color ?? ilocateYellow,
             ),
             onPressed: method,
-            child: Text(
-              placeholder!,
-              style: const TextStyle(fontSize: 18, color: Colors.white),
+            child: icon != null
+                  ?  SizedBox(
+                      width: 10,
+                  child: Icon(icon, color: ilocateWhite)
+                ):
+                Text(
+                  placeholder!,
+                  style: TextStyle(
+                    // fontSize: ,
+                    fontWeight: FontWeight.bold,
+                    color: ilocateWhite,
+
+                  ),
+                ),
             ),
-          )),
+          ),
     );
   }
 }

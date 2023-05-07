@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/components/clippath.dart';
 import 'package:ilocate/screens/components/pages/sales.dart';
@@ -42,7 +44,7 @@ class AppMenu extends ConsumerWidget {
     final selectedPageName = ref.watch(selectedPageNameProvider.state).state;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menu'),
+        title: const Text(''),
         backgroundColor: ilocateYellow,
         actions: [
           Container(
@@ -50,9 +52,11 @@ class AppMenu extends ConsumerWidget {
               shape: BoxShape.circle,
               color: Colors.white,
             ),
-            padding: const EdgeInsets.all(10),
-            child: Icon(
-              Icons.person,
+            child: IconButton(
+              icon: const Icon(
+                Icons.menu,
+              ),
+              onPressed:() {},
               color: ilocateYellow,
             ),
           ),
@@ -101,7 +105,11 @@ class AppMenu extends ConsumerWidget {
       ref.read(selectedPageNameProvider.state).state = pageName;
       // dismiss the drawer of the ancestor Scaffold if we have one
       if (Scaffold.maybeOf(context)?.hasDrawer ?? false) {
-        Navigator.of(context).pop();
+        Get.to(() => _availablePages[pageName]!,
+        transition: Transition.rightToLeft,
+        duration: const Duration(milliseconds: 500)
+
+        );
       }
     }
   }

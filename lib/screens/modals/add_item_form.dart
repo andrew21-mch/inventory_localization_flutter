@@ -114,7 +114,7 @@ class _MyFormState extends State<MyForm> {
         key: formKey,
         child: CustomButton(
           placeholder: 'Add Component',
-          width: isMobile ? 250 : 400,
+          width: isMobile ? 200 : 400,
           color: ilocateYellow,
           method: () {
             showDialog(
@@ -199,6 +199,7 @@ class _MyFormState extends State<MyForm> {
                         ),
 // Add dropdown for LEDs
                         DropdownButtonFormField(
+                          hint: const Text('Select LED'),
                           value: _selectedLed,
                           isExpanded: true,
                           icon: const Icon(Icons.arrow_downward),
