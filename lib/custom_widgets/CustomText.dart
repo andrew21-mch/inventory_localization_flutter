@@ -31,7 +31,7 @@ class CustomText extends StatelessWidget {
       maxLines: maxLines ?? 5,
       style: TextStyle(
         overflow: TextOverflow.fade,
-        fontSize: isMobile ? 12 : fontSize ?? 16,
+        fontSize: isMobile ? 13.5 : fontSize ?? 16,
         fontWeight: fontWeight,
           fontFamily: 'Poppins',
           fontStyle: FontStyle.normal,

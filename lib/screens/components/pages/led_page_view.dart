@@ -108,12 +108,18 @@ class _LedsState extends State<Leds> {
             ...cards,
             // const SearchBar(),
             const LedTableWidget(),
-            Expanded(
+            Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+              Expanded(
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: const [LedForm()]),
             ),
             const SizedBox(height: 16),
+          ],
+        ),
           ],
         ),
       );
@@ -132,11 +138,17 @@ class _LedsState extends State<Leds> {
                 ],
               ),
               const SizedBox(height: 16),
-              Expanded(
-                child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [LedForm()]),
+              Flex(
+                direction: Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: const [LedForm()]),
+                  ),
+                  const SizedBox(height: 16),
+                ],
               ),
               const SizedBox(height: 16),
               const LedTableWidget(),

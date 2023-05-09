@@ -90,7 +90,7 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                   },
                   icon: Icon(Icons.refresh, color: ilocateGreen),
                 ),
-                const MyForm(width: 200),
+                !isMobile ? const MyForm(width: 200) : Container(),
               ],
             ),
             SearchBar(onSearch: _onSearch),

@@ -322,13 +322,18 @@ class _StatisticsState extends State<Statistics> {
             ),
             const DataTableWidget(),
             const Padding(padding: EdgeInsets.all(32)),
-            Expanded(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    MyForm(),
-                    RestockForm(),
-                  ]),
+            Flex(
+              direction: Axis.horizontal,
+              children: [
+                Expanded(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        MyForm(),
+                        RestockForm(),
+                      ]),
+                ),
+              ],
             ),
             const Padding(padding: EdgeInsets.all(32)),
           ],

@@ -235,7 +235,8 @@ class _AuthHomeState extends State<AuthHome> {
             ),
             Card(
               margin: const EdgeInsets.all(10),
-              child: Column(
+              child: Flex(
+                direction: Axis.horizontal,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
@@ -275,7 +276,11 @@ class _AuthHomeState extends State<AuthHome> {
               ],
             ),
             const DataTableWidget(),
-            Expanded(
+            Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Expanded(
               child:
               Card(
 
@@ -289,6 +294,8 @@ class _AuthHomeState extends State<AuthHome> {
 
                   ]),
             ),),
+          ],
+        ),
           ],
         ),
       );
