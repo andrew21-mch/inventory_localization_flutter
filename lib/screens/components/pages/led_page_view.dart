@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/providers/ledProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/screens/components/leds/led_table.dart';
+import 'package:ilocate/custom_widgets/led_table.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/screens/modals/install_led.dart';
 import 'package:ilocate/styles/colors.dart';
