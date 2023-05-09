@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/providers/itemProvider.dart';
 import 'package:ilocate/custom_widgets/custom_search_button.dart';
 import 'package:ilocate/providers/outOfStockProvider.dart';
@@ -52,50 +53,42 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
         scrollDirection: Axis.horizontal,
         child: DataTable(
           columnSpacing:
-              isMobile ? 10 : (MediaQuery.of(context).size.width / 3.9) - 220,
+              isMobile ? 10 : (MediaQuery.of(context).size.width / 3) - 220,
           headingRowColor: MaterialStateColor.resolveWith(
             (states) => ilocateYellow,
           ),
           //   headingTextStyle: TextStyle(color: ilocateWhite),
           columns: [
             DataColumn(
-              label: Text(
+              label: CustomText(
+                placeholder:
                 'NAME',
-                style: TextStyle(
                   color: ilocateWhite,
-                ),
               ),
             ),
             DataColumn(
-              label: Text(
-                'DESCRIPTION',
-                style: TextStyle(
-                  color: ilocateWhite,
-                ),
+              label: CustomText(
+                placeholder: 'DESCRIPTION',
+                color: ilocateWhite,
               ),
             ),
             DataColumn(
-              label: Text(
+              label: CustomText(
+                placeholder:
                 'QUANTITY',
-                style: TextStyle(
                   color: ilocateWhite,
-                ),
               ),
             ),
             DataColumn(
-              label: Text(
-                'SUPPLIER PHONE',
-                style: TextStyle(
+              label: CustomText(
+                placeholder: 'SUPPLIER PHONE',
                   color: ilocateWhite,
-                ),
               ),
             ),
             DataColumn(
-              label: Text(
-                'ACTION',
-                style: TextStyle(
+              label: CustomText(
+                placeholder: 'ACTION',
                   color: ilocateWhite,
-                ),
               ),
             ),
           ],
@@ -106,42 +99,40 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
                   SizedBox(
                       width: isMobile ? 60 : 100,
                       child:
-                  Text(
-                      item['component']!['name'].toString()),
+                  CustomText(
+                     placeholder: item['component']!['name'].toString()),
                 ),
                 ),
                 DataCell(
                   SizedBox(
                       width: isMobile ? 60 : 150,
-                      child: Text(item['component']!['description'].toString(),
+                      child: CustomText(placeholder: item['component']!['description'].toString(),
                           maxLines: 4,
-                          softWrap: true,
-                          style: const TextStyle())),
+                          )),
                 ),
                 DataCell(
                   SizedBox(
                       width: isMobile ? 60 : 100,
-                      child: Text(item['component']!['quantity'].toString(),
+                      child: CustomText(placeholder: item['component']!['quantity'].toString(),
                           maxLines: 4,
-                          softWrap: true,
-                          style: const TextStyle())),
+                         )),
                 ),
                 DataCell(
                   SizedBox(
                       width: isMobile ? 60 : 100,
-                      child: Text(
-                          item['supplier'] == null ||
+                      child: CustomText(
+                          placeholder: item['supplier'] == null ||
                                   item['supplier']['phone'] == null
                               ? 'N/A'
                               : item['supplier']['phone'].toString(),
                           maxLines: 4,
-                          softWrap: true,
-                          style: const TextStyle())),
+                      )),
+
                 ),
                  DataCell(
                    Container(
                      padding: const EdgeInsets.all(10),
-                      width: 120,
+                      width: 130,
                       child:
                       RestockForm(selectedItem: item['component']['id'].toString(), width: 200, placeholder: 'Restock',),
                    ),

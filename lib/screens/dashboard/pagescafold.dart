@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/styles/colors.dart';
 
 class PageScaffold extends StatelessWidget {
@@ -32,7 +33,7 @@ class PageScaffold extends StatelessWidget {
                     hasDrawer ? () => ancestorScaffold.openDrawer() : null,
               )
             : null,
-        title: Text(title),
+        title: CustomText(placeholder: title, color: ilocateWhite),
         actions: [
           Container(
             decoration: const BoxDecoration(

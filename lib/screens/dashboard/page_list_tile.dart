@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 
 class PageListTile extends StatelessWidget {
   const PageListTile({
@@ -35,7 +36,7 @@ class PageListTile extends StatelessWidget {
 
     return ListTile(
       leading: leadingWidget,
-      title: Text(pageName),
+      title: CustomText(placeholder: pageName),
       onTap: onPressed,
     );
   }

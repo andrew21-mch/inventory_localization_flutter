@@ -13,7 +13,9 @@ import 'package:ilocate/utils/snackMessage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyForm extends StatefulWidget {
-  const MyForm({Key? key}) : super(key: key);
+  final int? width;
+  final int? id;
+  const MyForm({Key? key, this.width, this.id}) : super(key: key);
 
   @override
   _MyFormState createState() => _MyFormState();
@@ -110,8 +112,9 @@ class _MyFormState extends State<MyForm> {
     return Form(
         key: formKey,
         child: CustomButton(
-          placeholder: 'Add Component',
-          width: isMobile ? 200 : 400,
+          icon: widget.id != null ? Icons.edit : Icons.add_circle,
+          placeholder: widget.id != null ? '': 'Add Component',
+          width: isMobile ? 200 : widget.width != null ? widget.width!.toDouble() : 300,
           color: ilocateYellow,
           method: () {
             showDialog(
@@ -121,7 +124,8 @@ class _MyFormState extends State<MyForm> {
                 title: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text('Add Component',
+                    widget.id!=null?const Icon(Icons.edit):const Icon(Icons.add_circle_outline),
+                    Text( widget.id!=null?'Edit Component':'Add Component',
                         style: TextStyle(
                             overflow: TextOverflow.ellipsis,
                             color: ilocateYellow,

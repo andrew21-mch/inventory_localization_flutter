@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/custom_widgets/StocksLineChart.dart';
 import 'package:ilocate/providers/salesProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
@@ -109,9 +110,9 @@ class _AuthHomeState extends State<AuthHome> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Welcome, $_loggedInUserNickname'),
+                        CustomText(placeholder: 'Welcome, $_loggedInUserNickname'),
                         const SizedBox(height: 8),
-                        const Text('Here, you can view your statistics and manage your inventory.'),
+                        const CustomText(placeholder: 'Here, you can view your statistics and manage your inventory.'),
                       ],
                     ),
                   ),
@@ -139,14 +140,11 @@ class _AuthHomeState extends State<AuthHome> {
                   const Icon(Icons.credit_card, size: 64, color: Colors.redAccent),
                   const SizedBox(height: 16),
                   if(_statisticsData != null)
-                    Text('${_statisticsData![0]['data']['total_profit']}' + ' XAF', style: TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold,
-                        color: ilocateYellow
-                    ))
+                    CustomText(placeholder: '${_statisticsData![0]['data']['total_profit']}' + ' XAF', color: ilocateRed, fontSize: 22, fontWeight: FontWeight.bold)
                   else
                     const RefreshProgressIndicator(),
                   const SizedBox(height: 8),
-                  const Text('Total Expenses'),
+                  const CustomText(placeholder: 'Total Expenses'),
                 ],
               ),
             ),
@@ -171,15 +169,12 @@ class _AuthHomeState extends State<AuthHome> {
                     ),
                   const SizedBox(height: 16),
                   if(_statisticsData != null)
-                    Text('${_statisticsData![0]['data']['total_profit']}' + ' XAF', style: TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold,
-                        color: ilocateYellow
-                    ))
+                    CustomText(placeholder: '${_statisticsData![0]['data']['total_profit']}' + ' XAF', color: ilocateYellow, fontSize: 22, fontWeight: FontWeight.bold)
                   else
                     const RefreshProgressIndicator(),
 
                   const SizedBox(height: 8),
-                  const Text('Total Profits'),
+                  const CustomText(placeholder: 'Total Profits'),
                 ],
               ),
             ),
@@ -201,14 +196,13 @@ class _AuthHomeState extends State<AuthHome> {
                   const Icon(Icons.all_inbox, size: 64, color: Colors.green),
                   const SizedBox(height: 16),
                   if(_statisticsData != null)
-                    Text('${_statisticsData![0]['data']['total_components']}', style: TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold,
+                    CustomText(placeholder: '${_statisticsData![0]['data']['total_components']}', fontSize:  22, fontWeight: FontWeight.bold,
                         color: ilocateYellow
-                    ))
+                    )
                   else
                     const RefreshProgressIndicator(),
                   const SizedBox(height: 8),
-                  const Text('Total Items'),
+                  const CustomText(placeholder: 'Total Items'),
                 ],
               ),
             ),
@@ -230,13 +224,11 @@ class _AuthHomeState extends State<AuthHome> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(16),
-                    margin: const EdgeInsets.all(16),
-                    child: Text(
-                        'Welcome to your dashboard $_loggedInUserNickname!\nHere, you can view your statistics and manage your inventory.',
-                        style: TextStyle(
-                            color: ilocateBlue,
-                            textBaseline: TextBaseline.alphabetic)),
+                    padding: const EdgeInsets.all(12),
+                    child: CustomText(
+                        placeholder: 'Welcome to your dashboard $_loggedInUserNickname!\nHere, you can view your statistics and manage your inventory.',
+                        fontSize: 13,
+                    )
                   ),
                 ],
               ),

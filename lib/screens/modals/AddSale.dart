@@ -99,7 +99,8 @@ class _AddSalesFormState extends State<AddSalesForm> {
         key: formKey,
         child:
         CustomButton(
-          placeholder: widget.placeholder ?? 'Sell Item',
+          placeholder: widget.placeholder ?? 'Add Sale',
+          icon: Icons.add_circle_outline,
           color: ilocateYellow,
           width: widget.width ?? 200,
           method: () {

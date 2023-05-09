@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/custom_widgets/StocksLineChart.dart';
 import 'package:ilocate/providers/salesProvider.dart';
 import 'package:ilocate/providers/statisticsProvider.dart';
@@ -123,10 +124,10 @@ class _StatisticsState extends State<Statistics> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Stocks Stats', style: TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold,
-                      color: ilocateYellow
-                  )),
+                  CustomText(placeholder: 'Stocks Stats',
+                      color: ilocateYellow,
+                      fontSize: 24
+                  ),
                   if (_statisticsData != null && _errorMessage == null)
                     SizedBox(
                       height: 200, // Replace with desired height
@@ -162,10 +163,10 @@ class _StatisticsState extends State<Statistics> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Sales Stats', style: TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold,
-                      color: ilocateYellow
-                  )),
+                  CustomText(placeholder: 'Sales Stats',
+                      color: ilocateYellow,
+                      fontSize: 24
+                  ),
                   if (_salesData != null) // check if _salesData is not null and has at least one item
                     SizedBox(
                       height: 200, // Replace with desired height
@@ -177,9 +178,9 @@ class _StatisticsState extends State<Statistics> {
                   else if (_errorMessage == null)
                     const RefreshProgressIndicator()
                   else
-                    Text(
-                      _errorMessage!,
-                      style: const TextStyle(color: Colors.red),
+                    CustomText(
+                      placeholder: _errorMessage!,
+                      color: Colors.red,
                     ),
                 ],
               ),
@@ -206,14 +207,15 @@ class _StatisticsState extends State<Statistics> {
                   const Icon(Icons.credit_card, size: 64, color: Colors.redAccent),
                   const SizedBox(height: 16),
                   if(_statisticsData != null)
-                    Text('${_statisticsData![0]['data']['total_profit']}' + ' XAF', style: TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold,
-                        color: ilocateYellow
-                    ))
+                    CustomText(placeholder: '${_statisticsData![0]['data']['total_profit']}' + ' XAF',
+                        color: ilocateYellow,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold
+                    )
                   else
                     const RefreshProgressIndicator(),
                   const SizedBox(height: 8),
-                  const Text('Total Expenses'),
+                  const CustomText(placeholder: 'Total Expenses'),
                 ],
               ),
             ),
@@ -238,15 +240,16 @@ class _StatisticsState extends State<Statistics> {
                   ),
                   const SizedBox(height: 16),
                   if(_statisticsData != null)
-                  Text('${_statisticsData![0]['data']['total_profit']}' + ' XAF', style: TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold,
-                      color: ilocateYellow
-                  ))
+                  CustomText(placeholder: '${_statisticsData![0]['data']['total_profit']}' + ' XAF',
+                  color: ilocateYellow,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold
+                  )
                   else
                     const RefreshProgressIndicator(),
 
                   const SizedBox(height: 8),
-                  const Text('Total Profits'),
+                  const CustomText(placeholder: 'Total Profits'),
                 ],
               ),
             ),
@@ -268,14 +271,15 @@ class _StatisticsState extends State<Statistics> {
                   const Icon(Icons.all_inbox, size: 64, color: Colors.green),
                   const SizedBox(height: 16),
                   if(_statisticsData != null)
-                    Text('${_statisticsData![0]['data']['total_components']}', style: TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold,
-                        color: ilocateYellow
-                    ))
+                    CustomText(placeholder: '${_statisticsData![0]['data']['total_components']}',
+                        color: ilocateYellow,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold
+                    )
                   else
                     const RefreshProgressIndicator(),
                   const SizedBox(height: 8),
-                  const Text('Total Items'),
+                  const CustomText(placeholder: 'Total Items'),
                 ],
               ),
             ),

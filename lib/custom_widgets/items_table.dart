@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:ilocate/providers/itemProvider.dart';
 import 'package:ilocate/custom_widgets/custom_search_button.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/auth/route_names.dart';
+import 'package:ilocate/screens/components/pages/ItemDetails.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
+import 'package:ilocate/screens/modals/add_item_form.dart';
 import 'package:ilocate/styles/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'CustomText.dart';
 
 class DataTableWidget extends StatefulWidget {
   const DataTableWidget({Key? key}) : super(key: key);
@@ -74,6 +80,19 @@ class _DataTableWidgetState extends State<DataTableWidget> {
         elevation: 0,
         child: Column(
           children: [
+            const Padding(padding: EdgeInsets.only(top: 10)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    _loadItems();
+                  },
+                  icon: Icon(Icons.refresh, color: ilocateGreen),
+                ),
+                const MyForm(width: 200),
+              ],
+            ),
             SearchBar(onSearch: _onSearch),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -86,35 +105,31 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                 ),
                 columns: [
                   DataColumn(
-                    label: Text(
+                    label: CustomText(
+                      placeholder:
                       'NAME',
-                      style: TextStyle(
-                        color: ilocateWhite,
-                      ),
+                      color: ilocateWhite,
                     ),
                   ),
                   DataColumn(
-                    label: Text(
+                    label: CustomText(
+                      placeholder:
                       'DESCRIPTION',
-                      style: TextStyle(
-                        color: ilocateWhite,
-                      ),
+                      color: ilocateWhite,
                     ),
                   ),
                   DataColumn(
-                    label: Text(
+                    label: CustomText(
+                      placeholder:
                       'STATUS',
-                      style: TextStyle(
-                        color: ilocateWhite,
-                      ),
+                      color: ilocateWhite,
                     ),
                   ),
                   DataColumn(
-                    label: Text(
-                      'ACTION',
-                      style: TextStyle(
-                        color: ilocateWhite,
-                      ),
+                    label: CustomText(
+                      placeholder:
+                      'ACTIONS',
+                      color: ilocateWhite,
                     ),
                   ),
                 ],
@@ -124,19 +139,17 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                       DataCell(
                         SizedBox(
                           width: isMobile ? 60 : 150,
-                          child: Text(
-                            item['name'].toString(),
-                            style: const TextStyle(),
+                          child: CustomText(
+                            placeholder: item['name'].toString(),
                           ),
                         ),
                       ),
                       DataCell(
                         SizedBox(
                             width: isMobile ? 60 : 150,
-                            child: Text(item['description'].toString(),
-                                maxLines: 4,
-                                softWrap: true,
-                                style: const TextStyle())),
+                            child: CustomText(
+                              placeholder: item['description'].toString(),
+                            ))
                       ),
                       DataCell(
                         Container(
@@ -149,35 +162,41 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                                 : ilocateRed.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Text(
-                            isMobile
+                          child: CustomText(
+                            placeholder: isMobile
                                 ? (item['status'].toString() == 'high'
                                     ? 'high'
                                     : 'low')
                                 : (item['status'].toString() == 'high'
                                     ? 'In stock'
                                     : 'Out of stock'),
-                            style: TextStyle(
-                              color: item['status'] == 'high'
-                                  ? ilocateGreen
-                                  : ilocateRed,
-                            ),
+                            color: item['status'] == 'high'
+                                ? ilocateGreen
+                                : ilocateRed
                           ),
                         ),
                       ),
                       DataCell(
                         Row(
                           children: [
-                            Icon(Icons.lightbulb, color: ilocateGreen),
-                            const SizedBox(
-                              width: 10,
+                            IconButton(
+                              icon: Icon(
+                                Icons.lightbulb,
+                                color: ilocateGreen,
+                              ),
+                              onPressed: () {
+                                print(item['id']);
+                              },
                             ),
-                            Icon(
-                              Icons.edit,
-                              color: ilocateYellow,
-                            ),
-                            const SizedBox(
-                              width: 10,
+                             IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                                color: ilocateYellow,
+                              ),
+                              onPressed: () {
+                                Get.to(() => ItemDetail(itemID: item['id']!),
+                                    transition: Transition.rightToLeft);
+                              },
                             ),
                             IconButton(
                               icon: Icon(

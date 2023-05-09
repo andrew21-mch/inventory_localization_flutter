@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/providers/ledProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/components/leds/led_table.dart';
@@ -81,15 +82,13 @@ class _LedsState extends State<Leds> {
                   //  icon for money coin
                   const Icon(Icons.lightbulb, size: 64, color: Colors.yellow),
                   const SizedBox(height: 16),
-                  const Text('LEDs Installed'),
+                  const CustomText(placeholder: 'LEDs Installed'),
                   const SizedBox(height: 8),
-                  Text(
+                  CustomText(placeholder:
                     _totalLeds.toString(),
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor,
-                    ),
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: primaryColor,
                   ),
                 ],
               ),

@@ -90,16 +90,17 @@ class ItemProvider extends ChangeNotifier {
     }
   }
 
-  void updateItem({required String name,
-    required String description,
-    required String price,
-    required String quantity,
-    required String cost,
-    required String location,
-    required int supplierId,
-    required int id,
+  Future<bool>
+  updateItem( String name,
+     String description,
+     String price,
+     String quantity,
+     String cost,
+     String location,
+     String supplierId,
+     String id,
 
-  }) async {
+  ) async {
     _isLoading = true;
     notifyListeners();
     String url = '${AppUrl.items}/$id';
@@ -120,6 +121,8 @@ class ItemProvider extends ChangeNotifier {
       'supplier_id': supplierId,
     };
 
+    print(body);
+
     try {
       http.Response req = await http.put(Uri.parse(url),
           headers: headers, body: json.encode(body));
@@ -132,6 +135,7 @@ class ItemProvider extends ChangeNotifier {
         _isLoading = false;
         storeMessageToInMemory(res['message']);
         notifyListeners();
+        return true;
       } else {
         final res = json.decode(req.body);
         _isLoading = false;
@@ -140,16 +144,19 @@ class ItemProvider extends ChangeNotifier {
         if (kDebugMode) {
           print(res);
         }
+        return false;
       }
     } catch (e) {
       final res = json.decode(e.toString());
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
       if (kDebugMode) {
         print(res);
       }
+
       storeMessageToInMemory(res['message']);
+      return false;
     }
   }
 
@@ -187,6 +194,47 @@ class ItemProvider extends ChangeNotifier {
       _reqMessage = res['message'];
       notifyListeners();
       return [];
+    }
+  }
+
+  Future<Map<String, dynamic>> getItem(String? id) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.items}/$id';
+
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization': 'Bearer ${await _prefs.then((
+          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    try {
+      http.Response req = await http.get(Uri.parse(url), headers: headers);
+
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        notifyListeners();
+      //  print data type
+        print(res.runtimeType);
+        return res['data'];
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        print(res);
+        notifyListeners();
+
+        return {};
+      }
+    } catch (e) {
+      final res = json.decode(e.toString());
+      _isLoading = false;
+      _reqMessage = res['message'];
+      notifyListeners();
+      return {};
     }
   }
 

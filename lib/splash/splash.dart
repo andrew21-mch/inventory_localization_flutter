@@ -35,6 +35,8 @@ class Splash extends StatelessWidget {
                   child: Builder(
                     builder: (context) => Center(
                       child: CustomButton(
+                          width: 400,
+                          icon: Icons.double_arrow,
                           placeholder: 'Get Started',
                           color: ilocateYellow,
                           method: () {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/providers/salesProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/providers/statisticsProvider.dart';
@@ -100,10 +101,10 @@ class _SalesState extends State<Sales> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Sales Stats', style: TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold,
-                      color: ilocateYellow
-                  )),
+                  CustomText(placeholder: 'Sales Stats',
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: ilocateYellow),
                   if (_salesData != null)
                     SizedBox(
                       height: 200, // Replace with desired height
@@ -118,9 +119,9 @@ class _SalesState extends State<Sales> {
                         child: RefreshProgressIndicator()
                     )
                   else
-                    Text(
-                      _errorMessage!,
-                      style: const TextStyle(color: Colors.red),
+                    CustomText(
+                      placeholder: _errorMessage!,
+                      color: Colors.red,
                     ),
                 ],
               ),
@@ -143,16 +144,18 @@ class _SalesState extends State<Sales> {
                 children: [
                   const Icon(Icons.arrow_upward, size: 64, color: Colors.green),
                   const SizedBox(height: 16),
-                  const Text('Total Sales'),
+                  const CustomText(placeholder: 'Total Sales'),
                   const SizedBox(height: 8),
                   if (_salesData != null)
                     SizedBox(
                       height: 127,
                       width: double.infinity,
-                      child: Center( child: Text(
+                      child: Center( child: CustomText(
+                        placeholder:
                         // get sum of all prices
                         '${_salesData!.map<int>((item) => item['total_price']).reduce((value, element) => value + element)} XAF',
-                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),),
                     )
                   else if (_errorMessage == null)

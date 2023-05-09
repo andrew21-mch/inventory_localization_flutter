@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/providers/salesProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
@@ -41,6 +42,7 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('message');
   }
+
   void _loadItems() async {
     final items = await SalesProvider().getSales();
     setState(() {
@@ -67,7 +69,18 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             const SizedBox(height: 10),
-            const AddSalesForm(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    _loadItems();
+                  },
+                  icon: Icon(Icons.refresh, color: ilocateGreen),
+                ),
+                const AddSalesForm(),
+              ],
+            ),
             SearchBar(onSearch: _onSearch),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -81,36 +94,26 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                 //   headingTextStyle: TextStyle(color: ilocateWhite),
                 columns: [
                   DataColumn(
-                    label: Text(
-                      'ITEM',
-                      style: TextStyle(
-                        color: ilocateWhite,
-                      ),
+                    label: CustomText(
+                      placeholder: 'ITEM',
+                      color: ilocateWhite,
                     ),
                   ),
                   DataColumn(
-                    label: Text(
-                      'QUANTITY',
-                      style: TextStyle(
-                        color: ilocateWhite,
-                      ),
+                    label: CustomText(
+                      placeholder: 'QUANTITY',
+                      color: ilocateWhite,
                     ),
                   ),
                   DataColumn(
-                    label: Text(
-                      'TOTAL PRICE',
-                      style: TextStyle(
-                        color: ilocateWhite,
-                      ),
+                    label: CustomText(
+                      placeholder: 'TOTAL PRICE',
+                      color: ilocateWhite,
                     ),
                   ),
                   DataColumn(
-                    label: Text(
-                      'DATE SOLD',
-                      style: TextStyle(
-                        color: ilocateWhite,
-                      ),
-                    ),
+                    label: CustomText(
+                        placeholder: 'DATE SOLD', color: ilocateWhite),
                   ),
                 ],
                 rows: _sales.isEmpty || _sales == null
@@ -129,25 +132,23 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                           cells: [
                             DataCell(
                               SizedBox(
-                                width: isMobile ? 60 : 150,
-                                child:
-                                Text(item['component'] != null
-                                ? item['component']['name']
-                                : 'No Data')),
+                                  width: isMobile ? 60 : 150,
+                                  child: CustomText(
+                                      placeholder: item['component'] != null
+                                          ? item['component']['name']
+                                          : 'No Data')),
                             ),
-                            DataCell(Text(
-                              item['quantity'].toString(),
+                            DataCell(CustomText(
+                              placeholder: item['quantity'].toString(),
                               textAlign: TextAlign.center,
                             )),
                             DataCell(
                               SizedBox(
                                 width: isMobile ? 60 : 150,
-                                child: Text(
-                                  '${item['total_price']} XAF',
+                                child: CustomText(
+                                  placeholder: '${item['total_price']} XAF',
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -155,13 +156,11 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
-                                child: Text(
-                                  DateFormat('MMM d, y').format(
+                                child: CustomText(
+                                  placeholder: DateFormat('MMM d, y').format(
                                       DateTime.parse(item['created_at'])),
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),

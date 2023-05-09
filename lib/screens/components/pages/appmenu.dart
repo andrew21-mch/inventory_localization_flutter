@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:ilocate/screens/auth/route_names.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/screens/components/clippath.dart';
 import 'package:ilocate/screens/components/pages/sales.dart';
 import 'package:ilocate/screens/components/pages/statistics.dart';
@@ -44,23 +43,8 @@ class AppMenu extends ConsumerWidget {
     final selectedPageName = ref.watch(selectedPageNameProvider.state).state;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: CustomText(placeholder: 'Menu', color: ilocateWhite),
         backgroundColor: ilocateYellow,
-        actions: [
-          Container(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-            ),
-            child: IconButton(
-              icon: const Icon(
-                Icons.menu,
-              ),
-              onPressed:() {},
-              color: ilocateYellow,
-            ),
-          ),
-        ],
       ),
       body: Column(
         children: [

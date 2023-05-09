@@ -28,19 +28,20 @@ class _SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: TextField(
-        controller: _controller,
-        decoration: InputDecoration(
-          hintText: 'Search',
-          prefixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25.0),
+      child:
+        TextField(
+          controller: _controller,
+          decoration: InputDecoration(
+            hintText: 'Search',
+            prefixIcon: Icon(Icons.search),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+            ),
           ),
+          onChanged: (value) {
+            widget.onSearch(value); // invoke the callback with the search query
+          },
         ),
-        onChanged: (value) {
-          widget.onSearch(value); // invoke the callback with the search query
-        },
-      ),
     );
   }
 }

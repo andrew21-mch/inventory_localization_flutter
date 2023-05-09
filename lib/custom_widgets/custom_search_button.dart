@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/screens/customs/textfield.dart';
 import 'package:ilocate/styles/colors.dart';
+
+import 'CustomText.dart';
 
 class CustomSearchButton extends StatelessWidget {
   final String? placeholder;
@@ -18,7 +21,7 @@ class CustomSearchButton extends StatelessWidget {
       onPressed: () {
         print(placeholder);
       },
-      child: Text(placeholder!),
+      child: CustomText(placeholder: placeholder, color: ilocateWhite),
     );
   }
 }

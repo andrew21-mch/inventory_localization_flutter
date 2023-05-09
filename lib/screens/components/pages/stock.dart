@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/custom_widgets/StocksLineChart.dart';
 import 'package:ilocate/custom_widgets/out_of_stocks_table.dart';
 import 'package:ilocate/providers/itemProvider.dart';
@@ -90,11 +91,11 @@ class _StocksState extends State<Stocks> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Stocks Stats',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: ilocateYellow)),
+                  CustomText(
+                      placeholder: 'Stocks Stats',
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: ilocateYellow),
                   if (_statisticsData != null)
                     SizedBox(
                       height: 200, // Replace with desired height
@@ -111,9 +112,9 @@ class _StocksState extends State<Stocks> {
                     const SizedBox(
                         height: 200, child: RefreshProgressIndicator())
                   else
-                    Text(
-                      _errorMessage!,
-                      style: const TextStyle(color: Colors.red),
+                    CustomText(
+                      placeholder: _errorMessage!,
+                      color: Colors.red,
                     ),
                 ],
               ),
@@ -130,42 +131,44 @@ class _StocksState extends State<Stocks> {
           child: SizedBox(
             width: cardWidth,
             child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: Text('Running Out',
-                          style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: ilocateGreen)),
-                    ),
-                     Icon(Icons.running_with_errors,
-                        size: 64, color: ilocateRed),
-                    const SizedBox(height: 16),
-                    if (_outOfStocksData != null)
-                      SizedBox(
-                        height: 105,
-                        width: double.infinity,
-                        child: Center(
-                          child: Text(
-                            _outOfStocksData!.length.toString(),
-                            style: TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold, color: ilocateRed),
+              padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                  height: 200, // Replace with desired height
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: CustomText(
+                            placeholder: 'Running Out',
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: ilocateGreen),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.outlined_flag),
+                        onPressed: _loadOutOfStocksData,
+                      ),
+                      if (_outOfStocksData != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: CustomText(
+                            placeholder: _outOfStocksData!.length.toString(),
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: ilocateRed,
                           ),
-                        ),
-                      )
-                    else if (_errorMessage == null)
-                      const RefreshProgressIndicator()
-                    else
-                      Text(
-                        _errorMessage!,
-                        style: const TextStyle(color: Colors.red),
-                      )
-                  ],
-                )),
+                        )
+                      else if (_errorMessage == null)
+                        const RefreshProgressIndicator()
+                      else
+                        CustomText(
+                          placeholder: _errorMessage!,
+                          color: Colors.red,
+                        )
+                    ],
+                  )),
+            ),
           ),
         ),
       ),
@@ -180,12 +183,11 @@ class _StocksState extends State<Stocks> {
             ...cards,
             const SizedBox(height: 16),
             Center(
-              child: Text('Items Out Of Stock',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      textBaseline: TextBaseline.ideographic,
-                      color: ilocateRed)),
+              child: CustomText(
+                  placeholder: 'Items Out Of Stock',
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: ilocateRed),
             ),
             const OutOfStockTableWidget(),
             const SizedBox(height: 16),
@@ -209,11 +211,11 @@ class _StocksState extends State<Stocks> {
               const SizedBox(height: 16),
               Column(
                 children: [
-                  Text('Items Out Of Stock',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: ilocateRed)),
+                  CustomText(
+                      placeholder: 'Items Out Of Stock',
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: ilocateRed),
                   const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
                   const OutOfStockTableWidget(),
                 ],
