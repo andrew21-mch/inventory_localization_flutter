@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:ilocate/providers/itemProvider.dart';
 import 'package:ilocate/providers/outOfStockProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/auth/route_names.dart';
+import 'package:ilocate/screens/components/pages/stock.dart';
 import 'package:ilocate/screens/customs/button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,8 +48,9 @@ class _RestockFormState extends State<RestockForm> {
     //  clear message
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('message');
-
-    _closeModalAndNavigate();
+    Get.to(() => const Stocks(),
+        transition: Transition.rightToLeftWithFade,
+        duration: const Duration(milliseconds: 100));
   }
 
   final formKey = GlobalKey<FormState>();
@@ -68,12 +72,6 @@ class _RestockFormState extends State<RestockForm> {
     });
   }
 
-  _closeModalAndNavigate() {
-    Navigator.of(context).pop();
-    Navigator.of(context).pushNamedAndRemoveUntil(
-        dashboard, (Route<dynamic> route) => false);
-
-  }
 
   @override
   void initState() {
@@ -189,15 +187,19 @@ class _RestockFormState extends State<RestockForm> {
                         _loadItems();
                         selectedItem = null;
                         _loadMessageAndCloseModal();
+                        Navigator.of(context).pop();
                         clearInput();
                       }else{
                         _loadItems();
                         selectedItem = null;
                         clearInput();
                         _loadMessageAndCloseModal();
+                        Navigator.of(context).pop();
                       }
                     } else {
+
                       _loadMessageAndCloseModal();
+                      Navigator.of(context).pop();
                     }
                   },
                   style: ButtonStyle(

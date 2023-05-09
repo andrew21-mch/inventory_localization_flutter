@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ilocate/providers/salesProvider.dart';
+import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/providers/statisticsProvider.dart';
 import 'package:ilocate/custom_widgets/SalesLineChart.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/custom_widgets/sales_table.dart';
 import 'package:ilocate/styles/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Sales extends StatefulWidget {
   const Sales({Key? key});
@@ -16,6 +18,7 @@ class _SalesState extends State<Sales> {
   List<Map<String, dynamic>>? _salesData;
   List<Map<String, dynamic>>? _statisticsData;
   String? _errorMessage;
+  String? message;
 
 
   @override
@@ -67,6 +70,12 @@ class _SalesState extends State<Sales> {
   void _setStatisticsData(List<Map<String, dynamic>> data) {
     setState(() {
       _statisticsData = data;
+    });
+  }
+
+  void _setMessage(String newMessage) {
+    setState(() {
+      message = newMessage;
     });
   }
 
@@ -188,9 +197,7 @@ class _SalesState extends State<Sales> {
                   ...cards,
                 ],
               ),
-              const SizedBox(height: 16),
-              const SizedBox(height: 16),
-              const Padding(padding: EdgeInsets.all(32)),
+              const SizedBox(height: 32),
               const SalesTableWidget(),
             ],
           ),

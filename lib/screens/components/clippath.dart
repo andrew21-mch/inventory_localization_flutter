@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:ilocate/styles/colors.dart';
 
 class ClipPathWidget extends StatelessWidget {
-  const ClipPathWidget({super.key});
+  final double? height;
+  const ClipPathWidget({super.key, this.height});
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-        painter: MyPainter(), size: const Size(double.infinity, 150));
+        painter: MyPainter(), size: Size(double.infinity, height != null ? height!: 200));
   }
 }
 

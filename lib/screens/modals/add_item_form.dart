@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:ilocate/providers/UserProvider.dart';
 import 'package:ilocate/providers/itemProvider.dart';
 import 'package:ilocate/providers/ledProvider.dart';
@@ -36,7 +38,7 @@ class _MyFormState extends State<MyForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 3),
+          duration: const Duration(seconds: 2),
         ),
       );
     });
@@ -45,7 +47,9 @@ class _MyFormState extends State<MyForm> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('message');
 
-    _closeModalAndNavigate();
+    Get.to(() => const DashboardScreen(),
+        transition: Transition.rightToLeftWithFade,
+        duration: const Duration(milliseconds: 100));
   }
 
   final formKey = GlobalKey<FormState>();
@@ -82,13 +86,6 @@ class _MyFormState extends State<MyForm> {
     setState(() {
       _leds = leds;
     });
-  }
-
-  _closeModalAndNavigate() {
-    Navigator.of(context).pop();
-    Navigator.of(context).pushNamedAndRemoveUntil(
-        dashboard, (Route<dynamic> route) => false);
-
   }
   @override
   void initState() {
@@ -243,7 +240,6 @@ class _MyFormState extends State<MyForm> {
                   TextButton(
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          // Add item to database
                           if (await ItemProvider().addItem(
                             name: nameController.text,
                             description: descriptionController.text,
@@ -254,10 +250,11 @@ class _MyFormState extends State<MyForm> {
                             location: _selectedLed!,
                           )) {
                             _loadMessageAndCloseModal();
+                            Navigator.of(context).pop();
 
                           } else {
                             _loadMessageAndCloseModal();
-                            reloadPage(context);
+                            Navigator.of(context).pop();
                           }
                           clearInput();
                         } else {

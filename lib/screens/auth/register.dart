@@ -50,11 +50,11 @@ class _RegisterState extends State<Register> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const ClipPathWidget(),
+                  const ClipPathWidget(height: 130),
                   Column(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(32.0),
+                        padding: const EdgeInsets.all(24.0),
                         child: Center(
                           child: Text(
                             'Register',

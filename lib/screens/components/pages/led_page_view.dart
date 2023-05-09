@@ -133,7 +133,6 @@ class _LedsState extends State<Leds> {
                 ],
               ),
               const SizedBox(height: 16),
-              const SizedBox(height: 16),
               Expanded(
                 child: Row(
                     mainAxisSize: MainAxisSize.min,

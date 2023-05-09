@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:ilocate/providers/ledProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/components/pages/led_page_view.dart';
@@ -22,7 +24,7 @@ class _LedFormState extends State<LedForm> {
   @override
   void initState() {
     super.initState();
-    _loadMessage();
+    // _loadMessage();
   }
 
   void _setMessage(String newMessage) {
@@ -47,6 +49,10 @@ class _LedFormState extends State<LedForm> {
     //  clear message
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('message');
+
+    Get.to(() => const Leds(),
+        transition: Transition.rightToLeftWithFade,
+        duration: const Duration(milliseconds: 100));
   }
   final formKey = GlobalKey<FormState>();
   TextEditingController shelfController = TextEditingController();
@@ -60,10 +66,6 @@ class _LedFormState extends State<LedForm> {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
-
-    final cardWidth = isMobile
-        ? MediaQuery.of(context).size.width
-        : (MediaQuery.of(context).size.width - 80) / 3;
 
     return Form(
       key: formKey,

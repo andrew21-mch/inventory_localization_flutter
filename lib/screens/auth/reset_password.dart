@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -8,7 +7,6 @@ import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/components/clippath.dart';
 import 'package:ilocate/screens/customs/button.dart';
 import 'package:ilocate/screens/customs/textfield.dart';
-import 'package:ilocate/screens/dashboard/dashboard.dart';
 import 'package:ilocate/styles/colors.dart';
 import 'package:ilocate/utils/snackMessage.dart';
 import 'package:provider/provider.dart';
@@ -74,7 +72,10 @@ class _PasswordResetState extends State<PasswordReset> {
                                 children: [
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(context, login);
+                                      Get.to(() => const Login(),
+                                        transition: Transition.rightToLeft
+
+                                      );
                                     },
                                     child: const Text(
                                       'Login',
@@ -128,6 +129,7 @@ class _PasswordResetState extends State<PasswordReset> {
                                   },
                                   color: ilocateYellow,
                                   placeholder: 'Register',
+
                                 );
                               },
                             ),

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ilocate/constants/app_url.dart';
 import 'package:http/http.dart' as http;
+import 'package:ilocate/utils/snackMessage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -22,10 +23,9 @@ class SalesProvider extends ChangeNotifier {
 
   String get failureMessage => _failureMessage;
 
-  void addSales({
-    required int componentId,
-    required int quantity,
-  }) async {
+  Future<bool> addSales(
+    String? componentId, String? quantity,
+  ) async {
     _isLoading = true;
     notifyListeners();
     String url = AppUrl.sales;
@@ -51,25 +51,28 @@ class SalesProvider extends ChangeNotifier {
           print(res);
         }
         _isLoading = false;
-        _reqMessage = res['message'];
+        storeMessageToInMemory(res['message']);
         notifyListeners();
+        return true;
       } else {
         final res = json.decode(req.body);
         _isLoading = false;
-        _reqMessage = res['message'];
+        storeMessageToInMemory(res['message']);
         notifyListeners();
         if (kDebugMode) {
           print(res);
         }
+        return false;
       }
     } catch (e) {
       final res = json.decode(e.toString());
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
       if (kDebugMode) {
         print(res);
       }
+      return false;
     }
   }
 
@@ -101,7 +104,6 @@ class SalesProvider extends ChangeNotifier {
         _reqMessage = res['message'];
         print(res);
         notifyListeners();
-
         return [];
       }
     } catch (e) {

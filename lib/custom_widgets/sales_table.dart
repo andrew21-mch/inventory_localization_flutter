@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/providers/itemProvider.dart';
 import 'package:ilocate/providers/salesProvider.dart';
-import 'package:ilocate/custom_widgets/custom_search_button.dart';
+import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
+import 'package:ilocate/screens/modals/AddSale.dart';
 import 'package:ilocate/styles/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SalesTableWidget extends StatefulWidget {
   const SalesTableWidget({Key? key}) : super(key: key);
@@ -21,8 +22,25 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
   void initState() {
     super.initState();
     _loadItems();
+    _loadMessage();
   }
 
+  void _loadMessage() async {
+    final message = await DatabaseProvider().getMessage();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message ?? 'Error loading message'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    });
+
+    //  clear message
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('message');
+  }
   void _loadItems() async {
     final items = await SalesProvider().getSales();
     setState(() {
@@ -46,8 +64,10 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
         ),
         elevation: 0,
         child: Column(
-
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            const SizedBox(height: 10),
+            const AddSalesForm(),
             SearchBar(onSearch: _onSearch),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,

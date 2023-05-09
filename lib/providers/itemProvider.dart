@@ -130,12 +130,12 @@ class ItemProvider extends ChangeNotifier {
           print(res);
         }
         _isLoading = false;
-        _reqMessage = res['message'];
+        storeMessageToInMemory(res['message']);
         notifyListeners();
       } else {
         final res = json.decode(req.body);
         _isLoading = false;
-        _reqMessage = res['message'];
+        storeMessageToInMemory(res['message']);
         notifyListeners();
         if (kDebugMode) {
           print(res);
@@ -149,6 +149,7 @@ class ItemProvider extends ChangeNotifier {
       if (kDebugMode) {
         print(res);
       }
+      storeMessageToInMemory(res['message']);
     }
   }
 

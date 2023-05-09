@@ -231,7 +231,7 @@ class _AuthHomeState extends State<AuthHome> {
                 children: [
                   Container(
                     padding: const EdgeInsets.all(16),
-                    margin: const EdgeInsets.fromLTRB(8, 32, 32, 32),
+                    margin: const EdgeInsets.all(16),
                     child: Text(
                         'Welcome to your dashboard $_loggedInUserNickname!\nHere, you can view your statistics and manage your inventory.',
                         style: TextStyle(
