@@ -32,8 +32,8 @@ class _SearchBarState extends State<SearchBar> {
         TextField(
           controller: _controller,
           decoration: InputDecoration(
-            hintText: 'Search',
-            prefixIcon: Icon(Icons.search),
+            hintText: 'Start typing to search...',
+            prefixIcon: const Icon(Icons.search),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25.0),
             ),

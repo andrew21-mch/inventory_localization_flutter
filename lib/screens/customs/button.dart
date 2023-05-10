@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/styles/colors.dart';
 
 class CustomButton extends StatelessWidget {
@@ -34,20 +35,17 @@ class CustomButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                      placeholder!,
-                      style: TextStyle(
-                        // fontSize: ,
-                        fontWeight: FontWeight.bold,
-                        color: ilocateWhite,
-                        letterSpacing: 1.5,
-                      ),
-                    ),
+              CustomText(
+                placeholder: placeholder!,
+                fontWeight: FontWeight.bold,
+                color: ilocateWhite,
+                fontSize: 16,
+              ),
               icon != null
                   ? Icon(
-                icon,
-                color: ilocateWhite,
-              )
+                      icon,
+                      color: ilocateWhite,
+                    )
                   : const SizedBox(),
             ],
           ),

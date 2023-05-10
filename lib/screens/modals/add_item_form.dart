@@ -97,11 +97,6 @@ class _MyFormState extends State<MyForm> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
@@ -113,7 +108,7 @@ class _MyFormState extends State<MyForm> {
         key: formKey,
         child: CustomButton(
           icon: widget.id != null ? Icons.edit : Icons.add_circle,
-          placeholder: widget.id != null ? '': 'Add Component',
+          placeholder: widget.id != null ? '': 'Add',
           width: isMobile ? 200 : widget.width != null ? widget.width!.toDouble() : 300,
           color: ilocateYellow,
           method: () {
@@ -125,7 +120,7 @@ class _MyFormState extends State<MyForm> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     widget.id!=null?const Icon(Icons.edit):const Icon(Icons.add_circle_outline),
-                    Text( widget.id!=null?'Edit Component':'Add Component',
+                    Text( widget.id!=null?'Edit':'Add',
                         style: TextStyle(
                             overflow: TextOverflow.ellipsis,
                             color: ilocateYellow,

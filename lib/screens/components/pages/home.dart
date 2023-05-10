@@ -235,8 +235,7 @@ class _AuthHomeState extends State<AuthHome> {
             ),
             Card(
               margin: const EdgeInsets.all(10),
-              child: Flex(
-                direction: Axis.horizontal,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(

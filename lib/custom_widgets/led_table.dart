@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/providers/ledProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
@@ -27,10 +28,10 @@ class _LedTableWidgetState extends State<LedTableWidget> {
     final message = await DatabaseProvider().getMessage();
     _setMessage(message);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(message ?? 'Error loading message'),
+          content: Text(message),
           duration: const Duration(seconds: 2),
         ),
       );
@@ -84,35 +85,30 @@ class _LedTableWidgetState extends State<LedTableWidget> {
             //   headingTextStyle: TextStyle(color: ilocateWhite),
             columns: [
               DataColumn(
-                label: Text(
-                  'ID',
-                  style: TextStyle(
+                label: CustomText(
+                  placeholder: 'ID',
                     color: ilocateWhite,
-                  ),
                 ),
               ),
               DataColumn(
-                label: Text(
+                label: CustomText(
+                  placeholder:
                   'SHELF',
-                  style: TextStyle(
                     color: ilocateWhite,
-                  ),
                 ),
               ),
               DataColumn(
-                label: Text(
+                label: CustomText(
+                  placeholder:
                   'PIN_NUMBER',
-                  style: TextStyle(
-                    color: ilocateWhite,
-                  ),
+                  color: ilocateWhite,
                 ),
               ),
               DataColumn(
-                label: Text(
+                label: CustomText(
+                  placeholder:
                   'ACTION',
-                  style: TextStyle(
                     color: ilocateWhite,
-                  ),
                 ),
               ),
             ],
@@ -120,9 +116,9 @@ class _LedTableWidgetState extends State<LedTableWidget> {
                 ? const [
                     DataRow(
                       cells: [
-                        DataCell(Text('No Data')),
-                        DataCell(Text('No Data')),
-                        DataCell(Text('No Data')),
+                        DataCell(CustomText(placeholder: 'No Data')),
+                        DataCell(CustomText(placeholder: 'No Data')),
+                        DataCell(CustomText(placeholder: 'No Data')),
                         DataCell(LinearProgressIndicator()),
                       ],
                     ),
@@ -130,22 +126,18 @@ class _LedTableWidgetState extends State<LedTableWidget> {
                 : _items.map((item) {
                     return DataRow(
                       cells: [
-                        DataCell(Text(item!['id'].toString())),
+                        DataCell(CustomText(placeholder: item['id'].toString())),
                         DataCell(
                           SizedBox(
                               width: isMobile ? 60 : 100,
-                              child: Text(item!['shelf_number'].toString(),
-                                  maxLines: 4,
-                                  softWrap: true,
-                                  style: const TextStyle())),
+                              child: CustomText(placeholder: item['shelf_number'].toString(),
+                                  maxLines: 4)),
                         ),
                         DataCell(
                           SizedBox(
                               width: isMobile ? 60 : 100,
-                              child: Text(item!['led_unique_number'].toString(),
-                                  maxLines: 4,
-                                  softWrap: true,
-                                  style: const TextStyle())),
+                              child: CustomText(placeholder: item['led_unique_number'].toString(),
+                                  maxLines: 4,)),
                         ),
                         DataCell(
                           Row(
@@ -161,7 +153,7 @@ class _LedTableWidgetState extends State<LedTableWidget> {
                                   });
                                 },
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               IconButton(
                                 icon: Icon(Icons.edit, color: ilocateGreen),
                                 onPressed: () async {
@@ -169,7 +161,7 @@ class _LedTableWidgetState extends State<LedTableWidget> {
                                       arguments: item);
                                 },
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               IconButton(
                                 icon: Icon(Icons.delete, color: ilocateRed),
                                 onPressed: () async {

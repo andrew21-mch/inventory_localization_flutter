@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/providers/ledProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/components/pages/led_page_view.dart';
@@ -54,6 +55,7 @@ class _LedFormState extends State<LedForm> {
         transition: Transition.rightToLeftWithFade,
         duration: const Duration(milliseconds: 100));
   }
+
   final formKey = GlobalKey<FormState>();
   TextEditingController shelfController = TextEditingController();
   TextEditingController pinNumberController = TextEditingController();
@@ -80,11 +82,11 @@ class _LedFormState extends State<LedForm> {
               scrollable: true,
               title: Row(
                 children: [
-                  Text('Install LED',
-                      style: TextStyle(
-                          color: ilocateYellow,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold)),
+                  CustomText(
+                      placeholder: 'Install LED',
+                      color: ilocateYellow,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                   const SizedBox(width: 10),
                   const Icon(Icons.add_circle_outline),
                   const Icon(
@@ -101,13 +103,15 @@ class _LedFormState extends State<LedForm> {
                     children: [
                       TextFormField(
                         decoration: const InputDecoration(
-                          hintText: 'SHELF NUM',
+                          hintText: 'Shelf Description',
+                          hintStyle: TextStyle(color: Colors.grey, fontFamily: 'Poppins'),
                         ),
                         controller: shelfController,
                       ),
                       TextFormField(
                         decoration: const InputDecoration(
-                          hintText: 'UNIQUE NUMBER',
+                          hintText: 'Pin Number',
+                          hintStyle: TextStyle(color: Colors.grey, fontFamily: 'Poppins'),
                         ),
                         controller: pinNumberController,
                       ),

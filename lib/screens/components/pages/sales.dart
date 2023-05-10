@@ -15,12 +15,12 @@ class Sales extends StatefulWidget {
   @override
   _SalesState createState() => _SalesState();
 }
+
 class _SalesState extends State<Sales> {
   List<Map<String, dynamic>>? _salesData;
   List<Map<String, dynamic>>? _statisticsData;
   String? _errorMessage;
   String? message;
-
 
   @override
   void initState() {
@@ -61,7 +61,6 @@ class _SalesState extends State<Sales> {
     }
   }
 
-
   void _setSalesData(List<Map<String, dynamic>> data) {
     setState(() {
       _salesData = data;
@@ -101,7 +100,8 @@ class _SalesState extends State<Sales> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomText(placeholder: 'Sales Stats',
+                  CustomText(
+                      placeholder: 'Sales Stats',
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: ilocateYellow),
@@ -109,15 +109,16 @@ class _SalesState extends State<Sales> {
                     SizedBox(
                       height: 200, // Replace with desired height
                       child: SalessHistogramChartWidget(
-                        _statisticsData!.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
+                        _statisticsData!
+                            .map<Map<String, dynamic>>(
+                                (item) => Map<String, dynamic>.from(item))
+                            .toList(),
                         animate: true,
                       ),
                     )
                   else if (_errorMessage == null)
                     const SizedBox(
-                        height: 200,
-                        child: RefreshProgressIndicator()
-                    )
+                        height: 200, child: RefreshProgressIndicator())
                   else
                     CustomText(
                       placeholder: _errorMessage!,
@@ -141,22 +142,42 @@ class _SalesState extends State<Sales> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(Icons.arrow_upward, size: 64, color: Colors.green),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   const CustomText(placeholder: 'Total Sales'),
+                  SizedBox(
+                    height: 64,
+                    width: 64,
+                    child: IconButton(
+                      onPressed: _loadSalesData,
+                      icon: const Icon(Icons.monetization_on_outlined, color: Colors.green, size: 48),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.green.withOpacity(0.1),
+                        ),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                      )
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   if (_salesData != null)
                     SizedBox(
-                      height: 127,
+                      height: 130,
                       width: double.infinity,
-                      child: Center( child: CustomText(
-                        placeholder:
-                        // get sum of all prices
-                        '${_salesData!.map<int>((item) => item['total_price']).reduce((value, element) => value + element)} XAF',
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),),
+                      child: Center(
+                        child: CustomText(
+                          placeholder:
+                              // get sum of all prices
+                              '${_salesData!.map<int>((item) => item['total_price']).reduce((value, element) => value + element)} XAF',
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     )
                   else if (_errorMessage == null)
                     const RefreshProgressIndicator()
