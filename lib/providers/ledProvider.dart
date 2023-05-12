@@ -302,6 +302,7 @@ class LedProvider extends ChangeNotifier {
           SharedPreferences prefs) => prefs.getString('token') ?? '')}'
     };
     final body = {
+      "action": "on",
       'location': pinNumber,
     };
 
@@ -351,5 +352,61 @@ class LedProvider extends ChangeNotifier {
   Future<String>getLedTotal() async {
     var leds = await getLeds();
     return leds.length.toString();
+  }
+
+
+  Future<bool> showItem(String pinNumber, String status, int ledId) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.leds}/trigger';
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization': 'Bearer ${await _prefs.then((
+          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+    final body = {
+      "led_id": ledId,
+      "action": status,
+      'pin': pinNumber,
+    };
+
+    try {
+      http.Response req = await http.post(Uri.parse(url),
+          headers: headers, body: json.encode(body));
+
+      if (req.statusCode == 200 || req.statusCode == 201) {
+        final res = json.decode(req.body);
+        if (kDebugMode) {
+          print(res);
+        }
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+        storeMessageToInMemory(res['message']);
+        return true;
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+        if (kDebugMode) {
+          print(res);
+        }
+        storeMessageToInMemory(res['message']);
+        return false;
+      }
+    } catch (e) {
+      final res = json.decode(e.toString());
+      _isLoading = false;
+      _reqMessage = res['message'];
+      notifyListeners();
+      if (kDebugMode) {
+        print(res);
+      }
+      storeMessageToInMemory(res['message']);
+      return false;
+    }
   }
 }

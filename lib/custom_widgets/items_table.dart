@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:ilocate/providers/itemProvider.dart';
 import 'package:ilocate/custom_widgets/custom_search_button.dart';
+import 'package:ilocate/providers/ledProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/auth/route_names.dart';
 import 'package:ilocate/screens/components/pages/ItemDetails.dart';
@@ -180,12 +181,20 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                         Row(
                           children: [
                             IconButton(
-                              icon: Icon(
-                                Icons.lightbulb,
-                                color: ilocateGreen,
-                              ),
+                              icon: item['led']!['status'] == 'on'
+                                  ? Icon(
+                                      Icons.lightbulb,
+                                      color: ilocateGreen,
+                                    )
+                                  : Icon(
+                                      Icons.lightbulb,
+                                      color: ilocateRed,
+                                    ),
                               onPressed: () {
-                                print(item['id']);
+                                 LedProvider().showItem(item['led']!['led_unique_number'], item['led']!['status'] == 'on' ? 'off' : 'on', item['led']!['id']).then((value) {
+                                   _loadItems();
+                                   _loadMessage();
+                                 });
                               },
                             ),
                              IconButton(
