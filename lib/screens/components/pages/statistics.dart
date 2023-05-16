@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:ilocate/custom_widgets/CustomText.dart';
 import 'package:ilocate/custom_widgets/StocksLineChart.dart';
+import 'package:ilocate/custom_widgets/custom_filter.dart';
 import 'package:ilocate/providers/salesProvider.dart';
 import 'package:ilocate/providers/statisticsProvider.dart';
 import 'package:ilocate/custom_widgets/SalesLineChart.dart';
 import 'package:ilocate/custom_widgets/items_table.dart';
+import 'package:ilocate/screens/customs/button.dart';
 import 'package:ilocate/screens/dashboard/pagescafold.dart';
 import 'package:ilocate/screens/modals/add_item_form.dart';
 import 'package:ilocate/screens/modals/restock_form.dart';
 import 'package:ilocate/styles/colors.dart';
+import 'package:intl/intl.dart';
 
 class Statistics extends StatefulWidget {
-  const Statistics({Key? key});
+  const Statistics({Key? key}) : super(key: key);
 
   @override
   _StatisticsState createState() => _StatisticsState();
 }
+
 class _StatisticsState extends State<Statistics> {
   List<Map<String, dynamic>>? _statisticsData;
   List<Map<String, dynamic>>? _salesData;
   List<Map<String, dynamic>>? _salesStatisticsData;
+  late DateTime _startDate;
+  late DateTime _endDate;
   String? _errorMessage;
 
   @override
@@ -28,6 +34,26 @@ class _StatisticsState extends State<Statistics> {
     _loadSalesData();
     _loadStatisticsData();
     _loadSalesStatisticsData();
+    _startDate = DateTime.now();
+    _endDate = DateTime.now();
+  }
+
+  Future<void> _selectDate(BuildContext context, bool isStartDate) async {
+    final DateTime? selectedDate = await showDatePicker(
+      context: context,
+      initialDate: isStartDate ? _startDate : _endDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+    if (selectedDate != null) {
+      setState(() {
+        if (isStartDate) {
+          _startDate = selectedDate;
+        } else {
+          _endDate = selectedDate;
+        }
+      });
+    }
   }
 
   Future<void> _loadSalesStatisticsData() async {
@@ -44,6 +70,13 @@ class _StatisticsState extends State<Statistics> {
         _errorMessage = 'Error loading statistics';
       });
     }
+  }
+
+  void _onFilter(DateTime? from, DateTime? to) async {
+    final searchResults = await StatisticProvider().getSalesStatisticsByDate(from!, to!);
+    setState(() {
+      _salesStatisticsData = searchResults;
+    });
   }
 
   Future<void> _loadStatisticsData() async {
@@ -124,15 +157,19 @@ class _StatisticsState extends State<Statistics> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomText(placeholder: 'Stocks Stats',
+                  CustomText(
+                      placeholder: 'Stocks Stats',
                       color: ilocateYellow,
-                      fontSize: 24
-                  ),
+                      fontSize: 24),
                   if (_statisticsData != null && _errorMessage == null)
                     SizedBox(
                       height: 200, // Replace with desired height
                       child: StocksLineChartWidget(
-                        _statisticsData![0]['data']['component_with_their_quantity'].map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
+                        _statisticsData![0]['data']
+                                ['component_with_their_quantity']
+                            .map<Map<String, dynamic>>(
+                                (item) => Map<String, dynamic>.from(item))
+                            .toList(),
                         animate: true,
                       ),
                     )
@@ -163,15 +200,93 @@ class _StatisticsState extends State<Statistics> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomText(placeholder: 'Sales Stats',
-                      color: ilocateYellow,
-                      fontSize: 24
+                  Flexible(
+                    child: CustomText(
+                        placeholder: 'Sales Stats',
+                        color: ilocateYellow,
+                        fontSize: 24),
                   ),
-                  if (_salesData != null) // check if _salesData is not null and has at least one item
+                  Flexible(
+                    flex: 1,
+                    child: IconButton(
+                      icon: const Icon(Icons.filter_list),
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          title: const CustomText(
+                              placeholder: 'Filter by date',
+                              textAlign: TextAlign.center,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                          content:
+                              Column(mainAxisSize: MainAxisSize.min, children: [
+                            FractionallySizedBox(
+                              widthFactor: 0.3,
+                              child: GestureDetector(
+                                onTap: () => _selectDate(context, true),
+                                child: AbsorbPointer(
+                                  child: TextFormField(
+                                    controller: TextEditingController(
+                                        text: _startDate != null
+                                            ? DateFormat('yyyy-MM-dd')
+                                                .format(_startDate!)
+                                            : ''),
+                                    decoration: const InputDecoration(
+                                      labelText: 'From',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            FractionallySizedBox(
+                              widthFactor: 0.3,
+                              child: GestureDetector(
+                                onTap: () => _selectDate(context, false),
+                                child: AbsorbPointer(
+                                  child: TextFormField(
+                                    controller: TextEditingController(
+                                        text: _endDate != null
+                                            ? DateFormat('yyyy-MM-dd')
+                                                .format(_endDate!)
+                                            : ''),
+                                    decoration: const InputDecoration(
+                                      labelText: 'To',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            FractionallySizedBox(
+                              widthFactor: 0.3,
+                              child:
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: ilocateYellow,
+                                      onPrimary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(32.0),
+                                      ),
+                                    ),
+                                      onPressed: () => _onFilter(_startDate, _endDate), child: CustomText(placeholder: 'Filter', color: ilocateWhite,)),
+                            ),
+                          ]),
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (_salesData !=
+                      null) // check if _salesData is not null and has at least one item
                     SizedBox(
                       height: 200, // Replace with desired height
                       child: SalessHistogramChartWidget(
-                        _salesStatisticsData!.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList(),
+                        _salesStatisticsData!
+                            .map<Map<String, dynamic>>(
+                                (item) => Map<String, dynamic>.from(item))
+                            .toList(),
                         animate: true,
                       ),
                     )
@@ -184,7 +299,6 @@ class _StatisticsState extends State<Statistics> {
                     ),
                 ],
               ),
-
             ),
           ),
         ),
@@ -203,15 +317,18 @@ class _StatisticsState extends State<Statistics> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children:  [
-                  const Icon(Icons.credit_card, size: 64, color: Colors.redAccent),
+                children: [
+                  const Icon(Icons.credit_card,
+                      size: 64, color: Colors.redAccent),
                   const SizedBox(height: 16),
-                  if(_statisticsData != null)
-                    CustomText(placeholder: '${_statisticsData![0]['data']['total_profit']}' + ' XAF',
+                  if (_statisticsData != null)
+                    CustomText(
+                        placeholder:
+                            '${_statisticsData![0]['data']['total_profit']}' +
+                                ' XAF',
                         color: ilocateYellow,
                         fontSize: 24,
-                        fontWeight: FontWeight.bold
-                    )
+                        fontWeight: FontWeight.bold)
                   else
                     const RefreshProgressIndicator(),
                   const SizedBox(height: 8),
@@ -233,21 +350,23 @@ class _StatisticsState extends State<Statistics> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children:  [
-                  if(_statisticsData != null)
-                   Icon(Icons.account_balance, size: 64, color: Colors.purpleAccent.shade700
-                  //rotate the ic
-                  ),
+                children: [
+                  if (_statisticsData != null)
+                    Icon(Icons.account_balance,
+                        size: 64, color: Colors.purpleAccent.shade700
+                        //rotate the ic
+                        ),
                   const SizedBox(height: 16),
-                  if(_statisticsData != null)
-                  CustomText(placeholder: '${_statisticsData![0]['data']['total_profit']}' + ' XAF',
-                  color: ilocateYellow,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold
-                  )
+                  if (_statisticsData != null)
+                    CustomText(
+                        placeholder:
+                            '${_statisticsData![0]['data']['total_profit']}'
+                            ' XAF',
+                        color: ilocateYellow,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold)
                   else
                     const RefreshProgressIndicator(),
-
                   const SizedBox(height: 8),
                   const CustomText(placeholder: 'Total Profits'),
                 ],
@@ -267,15 +386,16 @@ class _StatisticsState extends State<Statistics> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children:  [
+                children: [
                   const Icon(Icons.all_inbox, size: 64, color: Colors.green),
                   const SizedBox(height: 16),
-                  if(_statisticsData != null)
-                    CustomText(placeholder: '${_statisticsData![0]['data']['total_components']}',
+                  if (_statisticsData != null)
+                    CustomText(
+                        placeholder:
+                            '${_statisticsData![0]['data']['total_components']}',
                         color: ilocateYellow,
                         fontSize: 24,
-                        fontWeight: FontWeight.bold
-                    )
+                        fontWeight: FontWeight.bold)
                   else
                     const RefreshProgressIndicator(),
                   const SizedBox(height: 8),

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ilocate/custom_widgets/CustomText.dart';
+import 'package:ilocate/custom_widgets/custom_filter.dart';
 
 class SearchBar extends StatefulWidget {
   final Function(String) onSearch;
+  final Function(DateTime?, DateTime?)? onFilter;
 
-  const SearchBar({Key? key, required this.onSearch}) : super(key: key);
+  const SearchBar({Key? key, required this.onSearch, this.onFilter}) : super(key: key);
 
   @override
   _SearchBarState createState() => _SearchBarState();
@@ -26,22 +29,42 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child:
-        TextField(
-          controller: _controller,
-          decoration: InputDecoration(
-            hintText: 'Start typing to search...',
-            prefixIcon: const Icon(Icons.search),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25.0),
+    return Row(
+      children: [
+        Flexible(
+          flex: 10,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                hintText: 'Search',
+                border: OutlineInputBorder(),
+                suffixIcon: Icon(Icons.search),
+              ),
+              onChanged: widget.onSearch,
             ),
           ),
-          onChanged: (value) {
-            widget.onSearch(value); // invoke the callback with the search query
-          },
         ),
+        Flexible(
+          flex: 1,
+          child: IconButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                title: const CustomText(placeholder: 'Filter by date', textAlign: TextAlign.center, fontSize: 20, fontWeight: FontWeight.bold),
+                content: FractionallySizedBox(
+                  heightFactor: 0.3,
+                  child: CustomFilterWidget(
+                    onFilter: widget.onFilter!,
+                  ),
+                ),
+              ),
+            ),
+            icon: const Icon(Icons.filter_list),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -74,6 +74,7 @@ class _LedTableWidgetState extends State<LedTableWidget> {
       Column(
       children: [
         SearchBar(onSearch: _onSearch),
+
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(

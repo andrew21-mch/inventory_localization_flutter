@@ -7,6 +7,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback? method;
   final Color? color;
   final double? width;
+  final double? height;
   final IconData? icon;
 
   const CustomButton(
@@ -15,6 +16,7 @@ class CustomButton extends StatelessWidget {
       this.method,
       this.color,
       this.width,
+      this.height,
       this.icon})
       : super(key: key);
 
@@ -22,6 +24,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width ?? 500,
+      height: height ?? 50,
       child: Container(
         height: 50,
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),

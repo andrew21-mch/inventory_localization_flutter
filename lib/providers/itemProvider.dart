@@ -407,5 +407,41 @@ class ItemProvider extends ChangeNotifier {
     }
   }
 
+  Future<List<Map<String, dynamic>>> filter(DateTime? startDate, DateTime? endDate) {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.items}/filter?start_date=$startDate&end_date=$endDate';
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization': 'Bearer ${_prefs.then((
+          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    http.get(Uri.parse(url), headers: headers).then((http.Response req) {
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        notifyListeners();
+        print(res);
+        return List<Map<String, dynamic>>.from(res['data']);
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+        return [];
+      }
+    }).catchError((e) {
+      final res = json.decode(e.toString());
+      _isLoading = false;
+      _reqMessage = res['message'];
+      notifyListeners();
+      return [];
+    });
+
+    return Future.value([]);
+  }
 
 }

@@ -45,6 +45,13 @@ class _DataTableWidgetState extends State<DataTableWidget> {
     });
   }
 
+  void _onFilter(DateTime? startDate, DateTime? endDate) async {
+    final filterResults = await ItemProvider().filter(startDate, endDate);
+    setState(() {
+      _items = filterResults;
+    });
+  }
+
   void _setMessage(String newMessage) {
     setState(() {
       message = newMessage;
@@ -80,6 +87,7 @@ class _DataTableWidgetState extends State<DataTableWidget> {
         color: ilocateWhite,
         elevation: 0,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(padding: EdgeInsets.only(top: 10)),
             Row(
@@ -94,157 +102,170 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                 !isMobile ? const MyForm(width: 200) : Container(),
               ],
             ),
-            SearchBar(onSearch: _onSearch),
+
+            SearchBar(onSearch: _onSearch, onFilter: _onFilter),
+            const Padding(padding: EdgeInsets.only(top: 15)),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-
               child: _items.isEmpty
                   ? Center(
                       child: CircularProgressIndicator(
                         color: ilocateGreen,
                       ),
                     )
-                  :
-              DataTable(
-                columnSpacing: isMobile
-                    ? 10
-                    : (MediaQuery.of(context).size.width / 3.5) - 220,
-                headingRowColor: MaterialStateColor.resolveWith(
-                  (states) => ilocateYellow,
-                ),
-                columns: [
-                  DataColumn(
-                    label: CustomText(
-                      placeholder:
-                      'NAME',
-                      color: ilocateWhite,
-                    ),
-                  ),
-                  DataColumn(
-                    label: CustomText(
-                      placeholder:
-                      'DESCRIPTION',
-                      color: ilocateWhite,
-                    ),
-                  ),
-                  DataColumn(
-                    label: CustomText(
-                      placeholder:
-                      'STATUS',
-                      color: ilocateWhite,
-                    ),
-                  ),
-                  DataColumn(
-                    label: CustomText(
-                      placeholder:
-                      'ACTIONS',
-                      color: ilocateWhite,
-                    ),
-                  ),
-                ],
-                rows: _items.map((item) {
-                  return DataRow(
-                    cells: [
-                      DataCell(
-                        SizedBox(
-                          width: isMobile ? 60 : 150,
-                          child: CustomText(
-                            placeholder: item['name'].toString(),
+                  : DataTable(
+                      columnSpacing: isMobile
+                          ? 10
+                          : (MediaQuery.of(context).size.width / 3.5) - 220,
+                      headingRowColor: MaterialStateColor.resolveWith(
+                        (states) => ilocateYellow,
+                      ),
+                      columns: [
+                        DataColumn(
+                          label: CustomText(
+                            placeholder: 'NAME',
+                            color: ilocateWhite,
                           ),
                         ),
-                      ),
-                      DataCell(
-                        SizedBox(
-                            width: isMobile ? 60 : 150,
-                            child: CustomText(
-                              placeholder: item['description'].toString(),
-                            ))
-                      ),
-                      DataCell(
-                        Container(
-                          width: isMobile ? 50 : 150,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          decoration: BoxDecoration(
-                            color: item['status'].toString() == 'high'
-                                ? ilocateGreen.withOpacity(0.2)
-                                : ilocateRed.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: CustomText(
-                            placeholder: isMobile
-                                ? (item['status'].toString() == 'high'
-                                    ? 'high'
-                                    : 'low')
-                                : (item['status'].toString() == 'high'
-                                    ? 'In stock'
-                                    : 'Out of stock'),
-                            color: item['status'] == 'high'
-                                ? ilocateGreen
-                                : ilocateRed
+                        DataColumn(
+                          label: CustomText(
+                            placeholder: 'DESCRIPTION',
+                            color: ilocateWhite,
                           ),
                         ),
-                      ),
-                      DataCell(
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: item['led'] != null &&
-                                      item['led']!['status'] == 'on'
-                                  ? Icon(
-                                      Icons.lightbulb,
-                                      color: ilocateGreen,
-                                    )
-                                  : Icon(
-                                      Icons.lightbulb,
+                        DataColumn(
+                          label: CustomText(
+                            placeholder: 'STATUS',
+                            color: ilocateWhite,
+                          ),
+                        ),
+                        DataColumn(
+                          label: CustomText(
+                            placeholder: 'ACTIONS',
+                            color: ilocateWhite,
+                          ),
+                        ),
+                      ],
+                      rows: _items.map((item) {
+                        return DataRow(
+                          cells: [
+                            DataCell(
+                              SizedBox(
+                                width: isMobile ? 60 : 150,
+                                child: CustomText(
+                                  placeholder: item['name'].toString(),
+                                ),
+                              ),
+                            ),
+                            DataCell(SizedBox(
+                                width: isMobile ? 60 : 150,
+                                child: CustomText(
+                                  placeholder: item['description'].toString(),
+                                ))),
+                            DataCell(
+                              Container(
+                                width: isMobile ? 50 : 150,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: item['status'].toString() == 'high'
+                                      ? ilocateGreen.withOpacity(0.2)
+                                      : ilocateRed.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: CustomText(
+                                    placeholder: isMobile
+                                        ? (item['status'].toString() == 'high'
+                                            ? 'high'
+                                            : 'low')
+                                        : (item['status'].toString() == 'high'
+                                            ? 'In stock'
+                                            : 'Out of stock'),
+                                    color: item['status'] == 'high'
+                                        ? ilocateGreen
+                                        : ilocateRed),
+                              ),
+                            ),
+                            DataCell(
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: item['led'] != null &&
+                                            item['led']!['status'] == 'on'
+                                        ? Icon(
+                                            Icons.lightbulb,
+                                            color: ilocateGreen,
+                                          )
+                                        : Icon(
+                                            Icons.lightbulb,
+                                            color: ilocateRed,
+                                          ),
+                                    onPressed: () {
+                                      LedProvider()
+                                          .showItem(
+                                              item['led'] != null &&
+                                                      item['led']![
+                                                              'led_unique_number'] !=
+                                                          null
+                                                  ? item['led']![
+                                                      'led_unique_number']
+                                                  : '',
+                                              item['led'] != null &&
+                                                      item['led']!['status'] ==
+                                                          'on'
+                                                  ? 'off'
+                                                  : 'on',
+                                              item['led'] != null
+                                                  ? item['led']!['id']
+                                                  : 0)
+                                          .then((value) {
+                                        print(item['led'] != null &&
+                                                item['led']![
+                                                        'led_unique_number'] !=
+                                                    null
+                                            ? item['led']!['led_unique_number']
+                                            : '');
+                                        _loadItems();
+                                        _loadMessage();
+                                      });
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: ilocateYellow,
+                                    ),
+                                    onPressed: () {
+                                      Get.to(
+                                          () => ItemDetail(itemID: item['id']!),
+                                          transition: Transition.rightToLeft);
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.delete,
                                       color: ilocateRed,
                                     ),
-                              onPressed: () {
-                                 LedProvider().showItem(
-                                     item['led'] != null && item['led']!['led_unique_number'] != null ? item['led']!['led_unique_number'] : '',
-                                     item['led'] != null && item['led']!['status'] == 'on' ? 'off' : 'on',
-                                     item['led'] != null ? item['led']!['id'] : 0
-                                 ).then((value) {
-                                   print(item['led'] != null && item['led']!['led_unique_number'] != null ? item['led']!['led_unique_number'] : '');
-                                   _loadItems();
-                                   _loadMessage();
-                                 });
-                              },
-                            ),
-                             IconButton(
-                              icon: Icon(
-                                Icons.edit,
-                                color: ilocateYellow,
+                                    onPressed: () async {
+                                      if (await ItemProvider()
+                                          .deleteItem(item['id'])) {
+                                        _loadMessage();
+                                      } else {
+                                        _loadMessage();
+                                      }
+                                      setState(() async {
+                                        _items =
+                                            await ItemProvider().getItems();
+                                      });
+                                    },
+                                  ),
+                                ],
                               ),
-                              onPressed: () {
-                                Get.to(() => ItemDetail(itemID: item['id']!),
-                                    transition: Transition.rightToLeft);
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.delete,
-                                color: ilocateRed,
-                              ),
-                              onPressed: () async {
-                                if (await ItemProvider()
-                                    .deleteItem(item['id'])) {
-                                  _loadMessage();
-                                } else {
-                                  _loadMessage();
-                                }
-                                setState(() async {
-                                  _items = await ItemProvider().getItems();
-                                });
-                              },
                             ),
                           ],
-                        ),
-                      ),
-                    ],
-                  );
-                }).toList(),
-              ),
+                        );
+                      }).toList(),
+                    ),
             )
           ],
         ));

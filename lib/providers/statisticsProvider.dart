@@ -119,5 +119,57 @@ class StatisticProvider extends ChangeNotifier {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getSalesStatisticsByDate(DateTime from, DateTime to) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.statistics}/get_sales_statistics_by_date';
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization':
+      'Bearer ${await _prefs.then((SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    final body = {
+      'from': from.toString(),
+      'to': to.toString(),
+    };
+
+    try {
+      http.Response req = await http.post(Uri.parse(url), headers: headers, body: json.encode(body));
+
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+
+        _isLoading = false;
+        notifyListeners();
+        if (res is Map<String, dynamic>) {
+          return [res]; // fix return statement
+        } else if (res is List<dynamic>) {
+          return List<Map<String, dynamic>>.from(res);
+        }else {
+          return [];
+        }
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        print(res);
+        notifyListeners();
+        return [];
+      }
+    } catch (e) {
+      final res = json.decode(e.toString());
+      _isLoading = false;
+      _reqMessage = res['message'];
+      notifyListeners();
+      if (kDebugMode) {
+        print(res);
+      }
+      return [];
+    }
+  }
+
 
 }

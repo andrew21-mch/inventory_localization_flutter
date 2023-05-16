@@ -57,6 +57,13 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
     });
   }
 
+  void _onFilter(DateTime? from, DateTime? to) async {
+    final searchResults = await SalesProvider().filterSales(from!, to!);
+    setState(() {
+      _sales = searchResults;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
@@ -81,7 +88,9 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                 const AddSalesForm(),
               ],
             ),
-            SearchBar(onSearch: _onSearch),
+            const SizedBox(height: 10),
+            SearchBar(onSearch: _onSearch, onFilter: _onFilter),
+            const SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
