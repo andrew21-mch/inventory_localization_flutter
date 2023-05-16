@@ -4,7 +4,6 @@ import 'package:ilocate/providers/ledProvider.dart';
 import 'package:ilocate/providers/sharePreference.dart';
 import 'package:ilocate/screens/components/search_bar.dart';
 import 'package:ilocate/styles/colors.dart';
-import 'package:ilocate/utils/snackMessage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LedTableWidget extends StatefulWidget {
@@ -148,7 +147,7 @@ class _LedTableWidgetState extends State<LedTableWidget> {
                                     ? Icon(Icons.lightbulb, color: ilocateGreen)
                                     : Icon(Icons.lightbulb, color: ilocateRed),
                                 onPressed: ()  {
-                                  LedProvider().showItem('1', item['status'] == 'on' ? 'off' : 'on', item['id'] )
+                                  LedProvider().showItem(item['led_unique_number'], item['status'] == 'on' ? 'off' : 'on', item['id'] )
                                       .then((value) {
                                     _loadItems();
                                     _loadMessage();

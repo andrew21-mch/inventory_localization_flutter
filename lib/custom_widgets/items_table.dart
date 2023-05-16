@@ -97,7 +97,15 @@ class _DataTableWidgetState extends State<DataTableWidget> {
             SearchBar(onSearch: _onSearch),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: DataTable(
+
+              child: _items.isEmpty
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: ilocateGreen,
+                      ),
+                    )
+                  :
+              DataTable(
                 columnSpacing: isMobile
                     ? 10
                     : (MediaQuery.of(context).size.width / 3.5) - 220,
@@ -181,7 +189,8 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                         Row(
                           children: [
                             IconButton(
-                              icon: item['led']!['status'] == 'on'
+                              icon: item['led'] != null &&
+                                      item['led']!['status'] == 'on'
                                   ? Icon(
                                       Icons.lightbulb,
                                       color: ilocateGreen,
@@ -191,7 +200,12 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                                       color: ilocateRed,
                                     ),
                               onPressed: () {
-                                 LedProvider().showItem(item['led']!['led_unique_number'], item['led']!['status'] == 'on' ? 'off' : 'on', item['led']!['id']).then((value) {
+                                 LedProvider().showItem(
+                                     item['led'] != null && item['led']!['led_unique_number'] != null ? item['led']!['led_unique_number'] : '',
+                                     item['led'] != null && item['led']!['status'] == 'on' ? 'off' : 'on',
+                                     item['led'] != null ? item['led']!['id'] : 0
+                                 ).then((value) {
+                                   print(item['led'] != null && item['led']!['led_unique_number'] != null ? item['led']!['led_unique_number'] : '');
                                    _loadItems();
                                    _loadMessage();
                                  });

@@ -232,7 +232,7 @@ class ItemProvider extends ChangeNotifier {
     } catch (e) {
       final res = json.decode(e.toString());
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
       return {};
     }

@@ -178,6 +178,7 @@ class _MyFormState extends State<MyForm> {
                             setState(() {
                               selectedSupplier = newValue;
                             });
+                            print(selectedSupplier);
                           },
                           items: _suppliers.isNotEmpty
                               ? _suppliers.map((value) {
@@ -206,6 +207,7 @@ class _MyFormState extends State<MyForm> {
                             setState(() {
                               _selectedLed = newValue;
                             });
+                            print(_selectedLed);
                           },
                           items: _leds.isNotEmpty
                               ? _leds.map<DropdownMenuItem<String>>(
@@ -245,8 +247,8 @@ class _MyFormState extends State<MyForm> {
                             cost: costController.text,
                             price: priceController.text,
                             quantity: quantityController.text,
-                            supplierId: selectedSupplier!,
                             location: _selectedLed!,
+                            supplierId: selectedSupplier!,
                           )) {
                             _loadMessageAndCloseModal();
                             Navigator.of(context).pop();

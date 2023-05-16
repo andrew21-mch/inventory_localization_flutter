@@ -369,7 +369,7 @@ class LedProvider extends ChangeNotifier {
     final body = {
       "led_id": ledId,
       "action": status,
-      'pin': pinNumber,
+      'pinNumber': pinNumber,
     };
 
     try {
