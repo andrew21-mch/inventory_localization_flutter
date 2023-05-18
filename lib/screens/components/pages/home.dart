@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/custom_widgets/StocksLineChart.dart';
-import 'package:ilocate/providers/salesProvider.dart';
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/providers/statisticsProvider.dart';
-import 'package:ilocate/screens/components/search_bar.dart';
-import 'package:ilocate/custom_widgets/SalesLineChart.dart';
-import 'package:ilocate/custom_widgets/items_table.dart';
-import 'package:ilocate/screens/dashboard/pagescafold.dart';
-import 'package:ilocate/screens/modals/add_item_form.dart';
-import 'package:ilocate/screens/modals/restock_form.dart';
-import 'package:ilocate/styles/colors.dart';
+import 'package:SmartShop/custom_widgets/CustomText.dart';
+import 'package:SmartShop/providers/salesProvider.dart';
+import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/providers/statisticsProvider.dart';
+import 'package:SmartShop/custom_widgets/items_table.dart';
+import 'package:SmartShop/screens/dashboard/pagescafold.dart';
+import 'package:SmartShop/screens/modals/add_item_form.dart';
+import 'package:SmartShop/screens/modals/restock_form.dart';
+import 'package:SmartShop/styles/colors.dart';
 
 class AuthHome extends StatefulWidget {
-  const AuthHome({Key? key});
+  const AuthHome({super.key});
 
   @override
-  _AuthHomeState createState() => _AuthHomeState();
+  AuthHomeState createState() => AuthHomeState();
 }
 
-class _AuthHomeState extends State<AuthHome> {
+class AuthHomeState extends State<AuthHome> {
   List<Map<String, dynamic>>? _statisticsData;
   List<Map<String, dynamic>>? _salesData;
   String? _loggedInUserNickname;
@@ -224,29 +221,22 @@ class _AuthHomeState extends State<AuthHome> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
+                    height: 200,
+                   decoration: BoxDecoration(
+                     borderRadius: BorderRadius.circular(10),
+                    ),
+
                     padding: const EdgeInsets.all(12),
+                    //put text vertically in the center
+
+                      alignment: Alignment.center,
                     child: CustomText(
-                        placeholder: 'Welcome to your dashboard $_loggedInUserNickname!\nHere, you can view your statistics and manage your inventory.',
+                      textAlign: TextAlign.center,
+                        // vertical center
+                        placeholder: 'Welcome to your dashboard $_loggedInUserNickname!\nHere, you can manage your stocks, easily view your statistics and manage your inventory.',
                         fontSize: 13,
                     )
                   ),
-                ],
-              ),
-            ),
-            Card(
-              margin: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-
-                    margin: const EdgeInsets.fromLTRB(8, 64, 32, 32),
-                    child: const MyForm(),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(8, 16, 32, 32),
-                    child: const RestockForm(width: 200),
-                  )
                 ],
               ),
             ),

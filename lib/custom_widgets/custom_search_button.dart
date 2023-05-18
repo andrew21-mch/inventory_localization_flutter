@@ -1,6 +1,5 @@
+import 'package:SmartShop/styles/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:ilocate/screens/customs/textfield.dart';
-import 'package:ilocate/styles/colors.dart';
 
 import 'CustomText.dart';
 

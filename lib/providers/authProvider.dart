@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ilocate/constants/app_url.dart';
+import 'package:SmartShop/constants/app_url.dart';
 import 'package:http/http.dart' as http;
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/screens/auth/login.dart';
-import 'package:ilocate/screens/dashboard/dashboard.dart';
+import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/screens/auth/login.dart';
+import 'package:SmartShop/screens/dashboard/dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -183,7 +183,7 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       final res = json.decode(req.body);
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
       return false;
     }

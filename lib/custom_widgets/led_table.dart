@@ -1,19 +1,19 @@
+import 'package:SmartShop/custom_widgets/CustomText.dart';
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/providers/ledProvider.dart';
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/screens/components/search_bar.dart';
-import 'package:ilocate/styles/colors.dart';
+import 'package:SmartShop/providers/ledProvider.dart';
+import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/screens/components/search_bar.dart';
+import 'package:SmartShop/styles/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LedTableWidget extends StatefulWidget {
   const LedTableWidget({Key? key}) : super(key: key);
 
   @override
-  _LedTableWidgetState createState() => _LedTableWidgetState();
+  LedTableWidgetState createState() => LedTableWidgetState();
 }
 
-class _LedTableWidgetState extends State<LedTableWidget> {
+class LedTableWidgetState extends State<LedTableWidget> {
   late Future<List<Map<String, dynamic>>> _itemsFuture;
   List<Map<String, dynamic>> _items = [];
   String? message;
@@ -73,14 +73,15 @@ class _LedTableWidgetState extends State<LedTableWidget> {
     child:
       Column(
       children: [
+        const SizedBox(height: 10),
         SearchBar(onSearch: _onSearch),
-
+        const SizedBox(height: 10),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(
-            columnSpacing:
-                isMobile ? 10 : (MediaQuery.of(context).size.width / 3) - 220,
-            headingRowColor: MaterialStateColor.resolveWith(
+            columnSpacing: isMobile
+                ? 10
+                : (MediaQuery.of(context).size.width / 3.5) - 220,            headingRowColor: MaterialStateColor.resolveWith(
               (states) => ilocateYellow,
             ),
             //   headingTextStyle: TextStyle(color: ilocateWhite),

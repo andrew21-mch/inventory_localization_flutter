@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/providers/salesProvider.dart';
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/screens/components/search_bar.dart';
-import 'package:ilocate/screens/modals/AddSale.dart';
-import 'package:ilocate/styles/colors.dart';
-import 'package:intl/intl.dart';
+import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/screens/components/search_bar.dart';
+import 'package:SmartShop/styles/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
+
+import '../providers/salesProvider.dart';
+import '../screens/modals/AddSale.dart';
+import 'CustomText.dart';
 
 class SalesTableWidget extends StatefulWidget {
   const SalesTableWidget({Key? key}) : super(key: key);
@@ -176,6 +177,30 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                           ],
                         );
                       }).toList(),
+              ),
+            //  add a total row
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: ilocateGreen.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const CustomText(
+                    placeholder: 'Total',
+                    fontWeight: FontWeight.bold,
+                  ),
+                  CustomText(
+                    placeholder: _sales.isEmpty || _sales == null
+                        ? '0 XAF'
+                        : '${_sales.map((e) => e['total_price']).reduce((value, element) => value + element)} XAF',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ],
               ),
             ),
           ],

@@ -1,7 +1,7 @@
+import 'package:SmartShop/screens/customs/button.dart';
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/custom_widgets/custom_search_button.dart';
-import 'package:ilocate/screens/customs/button.dart';
+
+import 'CustomText.dart';
 
 class CustomFilterWidget extends StatefulWidget {
   final Function(DateTime?, DateTime?) onFilter;

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:ilocate/providers/UserProvider.dart';
-import 'package:ilocate/providers/itemProvider.dart';
-import 'package:ilocate/providers/ledProvider.dart';
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/screens/auth/route_names.dart';
-import 'package:ilocate/screens/customs/button.dart';
-import 'package:ilocate/screens/dashboard/dashboard.dart';
-import 'package:ilocate/styles/colors.dart';
-import 'package:ilocate/utils/snackMessage.dart';
+import 'package:SmartShop/providers/UserProvider.dart';
+import 'package:SmartShop/providers/itemProvider.dart';
+import 'package:SmartShop/providers/ledProvider.dart';
+import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/screens/customs/button.dart';
+import 'package:SmartShop/screens/dashboard/dashboard.dart';
+import 'package:SmartShop/styles/colors.dart';
+import 'package:SmartShop/utils/snackMessage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyForm extends StatefulWidget {
@@ -78,16 +76,22 @@ class _MyFormState extends State<MyForm> {
 
   Future<void> _loadSuppliers() async {
     final items = await UserProvider().getUsers();
-    setState(() {
-      _suppliers = items;
-    });
+    if(mounted)
+      {
+        setState(() {
+          _suppliers = items;
+        });
+      }
   }
 
   Future<void> _loadLeds() async {
     final leds = await LedProvider().getLeds();
-    setState(() {
-      _leds = leds;
-    });
+    if(mounted)
+      {
+        setState(() {
+          _leds = leds;
+        });
+      }
   }
   @override
   void initState() {

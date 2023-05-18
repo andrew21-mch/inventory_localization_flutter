@@ -1,16 +1,14 @@
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:ilocate/screens/auth/register.dart';
-import 'package:ilocate/screens/auth/reset_password.dart';
-import 'package:provider/provider.dart';
+import 'package:SmartShop/screens/auth/register.dart';
+import 'package:SmartShop/screens/auth/reset_password.dart';
 import 'package:flutter/material.dart';
-import 'package:ilocate/screens/customs/button.dart';
-import 'package:ilocate/utils/snackMessage.dart';
-import 'package:ilocate/providers/authProvider.dart';
-import 'package:ilocate/screens/auth/route_names.dart';
-import 'package:ilocate/screens/components/clippath.dart';
-import 'package:ilocate/screens/customs/textfield.dart';
-import 'package:ilocate/styles/colors.dart';
+import 'package:get/get.dart';
+import 'package:SmartShop/providers/authProvider.dart';
+import 'package:SmartShop/screens/components/clippath.dart';
+import 'package:SmartShop/screens/customs/button.dart';
+import 'package:SmartShop/screens/customs/textfield.dart';
+import 'package:SmartShop/styles/colors.dart';
+import 'package:SmartShop/utils/snackMessage.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -45,7 +43,8 @@ class _LoginState extends State<Login> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const ClipPathWidget(),
+                  const ClipPathWidget(
+                  ),
                   Column(
                     children: [
                       Container(

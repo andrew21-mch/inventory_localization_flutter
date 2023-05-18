@@ -1,12 +1,11 @@
+import 'package:SmartShop/custom_widgets/led_table.dart';
+import 'package:SmartShop/providers/ledProvider.dart';
+import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/screens/modals/install_led.dart';
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/providers/ledProvider.dart';
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/custom_widgets/led_table.dart';
-import 'package:ilocate/screens/dashboard/pagescafold.dart';
-import 'package:ilocate/screens/modals/install_led.dart';
-import 'package:ilocate/styles/colors.dart';
-import 'package:ilocate/utils/snackMessage.dart';
+import 'package:SmartShop/custom_widgets/CustomText.dart';
+import 'package:SmartShop/screens/dashboard/pagescafold.dart';
+import 'package:SmartShop/styles/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Leds extends StatefulWidget {
@@ -69,8 +68,7 @@ class _LedsState extends State<Leds> {
 
     final cards = [
       // first card
-      Expanded(
-        child: Card(
+     Card(
           margin: const EdgeInsets.all(16),
           child: SizedBox(
             width: cardWidth,
@@ -95,7 +93,6 @@ class _LedsState extends State<Leds> {
             ),
           ),
         ),
-      ),
       // second card
     ];
 
@@ -129,7 +126,7 @@ class _LedsState extends State<Leds> {
         body: SizedBox(
           // width: double.infinity,
           child: ListView(
-            // mainAxisAlignment: MainAxisAlignment.start,
+            scrollDirection: Axis.vertical,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

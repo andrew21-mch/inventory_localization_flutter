@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/styles/colors.dart';
+import 'package:SmartShop/custom_widgets/CustomText.dart';
+import 'package:SmartShop/screens/modals/add_item_form.dart';
+import 'package:SmartShop/screens/modals/restock_form.dart';
+import 'package:SmartShop/styles/colors.dart';
 
 class PageScaffold extends StatelessWidget {
   const PageScaffold({
@@ -28,24 +30,40 @@ class PageScaffold extends StatelessWidget {
         leading: hasDrawer
             ? IconButton(
                 icon: const Icon(Icons.menu),
-                // 4. open the drawer if we have one
                 onPressed:
                     hasDrawer ? () => ancestorScaffold.openDrawer() : null,
               )
             : null,
         title: CustomText(placeholder: title, color: ilocateWhite),
         actions: [
-          Container(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-            ),
-            padding: const EdgeInsets.all(10),
-            child: Icon(
-              Icons.person,
-              color: ilocateYellow,
-            ),
-          //  print the user name
+
+          // an icon that when click it shows a popup menu with the options to add a new user or a new location
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+              const PopupMenuItem(
+                value: 'Add User',
+                child: Text('Add Item'),
+              ),
+              const PopupMenuItem(
+                value: 'Restock Item',
+                child: Text('Restock Item'),
+              ),
+            ],
+            onSelected: (value) {
+              if (value == 'Add User') {
+              //  bottom sheet that shows a form to add a new user
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => const MyForm(),
+                );
+              } else if (value == 'Restock Item') {
+                //  bottom sheet that shows a form to add a new location
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => const RestockForm(),
+                );
+              }
+            },
           ),
           ...actions,
         ],

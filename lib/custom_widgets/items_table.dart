@@ -1,15 +1,12 @@
+import 'package:SmartShop/providers/itemProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:ilocate/providers/itemProvider.dart';
-import 'package:ilocate/custom_widgets/custom_search_button.dart';
-import 'package:ilocate/providers/ledProvider.dart';
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/screens/auth/route_names.dart';
-import 'package:ilocate/screens/components/pages/ItemDetails.dart';
-import 'package:ilocate/screens/components/search_bar.dart';
-import 'package:ilocate/screens/modals/add_item_form.dart';
-import 'package:ilocate/styles/colors.dart';
+import 'package:SmartShop/providers/ledProvider.dart';
+import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/screens/components/pages/ItemDetails.dart';
+import 'package:SmartShop/screens/components/search_bar.dart';
+import 'package:SmartShop/screens/modals/add_item_form.dart';
+import 'package:SmartShop/styles/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'CustomText.dart';
@@ -18,10 +15,10 @@ class DataTableWidget extends StatefulWidget {
   const DataTableWidget({Key? key}) : super(key: key);
 
   @override
-  _DataTableWidgetState createState() => _DataTableWidgetState();
+  DataTableWidgetState createState() => DataTableWidgetState();
 }
 
-class _DataTableWidgetState extends State<DataTableWidget> {
+class DataTableWidgetState extends State<DataTableWidget> {
   List<Map<String, dynamic>> _items = [];
   String? message;
 
@@ -93,15 +90,19 @@ class _DataTableWidgetState extends State<DataTableWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                !isMobile
+                    ?
                 IconButton(
                   onPressed: () {
                     _loadItems();
                   },
                   icon: Icon(Icons.refresh, color: ilocateGreen),
-                ),
+                )
+                    : Container(),
                 !isMobile ? const MyForm(width: 200) : Container(),
               ],
             ),
+            const Padding(padding: EdgeInsets.only(top: 10)),
 
             SearchBar(onSearch: _onSearch, onFilter: _onFilter),
             const Padding(padding: EdgeInsets.only(top: 15)),

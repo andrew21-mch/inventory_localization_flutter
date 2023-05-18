@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/screens/components/clippath.dart';
-import 'package:ilocate/screens/components/pages/sales.dart';
-import 'package:ilocate/screens/components/pages/statistics.dart';
-import 'package:ilocate/screens/components/pages/stock.dart';
-import 'package:ilocate/screens/dashboard/page_list_tile.dart';
-import 'package:ilocate/screens/modals/logout.dart';
-import 'package:ilocate/styles/colors.dart';
+import 'package:SmartShop/custom_widgets/CustomText.dart';
+import 'package:SmartShop/screens/components/clippath.dart';
+import 'package:SmartShop/screens/components/pages/sales.dart';
+import 'package:SmartShop/screens/components/pages/statistics.dart';
+import 'package:SmartShop/screens/components/pages/stock.dart';
+import 'package:SmartShop/screens/dashboard/page_list_tile.dart';
+import 'package:SmartShop/screens/modals/logout.dart';
+import 'package:SmartShop/styles/colors.dart';
 
 import 'home.dart';
 import 'led_page_view.dart';
@@ -40,6 +40,8 @@ class AppMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // 3. watch the provider's state
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
     final selectedPageName = ref.watch(selectedPageNameProvider.state).state;
     return Scaffold(
       appBar: AppBar(
@@ -84,16 +86,30 @@ class AppMenu extends ConsumerWidget {
   }
 
   void _selectPage(BuildContext context, WidgetRef ref, String pageName) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
     // only change the state if we have selected a different page
     if (ref.read(selectedPageNameProvider.state).state != pageName) {
       ref.read(selectedPageNameProvider.state).state = pageName;
       // dismiss the drawer of the ancestor Scaffold if we have one
       if (Scaffold.maybeOf(context)?.hasDrawer ?? false) {
+
+        isMobile ? Navigator.push(context, MaterialPageRoute(builder: (context) => _availablePages[pageName]!(context)))
+                :
         Get.to(() => _availablePages[pageName]!,
         transition: Transition.rightToLeft,
         duration: const Duration(milliseconds: 500)
-
-        );
+        ); if (isMobile) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => _availablePages[pageName]!(context)),
+          );
+        } else {
+          Get.to(
+                () => _availablePages[pageName]!(context),
+            transition: Transition.rightToLeft,
+            duration: const Duration(milliseconds: 500),
+          );
+        }
       }
     }
   }

@@ -1,13 +1,11 @@
+import 'package:SmartShop/custom_widgets/sales_table.dart';
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/providers/salesProvider.dart';
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/providers/statisticsProvider.dart';
-import 'package:ilocate/custom_widgets/SalesLineChart.dart';
-import 'package:ilocate/screens/dashboard/pagescafold.dart';
-import 'package:ilocate/custom_widgets/sales_table.dart';
-import 'package:ilocate/styles/colors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SmartShop/custom_widgets/CustomText.dart';
+import 'package:SmartShop/providers/salesProvider.dart';
+import 'package:SmartShop/providers/statisticsProvider.dart';
+import 'package:SmartShop/custom_widgets/SalesLineChart.dart';
+import 'package:SmartShop/screens/dashboard/pagescafold.dart';
+import 'package:SmartShop/styles/colors.dart';
 
 class Sales extends StatefulWidget {
   const Sales({Key? key});
@@ -88,10 +86,7 @@ class _SalesState extends State<Sales> {
         : (MediaQuery.of(context).size.width - 80) / 3;
 
     final cards = [
-      // first card
-      Expanded(
-        flex: 2,
-        child: Card(
+      Card(
           margin: const EdgeInsets.all(16),
           child: SizedBox(
             width: cardWidth,
@@ -129,12 +124,10 @@ class _SalesState extends State<Sales> {
             ),
           ),
         ),
-      ),
 
       // second card
       // third card
-      Expanded(
-        child: Card(
+      Card(
           margin: const EdgeInsets.all(16),
           child: SizedBox(
             width: cardWidth,
@@ -191,7 +184,6 @@ class _SalesState extends State<Sales> {
             ),
           ),
         ),
-      ),
     ];
 
     if (isMobile) {
@@ -214,17 +206,27 @@ class _SalesState extends State<Sales> {
           // width: double.infinity,
           child: ListView(
             // mainAxisAlignment: MainAxisAlignment.start,
+            children: [Column(
+          children: [
+          Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ...cards,
-                ],
+              Expanded(
+                flex: 3,
+                child: cards[0],
               ),
+              Expanded(
+                flex: 1,
+                child: cards[1],
+              ),
+            ],
+          ),
               const SizedBox(height: 32),
               const SalesTableWidget(),
             ],
           ),
+          ],
+        ),
         ),
       );
     }

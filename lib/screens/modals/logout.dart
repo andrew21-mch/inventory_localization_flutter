@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/screens/auth/route_names.dart';
-import 'package:ilocate/styles/colors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/screens/auth/route_names.dart';
+import 'package:SmartShop/styles/colors.dart';
 
 class LogoutModal extends StatefulWidget {
   const LogoutModal({Key? key}) : super(key: key);

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/screens/auth/login.dart';
-import 'package:ilocate/screens/auth/register.dart';
-import 'package:ilocate/screens/auth/reset_password.dart';
-import 'package:ilocate/screens/components/pages/ItemDetails.dart';
-import 'package:ilocate/screens/dashboard/dashboard.dart';
-import 'package:ilocate/splash/splash.dart';
+import 'package:SmartShop/screens/auth/login.dart';
+import 'package:SmartShop/screens/auth/register.dart';
+import 'package:SmartShop/screens/auth/reset_password.dart';
+import 'package:SmartShop/screens/components/pages/ItemDetails.dart';
+import 'package:SmartShop/screens/dashboard/dashboard.dart';
+import 'package:SmartShop/splash/splash.dart';
 
 class CustomRoute {
   static Route<dynamic> allRoutes(RouteSettings settings) {

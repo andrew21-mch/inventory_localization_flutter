@@ -1,17 +1,13 @@
+import 'package:SmartShop/custom_widgets/CustomText.dart';
+import 'package:SmartShop/screens/components/pages/led_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/providers/ledProvider.dart';
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/screens/components/pages/led_page_view.dart';
-import 'package:ilocate/screens/customs/button.dart';
-import 'package:ilocate/utils/snackMessage.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:SmartShop/providers/ledProvider.dart';
+import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/screens/customs/button.dart';
+import 'package:SmartShop/styles/colors.dart';
+import 'package:SmartShop/utils/snackMessage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
-
-import '../../styles/colors.dart';
 
 class LedForm extends StatefulWidget {
   const LedForm({Key? key}) : super(key: key);

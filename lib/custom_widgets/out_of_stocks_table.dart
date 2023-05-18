@@ -1,11 +1,10 @@
+import 'package:SmartShop/providers/outOfStockProvider.dart';
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/providers/itemProvider.dart';
-import 'package:ilocate/custom_widgets/custom_search_button.dart';
-import 'package:ilocate/providers/outOfStockProvider.dart';
-import 'package:ilocate/screens/components/search_bar.dart';
-import 'package:ilocate/screens/modals/restock_form.dart';
-import 'package:ilocate/styles/colors.dart';
+import 'package:SmartShop/screens/components/search_bar.dart';
+import 'package:SmartShop/styles/colors.dart';
+
+import '../screens/modals/restock_form.dart';
+import 'CustomText.dart';
 
 class OutOfStockTableWidget extends StatefulWidget {
   const OutOfStockTableWidget({Key? key}) : super(key: key);
@@ -17,7 +16,6 @@ class OutOfStockTableWidget extends StatefulWidget {
 class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
   List<Map<String, dynamic>> _items = [];
 
-  @override
   @override
   void initState() {
     super.initState();
@@ -48,7 +46,9 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
     ),
     elevation: 0,
     child: Column(children: [
+    const SizedBox(height: 10),
       SearchBar(onSearch: _onSearch),
+    const SizedBox(height: 10),
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(

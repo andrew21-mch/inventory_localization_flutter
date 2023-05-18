@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/custom_widgets/custom_filter.dart';
+import 'package:SmartShop/custom_widgets/CustomText.dart';
+import 'package:SmartShop/custom_widgets/custom_filter.dart';
 
 class SearchBar extends StatefulWidget {
   final Function(String) onSearch;

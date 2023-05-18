@@ -1,12 +1,10 @@
+import 'package:SmartShop/providers/itemProvider.dart';
+import 'package:SmartShop/providers/outOfStockProvider.dart';
+import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/screens/components/pages/stock.dart';
+import 'package:SmartShop/screens/customs/button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:ilocate/providers/itemProvider.dart';
-import 'package:ilocate/providers/outOfStockProvider.dart';
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/screens/auth/route_names.dart';
-import 'package:ilocate/screens/components/pages/stock.dart';
-import 'package:ilocate/screens/customs/button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../styles/colors.dart';
@@ -67,11 +65,12 @@ class _RestockFormState extends State<RestockForm> {
 
   Future<void> _loadItems() async {
     final items = await ItemProvider().getItems();
-    setState(() {
-      _items = items;
-    });
+    if(mounted){
+      setState(() {
+        _items = items;
+      });
+    }
   }
-
 
   @override
   void initState() {
@@ -80,10 +79,6 @@ class _RestockFormState extends State<RestockForm> {
   _loadItems();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   void didChangeDependencies() {

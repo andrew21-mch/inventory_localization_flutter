@@ -1,13 +1,11 @@
+import 'package:SmartShop/providers/salesProvider.dart';
+import 'package:SmartShop/screens/components/pages/sales.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:ilocate/providers/itemProvider.dart';
-import 'package:ilocate/providers/outOfStockProvider.dart';
-import 'package:ilocate/providers/salesProvider.dart';
-import 'package:ilocate/providers/sharePreference.dart';
-import 'package:ilocate/screens/auth/route_names.dart';
-import 'package:ilocate/screens/components/pages/sales.dart';
-import 'package:ilocate/screens/customs/button.dart';
+import 'package:SmartShop/providers/itemProvider.dart';
+import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/screens/customs/button.dart';
+import 'package:SmartShop/styles/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../styles/colors.dart';

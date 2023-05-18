@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/styles/colors.dart';
+import 'package:SmartShop/custom_widgets/CustomText.dart';
+import 'package:SmartShop/styles/colors.dart';
 
 class CustomButton extends StatelessWidget {
   final String? placeholder;

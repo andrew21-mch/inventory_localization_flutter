@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:ilocate/providers/authProvider.dart';
-import 'package:ilocate/providers/ledProvider.dart';
-import 'package:ilocate/routes/routes.dart';
-import 'package:ilocate/screens/dashboard/dashboard.dart';
-import 'package:ilocate/splash/splash.dart';
+import 'package:SmartShop/providers/authProvider.dart';
+import 'package:SmartShop/routes/routes.dart';
+import 'package:SmartShop/screens/dashboard/dashboard.dart';
+import 'package:SmartShop/splash/splash.dart';
 
 import 'models/User.dart';
 
@@ -13,17 +12,13 @@ void main() {
   runApp(
     const ProviderScope(
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: MyApp(),
       ),
     ),
 
   );
 
-  Get.config(
-    defaultTransition: Transition.fade,
-    defaultOpaqueRoute: false,
-    defaultPopGesture: true,
-  );
 
 }
 
@@ -74,7 +69,9 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider((ref) => UserModel()),
         ),
       ],
-      child: GetMaterialApp(
+      child: GetMaterialApp
+  (
+        debugShowCheckedModeBanner: false,
         onGenerateRoute: CustomRoute.allRoutes,
         title: 'Ilocate',
         home: isAuth ? const DashboardScreen() : const Splash(),

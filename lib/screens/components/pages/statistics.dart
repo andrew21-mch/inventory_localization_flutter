@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/custom_widgets/StocksLineChart.dart';
-import 'package:ilocate/custom_widgets/custom_filter.dart';
-import 'package:ilocate/providers/salesProvider.dart';
-import 'package:ilocate/providers/statisticsProvider.dart';
-import 'package:ilocate/custom_widgets/SalesLineChart.dart';
-import 'package:ilocate/custom_widgets/items_table.dart';
-import 'package:ilocate/screens/customs/button.dart';
-import 'package:ilocate/screens/dashboard/pagescafold.dart';
-import 'package:ilocate/screens/modals/add_item_form.dart';
-import 'package:ilocate/screens/modals/restock_form.dart';
-import 'package:ilocate/styles/colors.dart';
+import 'package:SmartShop/custom_widgets/CustomText.dart';
+import 'package:SmartShop/custom_widgets/StocksLineChart.dart';
+import 'package:SmartShop/providers/salesProvider.dart';
+import 'package:SmartShop/providers/statisticsProvider.dart';
+import 'package:SmartShop/custom_widgets/SalesLineChart.dart';
+import 'package:SmartShop/custom_widgets/items_table.dart';
+import 'package:SmartShop/screens/dashboard/pagescafold.dart';
+import 'package:SmartShop/screens/modals/add_item_form.dart';
+import 'package:SmartShop/screens/modals/restock_form.dart';
+import 'package:SmartShop/styles/colors.dart';
 import 'package:intl/intl.dart';
 
 class Statistics extends StatefulWidget {
@@ -73,7 +71,8 @@ class _StatisticsState extends State<Statistics> {
   }
 
   void _onFilter(DateTime? from, DateTime? to) async {
-    final searchResults = await StatisticProvider().getSalesStatisticsByDate(from!, to!);
+    final searchResults =
+        await StatisticProvider().getSalesStatisticsByDate(from!, to!);
     setState(() {
       _salesStatisticsData = searchResults;
     });
@@ -146,159 +145,155 @@ class _StatisticsState extends State<Statistics> {
 
     final cards2 = [
       // first card
-      Expanded(
-        flex: 2,
-        child: Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomText(
-                      placeholder: 'Stocks Stats',
-                      color: ilocateYellow,
-                      fontSize: 24),
-                  if (_statisticsData != null && _errorMessage == null)
-                    SizedBox(
-                      height: 200, // Replace with desired height
-                      child: StocksLineChartWidget(
-                        _statisticsData![0]['data']
-                                ['component_with_their_quantity']
-                            .map<Map<String, dynamic>>(
-                                (item) => Map<String, dynamic>.from(item))
-                            .toList(),
-                        animate: true,
-                      ),
-                    )
-                  else if (_errorMessage == null || _statisticsData == null)
-                    const RefreshProgressIndicator()
-                  else
-                    Text(
-                      _errorMessage!,
-                      style: const TextStyle(color: Colors.red),
+      Card(
+        margin: const EdgeInsets.all(16),
+        child: SizedBox(
+          width: cardWidth,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomText(
+                    placeholder: 'Stocks Stats',
+                    color: ilocateYellow,
+                    fontSize: 24),
+                if (_statisticsData != null && _errorMessage == null)
+                  SizedBox(
+                    height: 200, // Replace with desired height
+                    child: StocksLineChartWidget(
+                      _statisticsData![0]['data']
+                              ['component_with_their_quantity']
+                          .map<Map<String, dynamic>>(
+                              (item) => Map<String, dynamic>.from(item))
+                          .toList(),
+                      animate: true,
                     ),
-                ],
-              ),
+                  )
+                else if (_errorMessage == null || _statisticsData == null)
+                  const RefreshProgressIndicator()
+                else
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+              ],
             ),
           ),
         ),
       ),
 
-      // second card
-      // third card
-      Expanded(
-        flex: 2,
-        child: Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Flexible(
-                    child: CustomText(
-                        placeholder: 'Sales Stats',
-                        color: ilocateYellow,
-                        fontSize: 24),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: IconButton(
-                      icon: const Icon(Icons.filter_list),
-                      onPressed: () => showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          title: const CustomText(
-                              placeholder: 'Filter by date',
-                              textAlign: TextAlign.center,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                          content:
-                              Column(mainAxisSize: MainAxisSize.min, children: [
-                            FractionallySizedBox(
-                              widthFactor: 0.3,
-                              child: GestureDetector(
-                                onTap: () => _selectDate(context, true),
-                                child: AbsorbPointer(
-                                  child: TextFormField(
-                                    controller: TextEditingController(
-                                        text: _startDate != null
-                                            ? DateFormat('yyyy-MM-dd')
-                                                .format(_startDate!)
-                                            : ''),
-                                    decoration: const InputDecoration(
-                                      labelText: 'From',
-                                      border: OutlineInputBorder(),
-                                    ),
+      Card(
+        margin: const EdgeInsets.all(16),
+        child: SizedBox(
+          width: cardWidth,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: CustomText(
+                      placeholder: 'Sales Stats',
+                      color: ilocateYellow,
+                      fontSize: 24),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: IconButton(
+                    icon: const Icon(Icons.filter_list),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const CustomText(
+                            placeholder: 'Filter by date',
+                            textAlign: TextAlign.center,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                        content:
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                          FractionallySizedBox(
+                            widthFactor: 0.3,
+                            child: GestureDetector(
+                              onTap: () => _selectDate(context, true),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: TextEditingController(
+                                      text: _startDate != null
+                                          ? DateFormat('yyyy-MM-dd')
+                                              .format(_startDate!)
+                                          : ''),
+                                  decoration: const InputDecoration(
+                                    labelText: 'From',
+                                    border: OutlineInputBorder(),
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            FractionallySizedBox(
-                              widthFactor: 0.3,
-                              child: GestureDetector(
-                                onTap: () => _selectDate(context, false),
-                                child: AbsorbPointer(
-                                  child: TextFormField(
-                                    controller: TextEditingController(
-                                        text: _endDate != null
-                                            ? DateFormat('yyyy-MM-dd')
-                                                .format(_endDate!)
-                                            : ''),
-                                    decoration: const InputDecoration(
-                                      labelText: 'To',
-                                      border: OutlineInputBorder(),
-                                    ),
+                          ),
+                          const SizedBox(height: 10),
+                          FractionallySizedBox(
+                            widthFactor: 0.3,
+                            child: GestureDetector(
+                              onTap: () => _selectDate(context, false),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: TextEditingController(
+                                      text: _endDate != null
+                                          ? DateFormat('yyyy-MM-dd')
+                                              .format(_endDate!)
+                                          : ''),
+                                  decoration: const InputDecoration(
+                                    labelText: 'To',
+                                    border: OutlineInputBorder(),
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            FractionallySizedBox(
-                              widthFactor: 0.3,
-                              child:
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: ilocateYellow,
-                                      onPrimary: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(32.0),
-                                      ),
-                                    ),
-                                      onPressed: () => _onFilter(_startDate, _endDate), child: CustomText(placeholder: 'Filter', color: ilocateWhite,)),
-                            ),
-                          ]),
-                        ),
+                          ),
+                          const SizedBox(height: 10),
+                          FractionallySizedBox(
+                            widthFactor: 0.3,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: ilocateYellow,
+                                  onPrimary: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32.0),
+                                  ),
+                                ),
+                                onPressed: () =>
+                                    _onFilter(_startDate, _endDate),
+                                child: CustomText(
+                                  placeholder: 'Filter',
+                                  color: ilocateWhite,
+                                )),
+                          ),
+                        ]),
                       ),
                     ),
                   ),
-                  if (_salesData !=
-                      null) // check if _salesData is not null and has at least one item
-                    SizedBox(
-                      height: 200, // Replace with desired height
-                      child: SalessHistogramChartWidget(
-                        _salesStatisticsData!
-                            .map<Map<String, dynamic>>(
-                                (item) => Map<String, dynamic>.from(item))
-                            .toList(),
-                        animate: true,
-                      ),
-                    )
-                  else if (_errorMessage == null)
-                    const RefreshProgressIndicator()
-                  else
-                    CustomText(
-                      placeholder: _errorMessage!,
-                      color: Colors.red,
+                ),
+                if (_salesData !=
+                    null) // check if _salesData is not null and has at least one item
+                  SizedBox(
+                    height: 200, // Replace with desired height
+                    child: SalessHistogramChartWidget(
+                      _salesStatisticsData!
+                          .map<Map<String, dynamic>>(
+                              (item) => Map<String, dynamic>.from(item))
+                          .toList(),
+                      animate: true,
                     ),
-                ],
-              ),
+                  )
+                else if (_errorMessage == null)
+                  const RefreshProgressIndicator()
+                else
+                  CustomText(
+                    placeholder: _errorMessage!,
+                    color: Colors.red,
+                  ),
+              ],
             ),
           ),
         ),
@@ -306,102 +301,92 @@ class _StatisticsState extends State<Statistics> {
     ];
 
     final cards = [
-      // first card
-      Expanded(
-        flex: 2,
-        child: Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.credit_card,
-                      size: 64, color: Colors.redAccent),
-                  const SizedBox(height: 16),
-                  if (_statisticsData != null)
-                    CustomText(
-                        placeholder:
-                            '${_statisticsData![0]['data']['total_profit']}' +
-                                ' XAF',
-                        color: ilocateYellow,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold)
-                  else
-                    const RefreshProgressIndicator(),
-                  const SizedBox(height: 8),
-                  const CustomText(placeholder: 'Total Expenses'),
-                ],
-              ),
+      Card(
+        margin: const EdgeInsets.all(16),
+        child: SizedBox(
+          width: cardWidth,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.credit_card,
+                    size: 64, color: Colors.redAccent),
+                const SizedBox(height: 16),
+                if (_statisticsData != null)
+                  CustomText(
+                      placeholder:
+                          '${_statisticsData![0]['data']['total_profit']}' +
+                              ' XAF',
+                      color: ilocateYellow,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold)
+                else
+                  const RefreshProgressIndicator(),
+                const SizedBox(height: 8),
+                const CustomText(placeholder: 'Total Expenses'),
+              ],
             ),
           ),
         ),
       ),
       // second card
-      Expanded(
-        flex: 2,
-        child: Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (_statisticsData != null)
-                    Icon(Icons.account_balance,
-                        size: 64, color: Colors.purpleAccent.shade700
-                        //rotate the ic
-                        ),
-                  const SizedBox(height: 16),
-                  if (_statisticsData != null)
-                    CustomText(
-                        placeholder:
-                            '${_statisticsData![0]['data']['total_profit']}'
-                            ' XAF',
-                        color: ilocateYellow,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold)
-                  else
-                    const RefreshProgressIndicator(),
-                  const SizedBox(height: 8),
-                  const CustomText(placeholder: 'Total Profits'),
-                ],
-              ),
+      Card(
+        margin: const EdgeInsets.all(16),
+        child: SizedBox(
+          width: cardWidth,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (_statisticsData != null)
+                  Icon(Icons.account_balance,
+                      size: 64, color: Colors.purpleAccent.shade700
+                      //rotate the ic
+                      ),
+                const SizedBox(height: 16),
+                if (_statisticsData != null)
+                  CustomText(
+                      placeholder:
+                          '${_statisticsData![0]['data']['total_profit']}'
+                          ' XAF',
+                      color: ilocateYellow,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold)
+                else
+                  const RefreshProgressIndicator(),
+                const SizedBox(height: 8),
+                const CustomText(placeholder: 'Total Profits'),
+              ],
             ),
           ),
         ),
       ),
       // third card
-      Expanded(
-        flex: 2,
-        child: Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.all_inbox, size: 64, color: Colors.green),
-                  const SizedBox(height: 16),
-                  if (_statisticsData != null)
-                    CustomText(
-                        placeholder:
-                            '${_statisticsData![0]['data']['total_components']}',
-                        color: ilocateYellow,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold)
-                  else
-                    const RefreshProgressIndicator(),
-                  const SizedBox(height: 8),
-                  const CustomText(placeholder: 'Total Items'),
-                ],
-              ),
+      Card(
+        margin: const EdgeInsets.all(16),
+        child: SizedBox(
+          width: cardWidth,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.all_inbox, size: 64, color: Colors.green),
+                const SizedBox(height: 16),
+                if (_statisticsData != null)
+                  CustomText(
+                      placeholder:
+                          '${_statisticsData![0]['data']['total_components']}',
+                      color: ilocateYellow,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold)
+                else
+                  const RefreshProgressIndicator(),
+                const SizedBox(height: 8),
+                const CustomText(placeholder: 'Total Items'),
+              ],
             ),
           ),
         ),
@@ -431,13 +416,31 @@ class _StatisticsState extends State<Statistics> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ...cards,
+                Expanded(
+                  flex: 2,
+                  child: cards[0],
+                ),
+                Expanded(
+                  flex: 2,
+                  child: cards[1],
+                ),
+                Expanded(
+                  flex: 2,
+                  child: cards[2],
+                ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ...cards2,
+                Expanded(
+                  flex: 2,
+                  child: cards2[0],
+                ),
+                Expanded(
+                  flex: 2,
+                  child: cards2[1],
+                ),
               ],
             ),
             const DataTableWidget(),
@@ -447,11 +450,12 @@ class _StatisticsState extends State<Statistics> {
               children: [
                 Expanded(
                   child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        MyForm(),
-                        RestockForm(),
-                      ]),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      MyForm(),
+                      RestockForm(),
+                    ],
+                  ),
                 ),
               ],
             ),

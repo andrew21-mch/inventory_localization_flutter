@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ilocate/screens/dashboard/split_view.dart';
+import 'package:SmartShop/screens/dashboard/split_view.dart';
 import '../../routes/routes.dart';
 import '../components/pages/appmenu.dart';
 

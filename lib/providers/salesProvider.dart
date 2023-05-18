@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'dart:ffi';
 
+import 'package:SmartShop/utils/snackMessage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ilocate/constants/app_url.dart';
+import 'package:SmartShop/constants/app_url.dart';
 import 'package:http/http.dart' as http;
-import 'package:ilocate/utils/snackMessage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 

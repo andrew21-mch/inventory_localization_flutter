@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:ilocate/providers/authProvider.dart';
-import 'package:ilocate/screens/auth/login.dart';
-import 'package:ilocate/screens/auth/route_names.dart';
-import 'package:ilocate/screens/components/clippath.dart';
-import 'package:ilocate/screens/customs/button.dart';
-import 'package:ilocate/screens/customs/textfield.dart';
-import 'package:ilocate/styles/colors.dart';
-import 'package:ilocate/utils/snackMessage.dart';
+import 'package:SmartShop/providers/authProvider.dart';
+import 'package:SmartShop/screens/auth/login.dart';
+import 'package:SmartShop/screens/components/clippath.dart';
+import 'package:SmartShop/screens/customs/button.dart';
+import 'package:SmartShop/screens/customs/textfield.dart';
+import 'package:SmartShop/styles/colors.dart';
+import 'package:SmartShop/utils/snackMessage.dart';
 import 'package:provider/provider.dart';
 
 class PasswordReset extends StatefulWidget {

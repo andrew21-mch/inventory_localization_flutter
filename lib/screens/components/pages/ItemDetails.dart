@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/custom_widgets/CustomText.dart';
-import 'package:ilocate/providers/itemProvider.dart';
-import 'package:ilocate/screens/customs/button.dart';
-import 'package:ilocate/screens/dashboard/pagescafold.dart';
+import 'package:SmartShop/custom_widgets/CustomText.dart';
+import 'package:SmartShop/providers/itemProvider.dart';
+import 'package:SmartShop/screens/customs/button.dart';
+import 'package:SmartShop/screens/dashboard/pagescafold.dart';
 
 class ItemDetail extends StatefulWidget {
   final int? itemID;

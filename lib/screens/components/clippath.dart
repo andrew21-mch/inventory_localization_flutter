@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ilocate/styles/colors.dart';
+import 'package:SmartShop/styles/colors.dart';
 
 class ClipPathWidget extends StatelessWidget {
   final double? height;
