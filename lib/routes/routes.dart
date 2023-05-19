@@ -1,3 +1,4 @@
+import 'package:SmartShop/main.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartShop/screens/auth/login.dart';
 import 'package:SmartShop/screens/auth/register.dart';
@@ -9,6 +10,8 @@ import 'package:SmartShop/splash/splash.dart';
 class CustomRoute {
   static Route<dynamic> allRoutes(RouteSettings settings) {
     switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(builder: (_) => const MyApp());
       case '/login':
         return MaterialPageRoute(builder: (_) => const Login());
       case '/register':

@@ -1,3 +1,4 @@
+import 'package:SmartShop/providers/sharePreference.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartShop/custom_widgets/CustomText.dart';
 import 'package:SmartShop/custom_widgets/StocksLineChart.dart';
@@ -10,6 +11,7 @@ import 'package:SmartShop/screens/modals/add_item_form.dart';
 import 'package:SmartShop/screens/modals/restock_form.dart';
 import 'package:SmartShop/styles/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({Key? key}) : super(key: key);
@@ -25,6 +27,7 @@ class _StatisticsState extends State<Statistics> {
   late DateTime _startDate;
   late DateTime _endDate;
   String? _errorMessage;
+  String? message;
 
   @override
   void initState() {
@@ -35,6 +38,32 @@ class _StatisticsState extends State<Statistics> {
     _startDate = DateTime.now();
     _endDate = DateTime.now();
   }
+
+
+  void _setMessage(String newMessage) {
+    setState(() {
+      message = newMessage;
+    });
+  }
+
+  void _loadMessage() async {
+    final message = await DatabaseProvider().getMessage();
+    _setMessage(message);
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message ?? 'Error loading message'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    });
+
+    // clear message
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('message');
+  }
+
 
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
     final DateTime? selectedDate = await showDatePicker(

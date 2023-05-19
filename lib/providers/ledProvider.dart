@@ -186,13 +186,10 @@ class LedProvider extends ChangeNotifier {
         return [];
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
       _reqMessage = res;
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return [];
     }
   }
@@ -214,8 +211,6 @@ class LedProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        print(res);
-
         _isLoading = false;
         notifyListeners();
         return List<Map<String, dynamic>>.from(res['data']);
@@ -223,21 +218,16 @@ class LedProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        print(res);
         storeMessageToInMemory(res['message']);
         notifyListeners();
-
-
         return [];
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
+      storeMessageToInMemory(res);
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return [];
     }
   }
@@ -259,8 +249,6 @@ class LedProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        print(res);
-
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
@@ -271,22 +259,16 @@ class LedProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        print(res);
         notifyListeners();
         storeMessageToInMemory(res['message']);
-
         return false;
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
-      storeMessageToInMemory(res['message']);
-
+      storeMessageToInMemory(res);
       return false;
     }
   }
@@ -313,9 +295,6 @@ class LedProvider extends ChangeNotifier {
 
       if (req.statusCode == 200 || req.statusCode == 201) {
         final res = json.decode(req.body);
-        if (kDebugMode) {
-          print(res);
-        }
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
@@ -326,21 +305,15 @@ class LedProvider extends ChangeNotifier {
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
-        if (kDebugMode) {
-          print(res);
-        }
         storeMessageToInMemory(res['message']);
         return false;
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
-      storeMessageToInMemory(res['message']);
+      storeMessageToInMemory(res);
       return false;
     }
   }
@@ -392,21 +365,15 @@ class LedProvider extends ChangeNotifier {
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
-        if (kDebugMode) {
-          print(res);
-        }
         storeMessageToInMemory(res['message']);
         return false;
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
-      storeMessageToInMemory(res['message']);
+      storeMessageToInMemory(res);
       return false;
     }
   }

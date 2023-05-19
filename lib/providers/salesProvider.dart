@@ -46,9 +46,6 @@ class SalesProvider extends ChangeNotifier {
 
       if (req.statusCode == 200 || req.statusCode == 201) {
         final res = json.decode(req.body);
-        if (kDebugMode) {
-          print(res);
-        }
         _isLoading = false;
         storeMessageToInMemory(res['message']);
         notifyListeners();
@@ -58,9 +55,6 @@ class SalesProvider extends ChangeNotifier {
         _isLoading = false;
         storeMessageToInMemory(res['message']);
         notifyListeners();
-        if (kDebugMode) {
-          print(res);
-        }
         return false;
       }
     } catch (e) {
@@ -68,9 +62,6 @@ class SalesProvider extends ChangeNotifier {
       _isLoading = false;
       _reqMessage = res;
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return false;
     }
   }
@@ -92,7 +83,6 @@ class SalesProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        print(res);
 
         _isLoading = false;
         notifyListeners();
@@ -101,7 +91,6 @@ class SalesProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        print(res);
         notifyListeners();
         return [];
       }
@@ -110,9 +99,6 @@ class SalesProvider extends ChangeNotifier {
       _isLoading = false;
       _reqMessage = res['message'];
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return [];
     }
   }
@@ -134,7 +120,6 @@ class SalesProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        print(res);
 
         _isLoading = false;
         notifyListeners();
@@ -143,19 +128,16 @@ class SalesProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        print(res);
         notifyListeners();
 
         return [];
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
+
       return [];
     }
   }
@@ -177,7 +159,6 @@ class SalesProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        print(res['data']);
 
         _isLoading = false;
         notifyListeners();
@@ -186,7 +167,6 @@ class SalesProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        print(res);
         notifyListeners();
 
         return [];
@@ -196,9 +176,6 @@ class SalesProvider extends ChangeNotifier {
       _isLoading = false;
       _reqMessage = res;
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return [];
     }
   }

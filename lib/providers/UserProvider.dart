@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:SmartShop/utils/snackMessage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartShop/constants/app_url.dart';
@@ -51,9 +52,10 @@ class UserProvider extends ChangeNotifier {
         return [];
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
+      storeMessageToInMemory(res);
       notifyListeners();
       if (kDebugMode) {
         print(res);

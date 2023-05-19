@@ -37,7 +37,6 @@ class StatisticProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        print(res);
 
         _isLoading = false;
         notifyListeners();
@@ -55,7 +54,6 @@ class StatisticProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        print(res);
         notifyListeners();
         return [];
       }
@@ -64,9 +62,6 @@ class StatisticProvider extends ChangeNotifier {
       _isLoading = false;
       _reqMessage = res['message'];
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return [];
     }
   }
@@ -111,9 +106,6 @@ class StatisticProvider extends ChangeNotifier {
       _isLoading = false;
       _reqMessage = res['message'];
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return [];
     }
   }
@@ -154,7 +146,6 @@ class StatisticProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        print(res);
         notifyListeners();
         return [];
       }
@@ -163,9 +154,6 @@ class StatisticProvider extends ChangeNotifier {
       _isLoading = false;
       _reqMessage = res['message'];
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return [];
     }
   }

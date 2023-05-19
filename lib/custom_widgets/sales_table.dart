@@ -46,16 +46,20 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
 
   void _loadItems() async {
     final items = await SalesProvider().getSales();
-    setState(() {
-      _sales = items;
-    });
+    if(mounted){
+      setState(() {
+        _sales = items;
+      });
+    }
   }
 
   void _onSearch(String query) async {
     final searchResults = await SalesProvider().search(query);
-    setState(() {
-      _sales = searchResults;
-    });
+    if(mounted) {
+      setState(() {
+        _sales = searchResults;
+      });
+    }
   }
 
   void _onFilter(DateTime? from, DateTime? to) async {

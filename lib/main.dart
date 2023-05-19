@@ -1,3 +1,4 @@
+import 'package:SmartShop/screens/components/pages/no_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -16,10 +17,7 @@ void main() {
         home: MyApp(),
       ),
     ),
-
   );
-
-
 }
 
 final authProvider = ChangeNotifierProvider((ref) => AuthProvider());
@@ -34,15 +32,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool isAuth = false;
+  bool canConnect = false;
+
   @override
   void initState() {
     super.initState();
+    checkConnection();
     checkAuth();
   }
 
-  bool isAuth = false;
-
-  //method to check if user is logged in
+  // method to check if the user is logged in
   void checkAuth() async {
     final auth = AuthProvider().isAuthenticated();
     if (await auth) {
@@ -56,7 +56,22 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-
+  void checkConnection() async {
+    final connection = AuthProvider().checkConnection();
+    if (await connection) {
+      if(mounted){
+        setState(() {
+          canConnect = true;
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          canConnect = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +84,15 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider((ref) => UserModel()),
         ),
       ],
-      child: GetMaterialApp
-  (
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         onGenerateRoute: CustomRoute.allRoutes,
-        title: 'Ilocate',
-        home: isAuth ? const DashboardScreen() : const Splash(),
+        title: 'smartShop',
+        home: canConnect && isAuth
+            ? const DashboardScreen()
+            : canConnect && !isAuth
+                ? const Splash()
+            : const NoConnectionScreen(),
       ),
     );
   }

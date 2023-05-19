@@ -8,6 +8,7 @@ import 'package:SmartShop/screens/dashboard/pagescafold.dart';
 import 'package:SmartShop/screens/modals/add_item_form.dart';
 import 'package:SmartShop/screens/modals/restock_form.dart';
 import 'package:SmartShop/styles/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthHome extends StatefulWidget {
   const AuthHome({super.key});
@@ -21,14 +22,42 @@ class AuthHomeState extends State<AuthHome> {
   List<Map<String, dynamic>>? _salesData;
   String? _loggedInUserNickname;
   String? _errorMessage;
+  String? message;
 
   @override
   void initState() {
     super.initState();
+    _loadMessage();
     _loadSalesData();
     _loadStatisticsData();
     _loadLoggedInUserName();
   }
+
+
+  void _setMessage(String newMessage) {
+    setState(() {
+      message = newMessage;
+    });
+  }
+
+  void _loadMessage() async {
+    final message = await DatabaseProvider().getMessage();
+    _setMessage(message);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message ?? 'Error loading message'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    });
+
+    // clear message
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('message');
+  }
+
 
   Future<void> _loadStatisticsData() async {
     setState(() {
@@ -40,9 +69,11 @@ class AuthHomeState extends State<AuthHome> {
       final data = await StatisticProvider().getGeneralStatistics();
       _setStatisticsData(data);
     } catch (e) {
-      setState(() {
-        _errorMessage = 'Error loading statistics';
-      });
+      if(mounted){
+        setState(() {
+          _errorMessage = e.toString();
+        });
+      }
     }
   }
 
@@ -56,9 +87,11 @@ class AuthHomeState extends State<AuthHome> {
       final data = await SalesProvider().getSales();
       _setSalesData(data);
     } catch (e) {
-      setState(() {
-        _errorMessage = 'Error loading statistics';
-      });
+      if(mounted){
+        setState(() {
+          _errorMessage = e.toString();
+        });
+      }
     }
   }
 

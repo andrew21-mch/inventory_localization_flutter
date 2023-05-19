@@ -30,9 +30,11 @@ class DataTableWidgetState extends State<DataTableWidget> {
 
   void _loadItems() async {
     final items = await ItemProvider().getItems();
-    setState(() {
-      _items = items;
-    });
+    if(mounted){
+      setState(() {
+        _items = items;
+      });
+    }
   }
 
   void _onSearch(String query) async {

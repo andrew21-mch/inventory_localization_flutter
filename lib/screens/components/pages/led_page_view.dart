@@ -64,7 +64,7 @@ class _LedsState extends State<Leds> {
 
     final cardWidth = isMobile
         ? MediaQuery.of(context).size.width
-        : (MediaQuery.of(context).size.width - 80) / 3;
+        : (MediaQuery.of(context).size.width) / 3;
 
     final cards = [
       // first card
@@ -75,7 +75,7 @@ class _LedsState extends State<Leds> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                // mainAxisSize: MainAxisSize.
                 children: [
                   //  icon for money coin
                   const Icon(Icons.lightbulb, size: 64, color: Colors.yellow),
@@ -124,7 +124,7 @@ class _LedsState extends State<Leds> {
       return PageScaffold(
         title: 'LEDs Page',
         body: SizedBox(
-          // width: double.infinity,
+          width: double.infinity,
           child: ListView(
             scrollDirection: Axis.vertical,
             children: [

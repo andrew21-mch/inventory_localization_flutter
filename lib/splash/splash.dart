@@ -1,19 +1,71 @@
+import 'package:SmartShop/providers/authProvider.dart';
 import 'package:SmartShop/responsive.dart';
+import 'package:SmartShop/screens/components/pages/no_connection.dart';
+import 'package:SmartShop/screens/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartShop/routes/routes.dart';
 import 'package:SmartShop/screens/auth/route_names.dart';
 import 'package:SmartShop/screens/customs/button.dart';
 import 'package:SmartShop/styles/colors.dart';
-import 'package:http/http.dart';
 
-class Splash extends StatelessWidget {
+class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
+
+  State<Splash> createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> {
+
+  bool canConnect = false;
+  bool isAuth = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkConnection();
+    checkAuth();
+  }
+
+  // method to check if the user is logged in
+  void checkAuth() async {
+    final auth = AuthProvider().isAuthenticated();
+    if (await auth) {
+      setState(() {
+        isAuth = true;
+      });
+    } else {
+      setState(() {
+        isAuth = false;
+      });
+    }
+  }
+
+  void checkConnection() async {
+    final connection = AuthProvider().checkConnection();
+    if (await connection) {
+      if(mounted){
+        setState(() {
+          canConnect = true;
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          canConnect = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-        title: 'Ilocate',
+    // check connection
+
+
+    return canConnect ?
+      MaterialApp(
+        title: 'smartShop',
         onGenerateRoute: CustomRoute.allRoutes,
         home: Scaffold(
             body: ListView(
@@ -51,6 +103,6 @@ class Splash extends StatelessWidget {
               ),
             ],
           )
-        ])));
+        ]))) : isAuth ? const DashboardScreen() : const NoConnectionScreen();
   }
 }

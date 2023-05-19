@@ -54,9 +54,9 @@ class OutOfStockProvider extends ChangeNotifier {
         return [];
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
       return [];
     }
@@ -66,8 +66,6 @@ class OutOfStockProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     String url = '${AppUrl.outOfStocks}/search/out_of_stocks?search=$query';
-    print(query);
-
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Charset': 'utf-8',
@@ -80,7 +78,6 @@ class OutOfStockProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        // print(res);
 
         _isLoading = false;
         notifyListeners();
@@ -89,7 +86,6 @@ class OutOfStockProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        print(res);
         notifyListeners();
 
         return [];
@@ -99,9 +95,6 @@ class OutOfStockProvider extends ChangeNotifier {
       _isLoading = false;
       _reqMessage = res['message'];
       notifyListeners();
-      if (kDebugMode) {
-        print(res);
-      }
       return [];
     }
   }
@@ -123,21 +116,18 @@ class OutOfStockProvider extends ChangeNotifier {
       'quantity': quantity,
     };
 
-    print(body);
     try {
       http.Response req = await http.post(Uri.parse(url), headers: headers, body: json.encode(body));
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
         _isLoading = false;
         notifyListeners();
-        print(res);
         storeMessageToInMemory(res['message']);
         return true;
       } else {
         final res = json.decode(req.body);
         _isLoading = false;
         _reqMessage = res['message'];
-        print(res);
         notifyListeners();
         storeMessageToInMemory(_reqMessage);
         return false;
@@ -147,7 +137,6 @@ class OutOfStockProvider extends ChangeNotifier {
       _isLoading = false;
       _reqMessage = res;
       notifyListeners();
-      print(res);
       storeMessageToInMemory(_reqMessage);
       return false;
     }

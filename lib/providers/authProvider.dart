@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:SmartShop/utils/snackMessage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,7 +49,6 @@ class AuthProvider extends ChangeNotifier {
 
 
     try {
-
       http.Response req = await http.post(Uri.parse(url),
           headers: headers, body: json.encode(body));
 
@@ -68,7 +68,6 @@ class AuthProvider extends ChangeNotifier {
             duration: const Duration(microseconds: 800),
           );
         });
-
       } else {
         final res = json.decode(req.body);
         _isLoading = false;
@@ -79,9 +78,10 @@ class AuthProvider extends ChangeNotifier {
         }
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res + 'Check to make sure you connected to the same server as the server';
+      _reqMessage =
+      '$res Check to make sure you connected to the same server as the server';
       notifyListeners();
     }
   }
@@ -100,10 +100,10 @@ class AuthProvider extends ChangeNotifier {
       'password': password,
     };
 
-    http.Response req = await http.post(Uri.parse(url),
-        headers: headers, body: json.encode(body));
-
     try {
+      http.Response req = await http.post(Uri.parse(url),
+          headers: headers, body: json.encode(body));
+
       if (req.statusCode == 200 || req.statusCode == 201) {
         final res = json.decode(req.body);
         _isLoading = false;
@@ -129,8 +129,6 @@ class AuthProvider extends ChangeNotifier {
             duration: const Duration(microseconds: 800),
           );
         });
-
-
       } else {
         final res = json.decode(req.body);
         _isLoading = false;
@@ -141,9 +139,10 @@ class AuthProvider extends ChangeNotifier {
         }
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res + 'Check to make sure you connected to the same server as the server';
+      _reqMessage =
+      '$res Check to make sure you connected to the same server as the server';
       notifyListeners();
     }
   }
@@ -172,7 +171,6 @@ class AuthProvider extends ChangeNotifier {
         _reqMessage = res['message'];
         notifyListeners();
         return true;
-
       } else {
         final res = json.decode(req.body);
         _isLoading = false;
@@ -188,7 +186,6 @@ class AuthProvider extends ChangeNotifier {
       return false;
     }
   }
-
 
 
   void resetPassword({required String phone}) async {
@@ -257,6 +254,21 @@ class AuthProvider extends ChangeNotifier {
       return false;
     } else {
       return true;
+    }
+  }
+
+//  check Connection AppUrl
+  Future<bool> checkConnection() async {
+    try {
+      final response = await http.get(Uri.parse(AppUrl.baseUrl));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      storeMessageToInMemory('$e Check that you are connected to the same server as the server');
+      return false;
     }
   }
 }
