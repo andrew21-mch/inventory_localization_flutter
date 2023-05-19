@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:SmartShop/custom_widgets/CustomText.dart';
 import 'package:SmartShop/custom_widgets/custom_filter.dart';
 
-class SearchBar extends StatefulWidget {
+class CustomSearchBar extends StatefulWidget {
   final Function(String) onSearch;
   final Function(DateTime?, DateTime?)? onFilter;
 
-  const SearchBar({Key? key, required this.onSearch, this.onFilter}) : super(key: key);
+  const CustomSearchBar({Key? key, required this.onSearch, this.onFilter}) : super(key: key);
 
   @override
-  _SearchBarState createState() => _SearchBarState();
+  _CustomSearchBarState createState() => _CustomSearchBarState();
 }
 
-class _SearchBarState extends State<SearchBar> {
+class _CustomSearchBarState extends State<CustomSearchBar> {
   late TextEditingController _controller;
 
   @override

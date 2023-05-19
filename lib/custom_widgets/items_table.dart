@@ -106,7 +106,7 @@ class DataTableWidgetState extends State<DataTableWidget> {
             ),
             const Padding(padding: EdgeInsets.only(top: 10)),
 
-            SearchBar(onSearch: _onSearch, onFilter: _onFilter),
+            CustomSearchBar(onSearch: _onSearch, onFilter: _onFilter),
             const Padding(padding: EdgeInsets.only(top: 15)),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,

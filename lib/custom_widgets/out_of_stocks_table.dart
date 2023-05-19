@@ -47,7 +47,7 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
     elevation: 0,
     child: Column(children: [
     const SizedBox(height: 10),
-      SearchBar(onSearch: _onSearch),
+      CustomSearchBar(onSearch: _onSearch),
     const SizedBox(height: 10),
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,

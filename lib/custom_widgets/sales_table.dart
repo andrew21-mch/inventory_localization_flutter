@@ -94,7 +94,7 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
               ],
             ),
             const SizedBox(height: 10),
-            SearchBar(onSearch: _onSearch, onFilter: _onFilter),
+            CustomSearchBar(onSearch: _onSearch, onFilter: _onFilter),
             const SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
