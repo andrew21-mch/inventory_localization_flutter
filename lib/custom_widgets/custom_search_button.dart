@@ -12,7 +12,7 @@ class CustomSearchButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: ilocateYellow,
+        primary: smartShopYellow,
         onPrimary: Color.fromARGB(255, 253, 252, 252),
         // minimumSize: const Size(150, 36),
         shadowColor: Colors.grey.withOpacity(0.8),
@@ -20,7 +20,7 @@ class CustomSearchButton extends StatelessWidget {
       onPressed: () {
         print(placeholder);
       },
-      child: CustomText(placeholder: placeholder, color: ilocateWhite),
+      child: CustomText(placeholder: placeholder, color: smartShopWhite),
     );
   }
 }

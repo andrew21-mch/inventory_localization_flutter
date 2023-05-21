@@ -51,7 +51,7 @@ class _PasswordResetState extends State<PasswordReset> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: isMobile ? 32 : 28,
-                                      color: ilocateYellow),
+                                      color: smartShopYellow),
                                 ))),
                             const CustomeTextField(
                               keyboardType: TextInputType.phone,
@@ -71,9 +71,7 @@ class _PasswordResetState extends State<PasswordReset> {
                                   TextButton(
                                     onPressed: () {
                                       Get.to(() => const Login(),
-                                        transition: Transition.rightToLeft
-
-                                      );
+                                          transition: Transition.rightToLeft);
                                     },
                                     child: const Text(
                                       'Login',
@@ -125,9 +123,8 @@ class _PasswordResetState extends State<PasswordReset> {
                                       );
                                     }
                                   },
-                                  color: ilocateYellow,
+                                  color: smartShopYellow,
                                   placeholder: 'Register',
-
                                 );
                               },
                             ),

@@ -30,7 +30,7 @@ class DataTableWidgetState extends State<DataTableWidget> {
 
   void _loadItems() async {
     final items = await ItemProvider().getItems();
-    if(mounted){
+    if (mounted) {
       setState(() {
         _items = items;
       });
@@ -83,7 +83,7 @@ class DataTableWidgetState extends State<DataTableWidget> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        color: ilocateWhite,
+        color: smartShopWhite,
         elevation: 0,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,19 +93,17 @@ class DataTableWidgetState extends State<DataTableWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 !isMobile
-                    ?
-                IconButton(
-                  onPressed: () {
-                    _loadItems();
-                  },
-                  icon: Icon(Icons.refresh, color: ilocateGreen),
-                )
+                    ? IconButton(
+                        onPressed: () {
+                          _loadItems();
+                        },
+                        icon: Icon(Icons.refresh, color: smartShopGreen),
+                      )
                     : Container(),
                 !isMobile ? const MyForm(width: 200) : Container(),
               ],
             ),
             const Padding(padding: EdgeInsets.only(top: 10)),
-
             CustomSearchBar(onSearch: _onSearch, onFilter: _onFilter),
             const Padding(padding: EdgeInsets.only(top: 15)),
             SingleChildScrollView(
@@ -113,7 +111,7 @@ class DataTableWidgetState extends State<DataTableWidget> {
               child: _items.isEmpty
                   ? Center(
                       child: CircularProgressIndicator(
-                        color: ilocateGreen,
+                        color: smartShopGreen,
                       ),
                     )
                   : DataTable(
@@ -121,31 +119,31 @@ class DataTableWidgetState extends State<DataTableWidget> {
                           ? 10
                           : (MediaQuery.of(context).size.width / 3.5) - 220,
                       headingRowColor: MaterialStateColor.resolveWith(
-                        (states) => ilocateYellow,
+                        (states) => smartShopYellow,
                       ),
                       columns: [
                         DataColumn(
                           label: CustomText(
                             placeholder: 'NAME',
-                            color: ilocateWhite,
+                            color: smartShopWhite,
                           ),
                         ),
                         DataColumn(
                           label: CustomText(
                             placeholder: 'DESCRIPTION',
-                            color: ilocateWhite,
+                            color: smartShopWhite,
                           ),
                         ),
                         DataColumn(
                           label: CustomText(
                             placeholder: 'STATUS',
-                            color: ilocateWhite,
+                            color: smartShopWhite,
                           ),
                         ),
                         DataColumn(
                           label: CustomText(
                             placeholder: 'ACTIONS',
-                            color: ilocateWhite,
+                            color: smartShopWhite,
                           ),
                         ),
                       ],
@@ -172,8 +170,8 @@ class DataTableWidgetState extends State<DataTableWidget> {
                                     horizontal: 10, vertical: 5),
                                 decoration: BoxDecoration(
                                   color: item['status'].toString() == 'high'
-                                      ? ilocateGreen.withOpacity(0.2)
-                                      : ilocateRed.withOpacity(0.2),
+                                      ? smartShopGreen.withOpacity(0.2)
+                                      : smartShopRed.withOpacity(0.2),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: CustomText(
@@ -185,8 +183,8 @@ class DataTableWidgetState extends State<DataTableWidget> {
                                             ? 'In stock'
                                             : 'Out of stock'),
                                     color: item['status'] == 'high'
-                                        ? ilocateGreen
-                                        : ilocateRed),
+                                        ? smartShopGreen
+                                        : smartShopRed),
                               ),
                             ),
                             DataCell(
@@ -197,11 +195,11 @@ class DataTableWidgetState extends State<DataTableWidget> {
                                             item['led']!['status'] == 'on'
                                         ? Icon(
                                             Icons.lightbulb,
-                                            color: ilocateGreen,
+                                            color: smartShopGreen,
                                           )
                                         : Icon(
                                             Icons.lightbulb,
-                                            color: ilocateRed,
+                                            color: smartShopRed,
                                           ),
                                     onPressed: () {
                                       LedProvider()
@@ -236,7 +234,7 @@ class DataTableWidgetState extends State<DataTableWidget> {
                                   IconButton(
                                     icon: Icon(
                                       Icons.edit,
-                                      color: ilocateYellow,
+                                      color: smartShopYellow,
                                     ),
                                     onPressed: () {
                                       Get.to(
@@ -247,7 +245,7 @@ class DataTableWidgetState extends State<DataTableWidget> {
                                   IconButton(
                                     icon: Icon(
                                       Icons.delete,
-                                      color: ilocateRed,
+                                      color: smartShopRed,
                                     ),
                                     onPressed: () async {
                                       if (await ItemProvider()

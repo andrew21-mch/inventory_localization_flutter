@@ -16,54 +16,53 @@ class _LogoutModalState extends State<LogoutModal> {
 
   @override
   Widget build(BuildContext context) {
-      return CupertinoAlertDialog(
-        title: const Text('Logout'),
-        content: _isLoading
-            ? Row(
-                children: const [
-                  CupertinoActivityIndicator(),
-                  SizedBox(width: 16),
-                  Text('Logging out...'),
-                ],
-              )
-            : const Text('Are you sure you want to logout?'),
-        actions: [
-          CupertinoDialogAction(
-            child: Text(
-              'Yes',
-              style: TextStyle(
-                color: ilocateYellow,
-              ),
+    return CupertinoAlertDialog(
+      title: const Text('Logout'),
+      content: _isLoading
+          ? Row(
+              children: const [
+                CupertinoActivityIndicator(),
+                SizedBox(width: 16),
+                Text('Logging out...'),
+              ],
+            )
+          : const Text('Are you sure you want to logout?'),
+      actions: [
+        CupertinoDialogAction(
+          child: Text(
+            'Yes',
+            style: TextStyle(
+              color: smartShopYellow,
             ),
-            onPressed: ()  {
-              setState(() {
-                _isLoading = true;
-              });
-
-             DatabaseProvider().logout(context);
-
-              setState(() {
-                _isLoading = false;
-              });
-
-              Navigator.of(context).pop();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  login, (Route<dynamic> route) => false);
-
-            },
           ),
-          CupertinoDialogAction(
-            child: const Text(
-              'No',
-              style: TextStyle(
-                color: Colors.black54,
-              ),
+          onPressed: () {
+            setState(() {
+              _isLoading = true;
+            });
+
+            DatabaseProvider().logout(context);
+
+            setState(() {
+              _isLoading = false;
+            });
+
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                login, (Route<dynamic> route) => false);
+          },
+        ),
+        CupertinoDialogAction(
+          child: const Text(
+            'No',
+            style: TextStyle(
+              color: Colors.black54,
             ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
           ),
-        ],
-       );
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
   }
 }

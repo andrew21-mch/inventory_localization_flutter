@@ -59,7 +59,7 @@ class _RegisterState extends State<Register> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 24,
-                              color: ilocateYellow,
+                              color: smartShopYellow,
                             ),
                           ),
                         ),
@@ -70,7 +70,7 @@ class _RegisterState extends State<Register> {
                         controller: nameController,
                         prefixIcon: Icon(
                           Icons.person,
-                          color: ilocateYellow,
+                          color: smartShopYellow,
                         ),
                       ),
                       CustomeTextField(
@@ -79,7 +79,7 @@ class _RegisterState extends State<Register> {
                         controller: emailController,
                         prefixIcon: Icon(
                           Icons.email,
-                          color: ilocateYellow,
+                          color: smartShopYellow,
                         ),
                       ),
                       CustomeTextField(
@@ -88,7 +88,7 @@ class _RegisterState extends State<Register> {
                         controller: phoneController,
                         prefixIcon: Icon(
                           Icons.phone,
-                          color: ilocateYellow,
+                          color: smartShopYellow,
                         ),
                       ),
                       CustomeTextField(
@@ -98,7 +98,7 @@ class _RegisterState extends State<Register> {
                         keyboardType: TextInputType.visiblePassword,
                         prefixIcon: Icon(
                           Icons.lock,
-                          color: ilocateYellow,
+                          color: smartShopYellow,
                         ),
                       ),
                       CustomeTextField(
@@ -108,7 +108,7 @@ class _RegisterState extends State<Register> {
                         keyboardType: TextInputType.visiblePassword,
                         prefixIcon: Icon(
                           Icons.lock,
-                          color: ilocateYellow,
+                          color: smartShopYellow,
                         ),
                       ),
                       SizedBox(
@@ -181,7 +181,7 @@ class _RegisterState extends State<Register> {
                                 );
                               }
                             },
-                            color: ilocateYellow,
+                            color: smartShopYellow,
                             placeholder: 'Register',
                           );
                         },

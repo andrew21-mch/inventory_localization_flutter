@@ -31,7 +31,7 @@ class _SalesState extends State<Sales> {
   }
 
   Future<void> _loadSalesData() async {
-    if(mounted) {
+    if (mounted) {
       setState(() {
         _errorMessage = null;
         _salesData = null;
@@ -42,7 +42,7 @@ class _SalesState extends State<Sales> {
       final data = await SalesProvider().getSales();
       _setSalesData(data);
     } catch (e) {
-      if(mounted){
+      if (mounted) {
         setState(() {
           _errorMessage = e.toString();
         });
@@ -75,7 +75,7 @@ class _SalesState extends State<Sales> {
   }
 
   Future<void> _loadStatisticsData() async {
-    if(mounted) {
+    if (mounted) {
       setState(() {
         _errorMessage = null;
         _statisticsData = null;
@@ -86,7 +86,7 @@ class _SalesState extends State<Sales> {
       final data = await StatisticProvider().getSalesStatistics();
       _setStatisticsData(data);
     } catch (e) {
-      if(mounted){
+      if (mounted) {
         setState(() {
           _errorMessage = e.toString();
         });
@@ -95,7 +95,7 @@ class _SalesState extends State<Sales> {
   }
 
   void _setSalesData(List<Map<String, dynamic>> data) {
-    if(mounted) {
+    if (mounted) {
       setState(() {
         _salesData = data;
       });
@@ -103,13 +103,12 @@ class _SalesState extends State<Sales> {
   }
 
   void _setStatisticsData(List<Map<String, dynamic>> data) {
-    if(mounted) {
-    setState(() {
-      _statisticsData = data;
-    });
+    if (mounted) {
+      setState(() {
+        _statisticsData = data;
+      });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -121,64 +120,64 @@ class _SalesState extends State<Sales> {
 
     final cards = [
       Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomText(
-                      placeholder: 'Sales Stats',
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: ilocateYellow),
-                  if (_statisticsData != null)
-                    SizedBox(
-                      height: 200, // Replace with desired height
-                      child: SalessHistogramChartWidget(
-                        _statisticsData
-                            !.map<Map<String, dynamic>>(
-                                (item) => Map<String, dynamic>.from(item))
-                            .toList(),
-                        animate: true,
-                      ),
-                    )
-                  else if (_errorMessage == null)
-                    const SizedBox(
-                        height: 200, child: RefreshProgressIndicator())
-                  else
-                    CustomText(
-                      placeholder: _errorMessage!,
-                      color: Colors.red,
+        margin: const EdgeInsets.all(16),
+        child: SizedBox(
+          width: cardWidth,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomText(
+                    placeholder: 'Sales Stats',
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: smartShopYellow),
+                if (_statisticsData != null)
+                  SizedBox(
+                    height: 200, // Replace with desired height
+                    child: SalessHistogramChartWidget(
+                      _statisticsData!
+                          .map<Map<String, dynamic>>(
+                              (item) => Map<String, dynamic>.from(item))
+                          .toList(),
+                      animate: true,
                     ),
-                ],
-              ),
+                  )
+                else if (_errorMessage == null)
+                  const SizedBox(height: 200, child: RefreshProgressIndicator())
+                else
+                  CustomText(
+                    placeholder: _errorMessage!,
+                    color: Colors.red,
+                  ),
+              ],
             ),
           ),
         ),
+      ),
 
       // second card
       // third card
       Card(
-          margin: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: cardWidth,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 8),
-                  const CustomText(placeholder: 'Total Sales'),
-                  SizedBox(
-                    height: 64,
-                    width: 64,
-                    child: IconButton(
+        margin: const EdgeInsets.all(16),
+        child: SizedBox(
+          width: cardWidth,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 8),
+                const CustomText(placeholder: 'Total Sales'),
+                SizedBox(
+                  height: 64,
+                  width: 64,
+                  child: IconButton(
                       onPressed: _loadSalesData,
-                      icon: const Icon(Icons.monetization_on_outlined, color: Colors.green, size: 48),
+                      icon: const Icon(Icons.monetization_on_outlined,
+                          color: Colors.green, size: 48),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
                           Colors.green.withOpacity(0.1),
@@ -188,36 +187,37 @@ class _SalesState extends State<Sales> {
                             borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                      )
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  if (_salesData != null && _errorMessage == null && _salesData!.isNotEmpty)
-                    SizedBox(
-                      height: 130,
-                      width: double.infinity,
-                      child: Center(
-                        child: CustomText(
-                          placeholder:
-                              // get sum of all prices
-                              '${_salesData!.map<int>((item) => item['total_price']).reduce((value, element) => value + element)} XAF',
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      )),
+                ),
+                const SizedBox(height: 8),
+                if (_salesData != null &&
+                    _errorMessage == null &&
+                    _salesData!.isNotEmpty)
+                  SizedBox(
+                    height: 130,
+                    width: double.infinity,
+                    child: Center(
+                      child: CustomText(
+                        placeholder:
+                            // get sum of all prices
+                            '${_salesData!.map<int>((item) => item['total_price']).reduce((value, element) => value + element)} XAF',
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
-                    )
-                  else if (_errorMessage == null)
-                    const RefreshProgressIndicator()
-                  else
-                    Text(
-                      _errorMessage!,
-                      style: const TextStyle(color: Colors.red),
                     ),
-                ],
-              ),
+                  )
+                else if (_errorMessage == null)
+                  const RefreshProgressIndicator()
+                else
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+              ],
             ),
           ),
         ),
+      ),
     ];
 
     if (isMobile) {
@@ -240,27 +240,28 @@ class _SalesState extends State<Sales> {
           // width: double.infinity,
           child: ListView(
             // mainAxisAlignment: MainAxisAlignment.start,
-            children: [Column(
-          children: [
-          Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Expanded(
-                flex: 3,
-                child: cards[0],
-              ),
-              Expanded(
-                flex: 1,
-                child: cards[1],
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: cards[0],
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: cards[1],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  const SalesTableWidget(),
+                ],
               ),
             ],
           ),
-              const SizedBox(height: 32),
-              const SalesTableWidget(),
-            ],
-          ),
-          ],
-        ),
         ),
       );
     }

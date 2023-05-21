@@ -46,7 +46,7 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
 
   void _loadItems() async {
     final items = await SalesProvider().getSales();
-    if(mounted){
+    if (mounted) {
       setState(() {
         _sales = items;
       });
@@ -55,7 +55,7 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
 
   void _onSearch(String query) async {
     final searchResults = await SalesProvider().search(query);
-    if(mounted) {
+    if (mounted) {
       setState(() {
         _sales = searchResults;
       });
@@ -88,7 +88,7 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                   onPressed: () {
                     _loadItems();
                   },
-                  icon: Icon(Icons.refresh, color: ilocateGreen),
+                  icon: Icon(Icons.refresh, color: smartShopGreen),
                 ),
                 const AddSalesForm(),
               ],
@@ -103,31 +103,31 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                     ? 10
                     : (MediaQuery.of(context).size.width / 3.3) - 220,
                 headingRowColor: MaterialStateColor.resolveWith(
-                  (states) => ilocateYellow,
+                  (states) => smartShopYellow,
                 ),
-                //   headingTextStyle: TextStyle(color: ilocateWhite),
+                //   headingTextStyle: TextStyle(color: smartShopWhite),
                 columns: [
                   DataColumn(
                     label: CustomText(
                       placeholder: 'ITEM',
-                      color: ilocateWhite,
+                      color: smartShopWhite,
                     ),
                   ),
                   DataColumn(
                     label: CustomText(
                       placeholder: 'QUANTITY',
-                      color: ilocateWhite,
+                      color: smartShopWhite,
                     ),
                   ),
                   DataColumn(
                     label: CustomText(
                       placeholder: 'TOTAL PRICE',
-                      color: ilocateWhite,
+                      color: smartShopWhite,
                     ),
                   ),
                   DataColumn(
                     label: CustomText(
-                        placeholder: 'DATE SOLD', color: ilocateWhite),
+                        placeholder: 'DATE SOLD', color: smartShopWhite),
                   ),
                 ],
                 rows: _sales.isEmpty || _sales == null
@@ -182,13 +182,13 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                         );
                       }).toList(),
               ),
-            //  add a total row
+              //  add a total row
             ),
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
-                color: ilocateGreen.withOpacity(0.6),
+                color: smartShopGreen.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(

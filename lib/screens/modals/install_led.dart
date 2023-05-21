@@ -70,7 +70,7 @@ class _LedFormState extends State<LedForm> {
       child: CustomButton(
         placeholder: 'Install LED',
         width: isMobile ? 250 : 400,
-        color: ilocateYellow,
+        color: smartShopYellow,
         method: () {
           showDialog(
             context: context,
@@ -80,7 +80,7 @@ class _LedFormState extends State<LedForm> {
                 children: [
                   CustomText(
                       placeholder: 'Install LED',
-                      color: ilocateYellow,
+                      color: smartShopYellow,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                   const SizedBox(width: 10),
@@ -91,7 +91,7 @@ class _LedFormState extends State<LedForm> {
                   )
                 ],
               ),
-              backgroundColor: ilocateLight,
+              backgroundColor: smartShopLight,
               content: SingleChildScrollView(
                 child: SizedBox(
                   width: isMobile ? null : 600,
@@ -100,14 +100,16 @@ class _LedFormState extends State<LedForm> {
                       TextFormField(
                         decoration: const InputDecoration(
                           hintText: 'Shelf Description',
-                          hintStyle: TextStyle(color: Colors.grey, fontFamily: 'Poppins'),
+                          hintStyle: TextStyle(
+                              color: Colors.grey, fontFamily: 'Poppins'),
                         ),
                         controller: shelfController,
                       ),
                       TextFormField(
                         decoration: const InputDecoration(
                           hintText: 'Pin Number',
-                          hintStyle: TextStyle(color: Colors.grey, fontFamily: 'Poppins'),
+                          hintStyle: TextStyle(
+                              color: Colors.grey, fontFamily: 'Poppins'),
                         ),
                         controller: pinNumberController,
                       ),
@@ -119,7 +121,7 @@ class _LedFormState extends State<LedForm> {
                 TextButton(
                   onPressed: () => Navigator.pop(context),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(ilocateYellow),
+                    backgroundColor: MaterialStateProperty.all(smartShopYellow),
                   ),
                   child: const Text('Cancel',
                       style: TextStyle(color: Colors.white)),
@@ -148,7 +150,8 @@ class _LedFormState extends State<LedForm> {
                       }
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(ilocateYellow),
+                      backgroundColor:
+                          MaterialStateProperty.all(smartShopYellow),
                     ),
                     child: const Text('Add',
                         style: TextStyle(color: Colors.white))),

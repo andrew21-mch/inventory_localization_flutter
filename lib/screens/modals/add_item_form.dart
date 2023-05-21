@@ -76,23 +76,22 @@ class _MyFormState extends State<MyForm> {
 
   Future<void> _loadSuppliers() async {
     final items = await UserProvider().getUsers();
-    if(mounted)
-      {
-        setState(() {
-          _suppliers = items;
-        });
-      }
+    if (mounted) {
+      setState(() {
+        _suppliers = items;
+      });
+    }
   }
 
   Future<void> _loadLeds() async {
     final leds = await LedProvider().getLeds();
-    if(mounted)
-      {
-        setState(() {
-          _leds = leds;
-        });
-      }
+    if (mounted) {
+      setState(() {
+        _leds = leds;
+      });
+    }
   }
+
   @override
   void initState() {
     super.initState();
@@ -112,9 +111,13 @@ class _MyFormState extends State<MyForm> {
         key: formKey,
         child: CustomButton(
           icon: widget.id != null ? Icons.edit : Icons.add_circle,
-          placeholder: widget.id != null ? '': 'Add',
-          width: isMobile ? 200 : widget.width != null ? widget.width!.toDouble() : 300,
-          color: ilocateYellow,
+          placeholder: widget.id != null ? '' : 'Add',
+          width: isMobile
+              ? 200
+              : widget.width != null
+                  ? widget.width!.toDouble()
+                  : 300,
+          color: smartShopYellow,
           method: () {
             showDialog(
               context: context,
@@ -123,18 +126,20 @@ class _MyFormState extends State<MyForm> {
                 title: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    widget.id!=null?const Icon(Icons.edit):const Icon(Icons.add_circle_outline),
-                    Text( widget.id!=null?'Edit':'Add',
+                    widget.id != null
+                        ? const Icon(Icons.edit)
+                        : const Icon(Icons.add_circle_outline),
+                    Text(widget.id != null ? 'Edit' : 'Add',
                         style: TextStyle(
                             overflow: TextOverflow.ellipsis,
-                            color: ilocateYellow,
+                            color: smartShopYellow,
                             fontSize: 20,
                             fontWeight: FontWeight.bold)),
                     const SizedBox(width: 10),
                     const Icon(Icons.add_circle_outline)
                   ],
                 ),
-                backgroundColor: ilocateLight,
+                backgroundColor: smartShopLight,
                 content: SingleChildScrollView(
                   child: SizedBox(
                     width: isMobile ? null : 600,
@@ -237,7 +242,8 @@ class _MyFormState extends State<MyForm> {
                   TextButton(
                     onPressed: () => Navigator.pop(context),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(ilocateYellow),
+                      backgroundColor:
+                          MaterialStateProperty.all(smartShopYellow),
                     ),
                     child: const Text('Cancel',
                         style: TextStyle(color: Colors.white)),
@@ -256,7 +262,6 @@ class _MyFormState extends State<MyForm> {
                           )) {
                             _loadMessageAndCloseModal();
                             Navigator.of(context).pop();
-
                           } else {
                             _loadMessageAndCloseModal();
                             Navigator.of(context).pop();
@@ -271,7 +276,7 @@ class _MyFormState extends State<MyForm> {
                       },
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(ilocateYellow),
+                            MaterialStateProperty.all(smartShopYellow),
                       ),
                       child: const Text('Add',
                           style: TextStyle(color: Colors.white))),

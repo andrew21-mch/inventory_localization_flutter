@@ -8,7 +8,8 @@ class ClipPathWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-        painter: MyPainter(), size: Size(double.infinity, height != null ? height!: 200));
+        painter: MyPainter(),
+        size: Size(double.infinity, height != null ? height! : 200));
   }
 }
 
@@ -26,7 +27,7 @@ class MyPainter extends CustomPainter {
       ..lineTo(size.width, 0)
       ..close();
 
-    var paint1 = Paint()..color = ilocateAmber;
+    var paint1 = Paint()..color = smartShopAmber;
 
     canvas.drawPath(path, paint1);
 
@@ -41,7 +42,7 @@ class MyPainter extends CustomPainter {
       ..lineTo(size.width, 0)
       ..close();
 
-    var paint2 = Paint()..color = ilocateYellow;
+    var paint2 = Paint()..color = smartShopYellow;
 
     canvas.drawPath(path2, paint2);
   }

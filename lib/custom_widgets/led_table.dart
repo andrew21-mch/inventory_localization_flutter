@@ -66,131 +66,142 @@ class LedTableWidgetState extends State<LedTableWidget> {
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
     return Card(
-        shape: RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-    ),
-    elevation: 0,
-    child:
-      Column(
-      children: [
-        const SizedBox(height: 10),
-        CustomSearchBar(onSearch: _onSearch),
-        const SizedBox(height: 10),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: DataTable(
-            columnSpacing: isMobile
-                ? 10
-                : (MediaQuery.of(context).size.width / 3.5) - 220,            headingRowColor: MaterialStateColor.resolveWith(
-              (states) => ilocateYellow,
-            ),
-            //   headingTextStyle: TextStyle(color: ilocateWhite),
-            columns: [
-              DataColumn(
-                label: CustomText(
-                  placeholder: 'ID',
-                    color: ilocateWhite,
-                ),
+      ),
+      elevation: 0,
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          CustomSearchBar(onSearch: _onSearch),
+          const SizedBox(height: 10),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+              columnSpacing: isMobile
+                  ? 10
+                  : (MediaQuery.of(context).size.width / 3.5) - 220,
+              headingRowColor: MaterialStateColor.resolveWith(
+                (states) => smartShopYellow,
               ),
-              DataColumn(
-                label: CustomText(
-                  placeholder:
-                  'SHELF',
-                    color: ilocateWhite,
+              //   headingTextStyle: TextStyle(color: smartShopWhite),
+              columns: [
+                DataColumn(
+                  label: CustomText(
+                    placeholder: 'ID',
+                    color: smartShopWhite,
+                  ),
                 ),
-              ),
-              DataColumn(
-                label: CustomText(
-                  placeholder:
-                  'PIN_NUMBER',
-                  color: ilocateWhite,
+                DataColumn(
+                  label: CustomText(
+                    placeholder: 'SHELF',
+                    color: smartShopWhite,
+                  ),
                 ),
-              ),
-              DataColumn(
-                label: CustomText(
-                  placeholder:
-                  'ACTION',
-                    color: ilocateWhite,
+                DataColumn(
+                  label: CustomText(
+                    placeholder: 'PIN_NUMBER',
+                    color: smartShopWhite,
+                  ),
                 ),
-              ),
-            ],
-            rows: _items.isEmpty
-                ? const [
-                    DataRow(
-                      cells: [
-                        DataCell(CustomText(placeholder: 'No Data')),
-                        DataCell(CustomText(placeholder: 'No Data')),
-                        DataCell(CustomText(placeholder: 'No Data')),
-                        DataCell(LinearProgressIndicator()),
-                      ],
-                    ),
-                  ]
-                : _items.map((item) {
-                    return DataRow(
-                      cells: [
-                        DataCell(CustomText(placeholder: item['id'].toString())),
-                        DataCell(
-                          SizedBox(
-                              width: isMobile ? 60 : 100,
-                              child: CustomText(placeholder: item['shelf_number'].toString(),
-                                  maxLines: 4)),
-                        ),
-                        DataCell(
-                          SizedBox(
-                              width: isMobile ? 60 : 100,
-                              child: CustomText(placeholder: item['led_unique_number'].toString(),
-                                  maxLines: 4,)),
-                        ),
-                        DataCell(
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: item['status'] == 'on'
-                                    ? Icon(Icons.lightbulb, color: ilocateGreen)
-                                    : Icon(Icons.lightbulb, color: ilocateRed),
-                                onPressed: ()  {
-                                  LedProvider().showItem(item['led_unique_number'], item['status'] == 'on' ? 'off' : 'on', item['id'] )
-                                      .then((value) {
-                                    _loadItems();
-                                    _loadMessage();
-                                  });
-                                },
-                              ),
-                              const SizedBox(width: 10),
-                              IconButton(
-                                icon: Icon(Icons.edit, color: ilocateGreen),
-                                onPressed: () async {
-                                  Navigator.pushNamed(context, '/leds/edit',
-                                      arguments: item);
-                                },
-                              ),
-                              const SizedBox(width: 10),
-                              IconButton(
-                                icon: Icon(Icons.delete, color: ilocateRed),
-                                onPressed: () async {
-                                  if (await LedProvider()
-                                      .deleteLed(item['id'])) {
-                                    setState(() {
-                                      _itemsFuture = LedProvider().getLeds();
-                                    });
-                                    _loadMessage();
-                                  } else {
-                                    _loadMessage();
-                                    setState(() {
-                                      _itemsFuture = LedProvider().getLeds();
-                                    });
-                                  }
-                                },
-                              ),
-                            ],
+                DataColumn(
+                  label: CustomText(
+                    placeholder: 'ACTION',
+                    color: smartShopWhite,
+                  ),
+                ),
+              ],
+              rows: _items.isEmpty
+                  ? const [
+                      DataRow(
+                        cells: [
+                          DataCell(CustomText(placeholder: 'No Data')),
+                          DataCell(CustomText(placeholder: 'No Data')),
+                          DataCell(CustomText(placeholder: 'No Data')),
+                          DataCell(LinearProgressIndicator()),
+                        ],
+                      ),
+                    ]
+                  : _items.map((item) {
+                      return DataRow(
+                        cells: [
+                          DataCell(
+                              CustomText(placeholder: item['id'].toString())),
+                          DataCell(
+                            SizedBox(
+                                width: isMobile ? 60 : 100,
+                                child: CustomText(
+                                    placeholder:
+                                        item['shelf_number'].toString(),
+                                    maxLines: 4)),
                           ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
-          ),
-        )
-      ],
+                          DataCell(
+                            SizedBox(
+                                width: isMobile ? 60 : 100,
+                                child: CustomText(
+                                  placeholder:
+                                      item['led_unique_number'].toString(),
+                                  maxLines: 4,
+                                )),
+                          ),
+                          DataCell(
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: item['status'] == 'on'
+                                      ? Icon(Icons.lightbulb,
+                                          color: smartShopGreen)
+                                      : Icon(Icons.lightbulb,
+                                          color: smartShopRed),
+                                  onPressed: () {
+                                    LedProvider()
+                                        .showItem(
+                                            item['led_unique_number'],
+                                            item['status'] == 'on'
+                                                ? 'off'
+                                                : 'on',
+                                            item['id'])
+                                        .then((value) {
+                                      _loadItems();
+                                      _loadMessage();
+                                    });
+                                  },
+                                ),
+                                const SizedBox(width: 10),
+                                IconButton(
+                                  icon: Icon(Icons.edit, color: smartShopGreen),
+                                  onPressed: () async {
+                                    Navigator.pushNamed(context, '/leds/edit',
+                                        arguments: item);
+                                  },
+                                ),
+                                const SizedBox(width: 10),
+                                IconButton(
+                                  icon: Icon(Icons.delete, color: smartShopRed),
+                                  onPressed: () async {
+                                    if (await LedProvider()
+                                        .deleteLed(item['id'])) {
+                                      setState(() {
+                                        _itemsFuture = LedProvider().getLeds();
+                                      });
+                                      _loadMessage();
+                                    } else {
+                                      _loadMessage();
+                                      setState(() {
+                                        _itemsFuture = LedProvider().getLeds();
+                                      });
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+            ),
+          )
+        ],
       ),
     );
   }

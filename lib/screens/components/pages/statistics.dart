@@ -39,7 +39,6 @@ class _StatisticsState extends State<Statistics> {
     _endDate = DateTime.now();
   }
 
-
   void _setMessage(String newMessage) {
     setState(() {
       message = newMessage;
@@ -63,7 +62,6 @@ class _StatisticsState extends State<Statistics> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('message');
   }
-
 
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
     final DateTime? selectedDate = await showDatePicker(
@@ -185,7 +183,7 @@ class _StatisticsState extends State<Statistics> {
               children: [
                 CustomText(
                     placeholder: 'Stocks Stats',
-                    color: ilocateYellow,
+                    color: smartShopYellow,
                     fontSize: 24),
                 if (_statisticsData != null && _errorMessage == null)
                   SizedBox(
@@ -224,7 +222,7 @@ class _StatisticsState extends State<Statistics> {
                 Flexible(
                   child: CustomText(
                       placeholder: 'Sales Stats',
-                      color: ilocateYellow,
+                      color: smartShopYellow,
                       fontSize: 24),
                 ),
                 Flexible(
@@ -285,7 +283,7 @@ class _StatisticsState extends State<Statistics> {
                             widthFactor: 0.3,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  primary: ilocateYellow,
+                                  primary: smartShopYellow,
                                   onPrimary: Colors.white,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(32.0),
@@ -295,7 +293,7 @@ class _StatisticsState extends State<Statistics> {
                                     _onFilter(_startDate, _endDate),
                                 child: CustomText(
                                   placeholder: 'Filter',
-                                  color: ilocateWhite,
+                                  color: smartShopWhite,
                                 )),
                           ),
                         ]),
@@ -347,7 +345,7 @@ class _StatisticsState extends State<Statistics> {
                       placeholder:
                           '${_statisticsData![0]['data']['total_profit']}' +
                               ' XAF',
-                      color: ilocateYellow,
+                      color: smartShopYellow,
                       fontSize: 24,
                       fontWeight: FontWeight.bold)
                 else
@@ -380,7 +378,7 @@ class _StatisticsState extends State<Statistics> {
                       placeholder:
                           '${_statisticsData![0]['data']['total_profit']}'
                           ' XAF',
-                      color: ilocateYellow,
+                      color: smartShopYellow,
                       fontSize: 24,
                       fontWeight: FontWeight.bold)
                 else
@@ -408,7 +406,7 @@ class _StatisticsState extends State<Statistics> {
                   CustomText(
                       placeholder:
                           '${_statisticsData![0]['data']['total_components']}',
-                      color: ilocateYellow,
+                      color: smartShopYellow,
                       fontSize: 24,
                       fontWeight: FontWeight.bold)
                 else

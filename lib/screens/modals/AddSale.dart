@@ -14,7 +14,8 @@ class AddSalesForm extends StatefulWidget {
   final String? selectedItem;
   final double? width;
   final String? placeholder;
-  const AddSalesForm({Key? key, this.selectedItem, this.width, this.placeholder})
+  const AddSalesForm(
+      {Key? key, this.selectedItem, this.width, this.placeholder})
       : super(key: key);
 
   @override
@@ -51,7 +52,6 @@ class _AddSalesFormState extends State<AddSalesForm> {
     Get.to(() => const Sales(),
         transition: Transition.rightToLeftWithFade,
         duration: const Duration(milliseconds: 100));
-
   }
 
   final formKey = GlobalKey<FormState>();
@@ -64,7 +64,6 @@ class _AddSalesFormState extends State<AddSalesForm> {
   }
 
   String? selectedItem;
-
 
   Future<void> _loadItems() async {
     final items = await ItemProvider().getItems();
@@ -89,17 +88,17 @@ class _AddSalesFormState extends State<AddSalesForm> {
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
 
     return Form(
         key: formKey,
-        child:
-        CustomButton(
+        child: CustomButton(
           placeholder: widget.placeholder ?? 'Add Sale',
           icon: Icons.add_circle_outline,
-          color: ilocateYellow,
+          color: smartShopYellow,
           width: widget.width ?? 200,
           method: () {
             showDialog(
@@ -112,14 +111,14 @@ class _AddSalesFormState extends State<AddSalesForm> {
                     Text('Sell',
                         style: TextStyle(
                             overflow: TextOverflow.ellipsis,
-                            color: ilocateYellow,
+                            color: smartShopYellow,
                             fontSize: 20,
                             fontWeight: FontWeight.bold)),
                     const SizedBox(width: 10),
                     const Icon(Icons.add_circle_outline)
                   ],
                 ),
-                backgroundColor: ilocateLight,
+                backgroundColor: smartShopLight,
                 content: SingleChildScrollView(
                   child: SizedBox(
                     width: isMobile ? 200 : 600,
@@ -140,17 +139,17 @@ class _AddSalesFormState extends State<AddSalesForm> {
                           },
                           items: _items.isNotEmpty
                               ? _items.map((value) {
-                            return DropdownMenuItem(
-                              value: value['id'].toString(),
-                              child: Text(value['name'].toString()),
-                            );
-                          }).toList()
+                                  return DropdownMenuItem(
+                                    value: value['id'].toString(),
+                                    child: Text(value['name'].toString()),
+                                  );
+                                }).toList()
                               : [
-                            const DropdownMenuItem<String>(
-                              value: 'loading',
-                              child: Text('Loading suppliers...'),
-                            ),
-                          ],
+                                  const DropdownMenuItem<String>(
+                                    value: 'loading',
+                                    child: Text('Loading suppliers...'),
+                                  ),
+                                ],
                         ),
                         TextFormField(
                           controller: quantityController,
@@ -165,7 +164,6 @@ class _AddSalesFormState extends State<AddSalesForm> {
                             hintText: 'Quantity',
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -174,24 +172,26 @@ class _AddSalesFormState extends State<AddSalesForm> {
                   TextButton(
                     onPressed: () => Navigator.pop(context),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(ilocateYellow),
+                      backgroundColor:
+                          MaterialStateProperty.all(smartShopYellow),
                     ),
-                    child:
-                    const Text('Cancel', style: TextStyle(color: Colors.white)),
+                    child: const Text('Cancel',
+                        style: TextStyle(color: Colors.white)),
                   ),
                   TextButton(
                       onPressed: () async {
-                        if (formKey.currentState!.validate() && selectedItem != null) {
+                        if (formKey.currentState!.validate() &&
+                            selectedItem != null) {
                           var componentId = selectedItem;
                           var quantity = quantityController.text;
-                          if(await SalesProvider().addSales(componentId, quantity)){
+                          if (await SalesProvider()
+                              .addSales(componentId, quantity)) {
                             _loadItems();
                             selectedItem = null;
                             _loadMessageAndCloseModal();
                             Navigator.of(context).pop();
                             clearInput();
-
-                          }else{
+                          } else {
                             _loadItems();
                             selectedItem = null;
                             clearInput();
@@ -201,19 +201,18 @@ class _AddSalesFormState extends State<AddSalesForm> {
                         } else {
                           _loadMessageAndCloseModal();
                           Navigator.of(context).pop();
-
                         }
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(ilocateYellow),
+                        backgroundColor:
+                            MaterialStateProperty.all(smartShopYellow),
                       ),
-                      child:
-                      const Text('Add', style: TextStyle(color: Colors.white))),
+                      child: const Text('Add',
+                          style: TextStyle(color: Colors.white))),
                 ],
               ),
             );
           },
-        )
-    );
+        ));
   }
 }

@@ -43,8 +43,7 @@ class _LoginState extends State<Login> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const ClipPathWidget(
-                  ),
+                  const ClipPathWidget(),
                   Column(
                     children: [
                       Container(
@@ -55,7 +54,7 @@ class _LoginState extends State<Login> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 24,
-                              color: ilocateYellow,
+                              color: smartShopYellow,
                             ),
                           ),
                         ),
@@ -66,7 +65,7 @@ class _LoginState extends State<Login> {
                         controller: phoneController,
                         prefixIcon: Icon(
                           Icons.phone,
-                          color: ilocateYellow,
+                          color: smartShopYellow,
                         ),
                       ),
                       CustomeTextField(
@@ -76,7 +75,7 @@ class _LoginState extends State<Login> {
                         keyboardType: TextInputType.visiblePassword,
                         prefixIcon: Icon(
                           Icons.lock,
-                          color: ilocateYellow,
+                          color: smartShopYellow,
                         ),
                       ),
                       SizedBox(
@@ -166,7 +165,7 @@ class _LoginState extends State<Login> {
                                 );
                               }
                             },
-                            color: ilocateYellow,
+                            color: smartShopYellow,
                             placeholder: 'Login',
                           );
                         },

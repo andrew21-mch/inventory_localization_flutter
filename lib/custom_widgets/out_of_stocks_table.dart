@@ -42,107 +42,109 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
 
     return Card(
         shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-    ),
-    elevation: 0,
-    child: Column(children: [
-    const SizedBox(height: 10),
-      CustomSearchBar(onSearch: _onSearch),
-    const SizedBox(height: 10),
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columnSpacing:
-              isMobile ? 10 : (MediaQuery.of(context).size.width / 3) - 220,
-          headingRowColor: MaterialStateColor.resolveWith(
-            (states) => ilocateYellow,
-          ),
-          //   headingTextStyle: TextStyle(color: ilocateWhite),
-          columns: [
-            DataColumn(
-              label: CustomText(
-                placeholder:
-                'NAME',
-                  color: ilocateWhite,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 0,
+        child: Column(children: [
+          const SizedBox(height: 10),
+          CustomSearchBar(onSearch: _onSearch),
+          const SizedBox(height: 10),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+              columnSpacing:
+                  isMobile ? 10 : (MediaQuery.of(context).size.width / 3) - 220,
+              headingRowColor: MaterialStateColor.resolveWith(
+                (states) => smartShopYellow,
               ),
-            ),
-            DataColumn(
-              label: CustomText(
-                placeholder: 'DESCRIPTION',
-                color: ilocateWhite,
-              ),
-            ),
-            DataColumn(
-              label: CustomText(
-                placeholder:
-                'QUANTITY',
-                  color: ilocateWhite,
-              ),
-            ),
-            DataColumn(
-              label: CustomText(
-                placeholder: 'SUPPLIER PHONE',
-                  color: ilocateWhite,
-              ),
-            ),
-            DataColumn(
-              label: CustomText(
-                placeholder: 'ACTION',
-                  color: ilocateWhite,
-              ),
-            ),
-          ],
-          rows: _items.map((item) {
-            return DataRow(
-              cells: [
-                DataCell(
-                  SizedBox(
-                      width: isMobile ? 60 : 100,
-                      child:
-                  CustomText(
-                     placeholder: item['component']!['name'].toString()),
+              //   headingTextStyle: TextStyle(color: smartShopWhite),
+              columns: [
+                DataColumn(
+                  label: CustomText(
+                    placeholder: 'NAME',
+                    color: smartShopWhite,
+                  ),
                 ),
+                DataColumn(
+                  label: CustomText(
+                    placeholder: 'DESCRIPTION',
+                    color: smartShopWhite,
+                  ),
                 ),
-                DataCell(
-                  SizedBox(
-                      width: isMobile ? 60 : 150,
-                      child: CustomText(placeholder: item['component']!['description'].toString(),
-                          maxLines: 4,
-                          )),
+                DataColumn(
+                  label: CustomText(
+                    placeholder: 'QUANTITY',
+                    color: smartShopWhite,
+                  ),
                 ),
-                DataCell(
-                  SizedBox(
-                      width: isMobile ? 60 : 100,
-                      child: CustomText(placeholder: item['component']!['quantity'].toString(),
-                          maxLines: 4,
-                         )),
+                DataColumn(
+                  label: CustomText(
+                    placeholder: 'SUPPLIER PHONE',
+                    color: smartShopWhite,
+                  ),
                 ),
-                DataCell(
-                  SizedBox(
-                      width: isMobile ? 60 : 100,
-                      child: CustomText(
-                          placeholder: item['supplier'] == null ||
-                                  item['supplier']['phone'] == null
-                              ? 'N/A'
-                              : item['supplier']['phone'].toString(),
-                          maxLines: 4,
-                      )),
-
-                ),
-                 DataCell(
-                   Container(
-                     padding: const EdgeInsets.all(10),
-                      width: 130,
-                      child:
-                      RestockForm(selectedItem: item['component']['id'].toString(), width: 200, placeholder: 'Restock',),
-                   ),
+                DataColumn(
+                  label: CustomText(
+                    placeholder: 'ACTION',
+                    color: smartShopWhite,
+                  ),
                 ),
               ],
-            );
-          }).toList(),
-        ),
-      ),
-    ])
-    );
+              rows: _items.map((item) {
+                return DataRow(
+                  cells: [
+                    DataCell(
+                      SizedBox(
+                        width: isMobile ? 60 : 100,
+                        child: CustomText(
+                            placeholder: item['component']!['name'].toString()),
+                      ),
+                    ),
+                    DataCell(
+                      SizedBox(
+                          width: isMobile ? 60 : 150,
+                          child: CustomText(
+                            placeholder:
+                                item['component']!['description'].toString(),
+                            maxLines: 4,
+                          )),
+                    ),
+                    DataCell(
+                      SizedBox(
+                          width: isMobile ? 60 : 100,
+                          child: CustomText(
+                            placeholder:
+                                item['component']!['quantity'].toString(),
+                            maxLines: 4,
+                          )),
+                    ),
+                    DataCell(
+                      SizedBox(
+                          width: isMobile ? 60 : 100,
+                          child: CustomText(
+                            placeholder: item['supplier'] == null ||
+                                    item['supplier']['phone'] == null
+                                ? 'N/A'
+                                : item['supplier']['phone'].toString(),
+                            maxLines: 4,
+                          )),
+                    ),
+                    DataCell(
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        width: 130,
+                        child: RestockForm(
+                          selectedItem: item['component']['id'].toString(),
+                          width: 200,
+                          placeholder: 'Restock',
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
+            ),
+          ),
+        ]));
   }
 }

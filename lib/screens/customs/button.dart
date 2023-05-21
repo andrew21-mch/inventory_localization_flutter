@@ -32,7 +32,7 @@ class CustomButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(150, 36),
             shadowColor: Colors.grey.withOpacity(0.8),
-            backgroundColor: color ?? ilocateYellow,
+            backgroundColor: color ?? smartShopYellow,
           ),
           onPressed: method,
           child: Row(
@@ -41,13 +41,13 @@ class CustomButton extends StatelessWidget {
               CustomText(
                 placeholder: placeholder!,
                 fontWeight: FontWeight.bold,
-                color: ilocateWhite,
+                color: smartShopWhite,
                 fontSize: 16,
               ),
               icon != null
                   ? Icon(
                       icon,
-                      color: ilocateWhite,
+                      color: smartShopWhite,
                     )
                   : const SizedBox(),
             ],

@@ -45,8 +45,8 @@ class AppMenu extends ConsumerWidget {
     final selectedPageName = ref.watch(selectedPageNameProvider.state).state;
     return Scaffold(
       appBar: AppBar(
-        title: CustomText(placeholder: 'Menu', color: ilocateWhite),
-        backgroundColor: ilocateYellow,
+        title: CustomText(placeholder: 'Menu', color: smartShopWhite),
+        backgroundColor: smartShopYellow,
       ),
       body: Column(
         children: [
@@ -79,7 +79,6 @@ class AppMenu extends ConsumerWidget {
               );
             },
           ),
-
         ],
       ),
     );
@@ -92,20 +91,23 @@ class AppMenu extends ConsumerWidget {
       ref.read(selectedPageNameProvider.state).state = pageName;
       // dismiss the drawer of the ancestor Scaffold if we have one
       if (Scaffold.maybeOf(context)?.hasDrawer ?? false) {
-
-        isMobile ? Navigator.push(context, MaterialPageRoute(builder: (context) => _availablePages[pageName]!(context)))
-                :
-        Get.to(() => _availablePages[pageName]!,
-        transition: Transition.rightToLeft,
-        duration: const Duration(milliseconds: 500)
-        ); if (isMobile) {
+        isMobile
+            ? Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => _availablePages[pageName]!(context)))
+            : Get.to(() => _availablePages[pageName]!,
+                transition: Transition.rightToLeft,
+                duration: const Duration(milliseconds: 500));
+        if (isMobile) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => _availablePages[pageName]!(context)),
+            MaterialPageRoute(
+                builder: (_) => _availablePages[pageName]!(context)),
           );
         } else {
           Get.to(
-                () => _availablePages[pageName]!(context),
+            () => _availablePages[pageName]!(context),
             transition: Transition.rightToLeft,
             duration: const Duration(milliseconds: 500),
           );
@@ -114,4 +116,3 @@ class AppMenu extends ConsumerWidget {
     }
   }
 }
-

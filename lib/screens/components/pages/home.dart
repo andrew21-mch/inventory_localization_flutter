@@ -33,7 +33,6 @@ class AuthHomeState extends State<AuthHome> {
     _loadLoggedInUserName();
   }
 
-
   void _setMessage(String newMessage) {
     setState(() {
       message = newMessage;
@@ -58,7 +57,6 @@ class AuthHomeState extends State<AuthHome> {
     prefs.remove('message');
   }
 
-
   Future<void> _loadStatisticsData() async {
     setState(() {
       _errorMessage = null;
@@ -69,7 +67,7 @@ class AuthHomeState extends State<AuthHome> {
       final data = await StatisticProvider().getGeneralStatistics();
       _setStatisticsData(data);
     } catch (e) {
-      if(mounted){
+      if (mounted) {
         setState(() {
           _errorMessage = e.toString();
         });
@@ -87,7 +85,7 @@ class AuthHomeState extends State<AuthHome> {
       final data = await SalesProvider().getSales();
       _setSalesData(data);
     } catch (e) {
-      if(mounted){
+      if (mounted) {
         setState(() {
           _errorMessage = e.toString();
         });
@@ -140,9 +138,12 @@ class AuthHomeState extends State<AuthHome> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CustomText(placeholder: 'Welcome, $_loggedInUserNickname'),
+                        CustomText(
+                            placeholder: 'Welcome, $_loggedInUserNickname'),
                         const SizedBox(height: 8),
-                        const CustomText(placeholder: 'Here, you can view your statistics and manage your inventory.'),
+                        const CustomText(
+                            placeholder:
+                                'Here, you can view your statistics and manage your inventory.'),
                       ],
                     ),
                   ),
@@ -166,11 +167,18 @@ class AuthHomeState extends State<AuthHome> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children:  [
-                  const Icon(Icons.credit_card, size: 64, color: Colors.redAccent),
+                children: [
+                  const Icon(Icons.credit_card,
+                      size: 64, color: Colors.redAccent),
                   const SizedBox(height: 16),
-                  if(_statisticsData != null)
-                    CustomText(placeholder: '${_statisticsData![0]['data']['total_profit']}' + ' XAF', color: ilocateRed, fontSize: 22, fontWeight: FontWeight.bold)
+                  if (_statisticsData != null)
+                    CustomText(
+                        placeholder:
+                            '${_statisticsData![0]['data']['total_profit']}' +
+                                ' XAF',
+                        color: smartShopRed,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold)
                   else
                     const RefreshProgressIndicator(),
                   const SizedBox(height: 8),
@@ -192,17 +200,23 @@ class AuthHomeState extends State<AuthHome> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children:  [
-                  if(_statisticsData != null)
-                    Icon(Icons.account_balance, size: 64, color: Colors.purpleAccent.shade700
-                      //rotate the ic
-                    ),
+                children: [
+                  if (_statisticsData != null)
+                    Icon(Icons.account_balance,
+                        size: 64, color: Colors.purpleAccent.shade700
+                        //rotate the ic
+                        ),
                   const SizedBox(height: 16),
-                  if(_statisticsData != null)
-                    CustomText(placeholder: '${_statisticsData![0]['data']['total_profit']}' + ' XAF', color: ilocateYellow, fontSize: 22, fontWeight: FontWeight.bold)
+                  if (_statisticsData != null)
+                    CustomText(
+                        placeholder:
+                            '${_statisticsData![0]['data']['total_profit']}' +
+                                ' XAF',
+                        color: smartShopYellow,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold)
                   else
                     const RefreshProgressIndicator(),
-
                   const SizedBox(height: 8),
                   const CustomText(placeholder: 'Total Profits'),
                 ],
@@ -222,13 +236,16 @@ class AuthHomeState extends State<AuthHome> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children:  [
+                children: [
                   const Icon(Icons.all_inbox, size: 64, color: Colors.green),
                   const SizedBox(height: 16),
-                  if(_statisticsData != null)
-                    CustomText(placeholder: '${_statisticsData![0]['data']['total_components']}', fontSize:  22, fontWeight: FontWeight.bold,
-                        color: ilocateYellow
-                    )
+                  if (_statisticsData != null)
+                    CustomText(
+                        placeholder:
+                            '${_statisticsData![0]['data']['total_components']}',
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: smartShopYellow)
                   else
                     const RefreshProgressIndicator(),
                   const SizedBox(height: 8),
@@ -254,26 +271,24 @@ class AuthHomeState extends State<AuthHome> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: 200,
-                   decoration: BoxDecoration(
-                     borderRadius: BorderRadius.circular(10),
-                    ),
-
-                    padding: const EdgeInsets.all(12),
-                    //put text vertically in the center
+                      height: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.all(12),
+                      //put text vertically in the center
 
                       alignment: Alignment.center,
-                    child: CustomText(
-                      textAlign: TextAlign.center,
+                      child: CustomText(
+                        textAlign: TextAlign.center,
                         // vertical center
-                        placeholder: 'Welcome to your dashboard $_loggedInUserNickname!\nHere, you can manage your stocks, easily view your statistics and manage your inventory.',
+                        placeholder:
+                            'Welcome to your dashboard $_loggedInUserNickname!\nHere, you can manage your stocks, easily view your statistics and manage your inventory.',
                         fontSize: 13,
-                    )
-                  ),
+                      )),
                 ],
               ),
             ),
-
             const DataTableWidget(),
             const Padding(padding: EdgeInsets.all(32)),
           ],
@@ -302,22 +317,20 @@ class AuthHomeState extends State<AuthHome> {
               direction: Axis.horizontal,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              Expanded(
-              child:
-              Card(
-
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Padding(padding: EdgeInsets.all(32)),
-                    MyForm(),
-                    RestockForm(),
-                    Padding(padding: EdgeInsets.all(32)),
-
-                  ]),
-            ),),
-          ],
-        ),
+                Expanded(
+                  child: Card(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Padding(padding: EdgeInsets.all(32)),
+                          MyForm(),
+                          RestockForm(),
+                          Padding(padding: EdgeInsets.all(32)),
+                        ]),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       );

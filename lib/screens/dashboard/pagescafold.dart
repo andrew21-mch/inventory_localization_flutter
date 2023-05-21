@@ -34,9 +34,8 @@ class PageScaffold extends StatelessWidget {
                     hasDrawer ? () => ancestorScaffold.openDrawer() : null,
               )
             : null,
-        title: CustomText(placeholder: title, color: ilocateWhite),
+        title: CustomText(placeholder: title, color: smartShopWhite),
         actions: [
-
           // an icon that when click it shows a popup menu with the options to add a new user or a new location
           PopupMenuButton(
             itemBuilder: (BuildContext context) => <PopupMenuEntry>[
@@ -51,7 +50,7 @@ class PageScaffold extends StatelessWidget {
             ],
             onSelected: (value) {
               if (value == 'Add User') {
-              //  bottom sheet that shows a form to add a new user
+                //  bottom sheet that shows a form to add a new user
                 showModalBottomSheet(
                   context: context,
                   builder: (context) => const MyForm(),
@@ -67,7 +66,7 @@ class PageScaffold extends StatelessWidget {
           ),
           ...actions,
         ],
-        backgroundColor: ilocateYellow,
+        backgroundColor: smartShopYellow,
       ),
       body: body,
       floatingActionButton: floatingActionButton,

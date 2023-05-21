@@ -17,7 +17,7 @@ void showMessage(
         ),
       ),
       duration: const Duration(seconds: 3),
-      backgroundColor: type == 'error' ? Colors.red : ilocateYellow,
+      backgroundColor: type == 'error' ? Colors.red : smartShopYellow,
     ),
   );
 }

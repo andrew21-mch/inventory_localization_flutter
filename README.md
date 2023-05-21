@@ -1,4 +1,4 @@
-# ilocate
+# smartShop
 
 A new Flutter project.
 

@@ -62,10 +62,9 @@ class _RestockFormState extends State<RestockForm> {
 
   String? selectedItem;
 
-
   Future<void> _loadItems() async {
     final items = await ItemProvider().getItems();
-    if(mounted){
+    if (mounted) {
       setState(() {
         _items = items;
       });
@@ -74,139 +73,139 @@ class _RestockFormState extends State<RestockForm> {
 
   @override
   void initState() {
-  super.initState();
-  selectedItem = widget.selectedItem;
-  _loadItems();
+    super.initState();
+    selectedItem = widget.selectedItem;
+    _loadItems();
   }
-
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
 
     return Form(
         key: formKey,
-        child:
-      CustomButton(
-      placeholder: widget.placeholder ?? 'Restock Item',
-      color: ilocateYellow,
-      width: widget.width ?? 200,
-      method: () {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            scrollable: true,
-            title: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Restock Items',
-                    style: TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        color: ilocateYellow,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
-                const SizedBox(width: 10),
-                const Icon(Icons.add_circle_outline)
-              ],
-            ),
-            backgroundColor: ilocateLight,
-            content: SingleChildScrollView(
-              child: SizedBox(
-                width: isMobile ? 200 : 600,
-                child: Column(
+        child: CustomButton(
+          placeholder: widget.placeholder ?? 'Restock Item',
+          color: smartShopYellow,
+          width: widget.width ?? 200,
+          method: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                scrollable: true,
+                title: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    DropdownButtonFormField(
-                      hint: const Text('Select Item'),
-                      isExpanded: true,
-                      value: selectedItem,
-                      icon: const Icon(Icons.arrow_downward),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.deepPurple),
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedItem = newValue;
-                        });
-                      },
-                      items: _items.isNotEmpty
-                          ? _items.map((value) {
-                        return DropdownMenuItem(
-                          value: value['id'].toString(),
-                          child: Text(value['name'].toString()),
-                        );
-                      }).toList()
-                          : [
-                        const DropdownMenuItem<String>(
-                          value: 'loading',
-                          child: Text('Loading suppliers...'),
+                    Text('Restock Items',
+                        style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            color: smartShopYellow,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                    const SizedBox(width: 10),
+                    const Icon(Icons.add_circle_outline)
+                  ],
+                ),
+                backgroundColor: smartShopLight,
+                content: SingleChildScrollView(
+                  child: SizedBox(
+                    width: isMobile ? 200 : 600,
+                    child: Column(
+                      children: [
+                        DropdownButtonFormField(
+                          hint: const Text('Select Item'),
+                          isExpanded: true,
+                          value: selectedItem,
+                          icon: const Icon(Icons.arrow_downward),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.deepPurple),
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedItem = newValue;
+                            });
+                          },
+                          items: _items.isNotEmpty
+                              ? _items.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value['id'].toString(),
+                                    child: Text(value['name'].toString()),
+                                  );
+                                }).toList()
+                              : [
+                                  const DropdownMenuItem<String>(
+                                    value: 'loading',
+                                    child: Text('Loading suppliers...'),
+                                  ),
+                                ],
+                        ),
+                        TextFormField(
+                          controller: quantityController,
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter quantity';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            hintText: 'Quantity',
+                          ),
                         ),
                       ],
                     ),
-                    TextFormField(
-                      controller: quantityController,
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter quantity';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        hintText: 'Quantity',
-                      ),
-                    ),
-
-                  ],
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(ilocateYellow),
-                ),
-                child:
-                const Text('Cancel', style: TextStyle(color: Colors.white)),
-              ),
-              TextButton(
-                  onPressed: () async {
-                    if (formKey.currentState!.validate() && selectedItem != null) {
-                      var itemId = selectedItem;
-                      var quantity = quantityController.text;
-                      if(await OutOfStockProvider().restock(itemId!, quantity!)){
-                        _loadItems();
-                        selectedItem = null;
-                        _loadMessageAndCloseModal();
-                        Navigator.of(context).pop();
-                        clearInput();
-                      }else{
-                        _loadItems();
-                        selectedItem = null;
-                        clearInput();
-                        _loadMessageAndCloseModal();
-                        Navigator.of(context).pop();
-                      }
-                    } else {
-
-                      _loadMessageAndCloseModal();
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(ilocateYellow),
                   ),
-                  child:
-                  const Text('Add', style: TextStyle(color: Colors.white))),
-            ],
-          ),
-        );
-      },
-      )
-    );
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(smartShopYellow),
+                    ),
+                    child: const Text('Cancel',
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                  TextButton(
+                      onPressed: () async {
+                        if (formKey.currentState!.validate() &&
+                            selectedItem != null) {
+                          var itemId = selectedItem;
+                          var quantity = quantityController.text;
+                          if (await OutOfStockProvider()
+                              .restock(itemId!, quantity!)) {
+                            _loadItems();
+                            selectedItem = null;
+                            _loadMessageAndCloseModal();
+                            Navigator.of(context).pop();
+                            clearInput();
+                          } else {
+                            _loadItems();
+                            selectedItem = null;
+                            clearInput();
+                            _loadMessageAndCloseModal();
+                            Navigator.of(context).pop();
+                          }
+                        } else {
+                          _loadMessageAndCloseModal();
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(smartShopYellow),
+                      ),
+                      child: const Text('Add',
+                          style: TextStyle(color: Colors.white))),
+                ],
+              ),
+            );
+          },
+        ));
   }
 }

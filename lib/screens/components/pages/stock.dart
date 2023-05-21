@@ -93,13 +93,14 @@ class _StocksState extends State<Stocks> {
                   placeholder: 'Stocks Stats',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: ilocateYellow,
+                  color: smartShopYellow,
                 ),
                 if (_statisticsData != null)
                   SizedBox(
                     height: 200, // Replace with desired height
                     child: StocksLineChartWidget(
-                      _statisticsData![0]['data']['component_with_their_quantity']
+                      _statisticsData![0]['data']
+                              ['component_with_their_quantity']
                           .map<Map<String, dynamic>>(
                               (item) => Map<String, dynamic>.from(item))
                           .toList(),
@@ -139,7 +140,7 @@ class _StocksState extends State<Stocks> {
                       placeholder: 'Running Out',
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: ilocateGreen,
+                      color: smartShopGreen,
                     ),
                   ),
                   IconButton(
@@ -153,7 +154,7 @@ class _StocksState extends State<Stocks> {
                         placeholder: _outOfStocksData!.length.toString(),
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: ilocateRed,
+                        color: smartShopRed,
                       ),
                     )
                   else if (_errorMessage == null)
@@ -186,7 +187,7 @@ class _StocksState extends State<Stocks> {
                 placeholder: 'Items Out Of Stock',
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: ilocateRed,
+                color: smartShopRed,
               ),
             ),
             const OutOfStockTableWidget(),
@@ -199,36 +200,37 @@ class _StocksState extends State<Stocks> {
         title: 'Stocks Page',
         body: ListView(
           scrollDirection: Axis.vertical,
-          children: [Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: cards[0],
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: cards[1],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Column(
-                children: [
-                  CustomText(
-                    placeholder: 'Items Out Of Stock',
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: ilocateRed,
-                  ),
-                  const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
-                  const OutOfStockTableWidget(),
-                ],
-              )
-            ],
-          ),
+          children: [
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: cards[0],
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: cards[1],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Column(
+                  children: [
+                    CustomText(
+                      placeholder: 'Items Out Of Stock',
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: smartShopRed,
+                    ),
+                    const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
+                    const OutOfStockTableWidget(),
+                  ],
+                )
+              ],
+            ),
           ],
         ),
       );
