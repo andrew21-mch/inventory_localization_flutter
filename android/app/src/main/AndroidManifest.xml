@@ -1,6 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.smartShop">
     <uses-permission android:name="android.permission.INTERNET"/> <!-- Add this -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> <!-- Add this -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/> <!-- Add this -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- Add this -->
+    <uses-permission android:name="android.permission.CAMERA"/> <!-- Add this -->
+
 
 
    <application

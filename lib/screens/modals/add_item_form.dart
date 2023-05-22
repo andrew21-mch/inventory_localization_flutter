@@ -1,3 +1,4 @@
+import 'package:SmartShop/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:SmartShop/providers/UserProvider.dart';
@@ -124,19 +125,21 @@ class _MyFormState extends State<MyForm> {
               builder: (context) => AlertDialog(
                 scrollable: true,
                 title: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+
                   children: [
                     widget.id != null
                         ? const Icon(Icons.edit)
                         : const Icon(Icons.add_circle_outline),
                     Text(widget.id != null ? 'Edit' : 'Add',
+
                         style: TextStyle(
+                          decoration: TextDecoration.underline,
                             overflow: TextOverflow.ellipsis,
                             color: smartShopYellow,
-                            fontSize: 20,
+                            fontSize: Responsive.isMobile(context) ? 20 : 30,
                             fontWeight: FontWeight.bold)),
                     const SizedBox(width: 10),
-                    const Icon(Icons.add_circle_outline)
                   ],
                 ),
                 backgroundColor: smartShopLight,

@@ -5,6 +5,7 @@ class AppUrl {
   static const String register = '$baseUrl/register';
   static const String resetPassword = '$baseUrl/password/reset';
   static const String logout = '$baseUrl/auth/logout';
+  static const String updatePassword = '$baseUrl/auth/update_password';
 
   static const String items = '$baseUrl/components';
 
@@ -15,6 +16,9 @@ class AppUrl {
   static const String salesStatistics = '$baseUrl/statistics/sales';
 
   static const String outOfStocks = '$baseUrl/out_of_stocks';
+
+  //profile
+  static const String profile = '$baseUrl/users/profile';
 
   static const String restock = '$baseUrl/restocks';
 

@@ -1,3 +1,4 @@
+import 'package:SmartShop/screens/components/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -14,11 +15,12 @@ import 'home.dart';
 import 'led_page_view.dart';
 
 final _availablePages = <String, WidgetBuilder>{
-  'Home': (_) => const AuthHome(),
-  'Stocks': (_) => const Stocks(),
-  'Sales': (_) => const Sales(),
-  'Statistics': (_) => const Statistics(),
-  'LEDs': (_) => const Leds(),
+  'Home, home': (_) => const AuthHome(),
+  'Stocks, stocks': (_) => const Stocks(),
+  'Sales, sales': (_) => const Sales(),
+  'Statistics, statistics': (_) => const Statistics(),
+  'LEDs, lightbulb': (_) => const Leds(),
+  'Profile, user': (_) => Profile(),
 };
 
 final selectedPageNameProvider = StateProvider<String>((ref) {
@@ -54,13 +56,28 @@ class AppMenu extends ConsumerWidget {
             child: ListView(
               children: <Widget>[
                 const ClipPathWidget(),
-                for (var pageName in _availablePages.keys)
+                for (var pageName in _availablePages.entries)
                   PageListTile(
+                    icon: pageName.key.contains('home')
+                        ?  Icon(Icons.home, color: smartShopBlue)
+                        : pageName.key.contains('stocks')
+                            ? Icon(Icons.inventory, color: smartShopBlue)
+                            : pageName.key.contains('sales')
+                                ? Icon(Icons.shopping_cart, color: smartShopGreen)
+                                : pageName.key.contains('statistics')
+                                    ? Icon(Icons.bar_chart, color: smartShopGreen)
+                                    : pageName.key.contains('lightbulb')
+                                        ?  const Icon(Icons.lightbulb, color: Colors.yellowAccent)
+                                        : pageName.key.contains('user')
+                                            ? const Icon(Icons.person, color: Colors.blue)
+                                        : null,
+
                     selectedPageName: selectedPageName,
-                    pageName: pageName,
-                    onPressed: () => _selectPage(context, ref, pageName),
+                    pageName: pageName.key.split(',').first,
+                    onPressed: () => _selectPage(context, ref, pageName.key),
                   ),
               ],
+
             ),
           ),
           PageListTile(

@@ -4,6 +4,7 @@ class UserModel with ChangeNotifier {
   int? id;
   String? name;
   String? email;
+  String? phone;
   String? password;
   User? user;
 
@@ -31,13 +32,15 @@ class User {
   String? name;
   String? email;
   String? phone;
+  String? password;
 
-  User({this.id, this.name, this.email, this.phone});
+  User({this.id, this.name, this.email, this.phone, this.password});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
+    password = json['password'];
     phone = json['phone'];
   }
 
@@ -47,6 +50,7 @@ class User {
       'name': name,
       'email': email,
       'phone': phone,
+      'password': password,
     };
   }
 

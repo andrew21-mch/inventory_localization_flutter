@@ -1,3 +1,4 @@
+import 'package:SmartShop/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartShop/custom_widgets/CustomText.dart';
 import 'package:SmartShop/providers/itemProvider.dart';
@@ -24,7 +25,6 @@ class _ItemDetailState extends State<ItemDetail> {
 
   void _loadItem(String itemID) async {
     final item = await ItemProvider().getItem(itemID);
-    setState(() {
       setState(() {
         _item = item;
         nameController.text = item!['name'].toString();
@@ -33,7 +33,6 @@ class _ItemDetailState extends State<ItemDetail> {
         supplierController.text = item!['supplier'].toString();
         descriptionController.text = item!['description'].toString();
         supplierController.text = item!['supplier_id'].toString();
-      });
     });
   }
 
@@ -74,20 +73,11 @@ class _ItemDetailState extends State<ItemDetail> {
                       ? ListView(
                           scrollDirection: Axis.vertical,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  _item?['name'] ?? 'Item Details',
-                                  style: Theme.of(context).textTheme.headline6,
-                                ),
-                              ],
-                            ),
                             Image.asset(
                               // random image from unsplash
                               'assets/images/logo.png',
-                              height: 200,
-                              width: 200,
+                              height: Responsive.isMobile(context) ? 200: 400,
+                              width: Responsive.isMobile(context) ? 200: 400,
                             ),
                             const SizedBox(height: 16),
                             TextFormField(
@@ -189,13 +179,16 @@ class _ItemDetailState extends State<ItemDetail> {
                       : Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Expanded(
+                              flex: 1,
+                              child:
                             Column(
                               children: [
                                 Image.asset(
                                   // random image from unsplash
                                   'assets/images/logo.png',
-                                  height: 200,
-                                  width: 200,
+                                  height: Responsive.isMobile(context) ? 200: 250,
+                                  width: Responsive.isMobile(context) ? 200: 250,
                                 ),
                                 const SizedBox(width: 16),
                                 IconButton(
@@ -206,7 +199,9 @@ class _ItemDetailState extends State<ItemDetail> {
                                 ),
                               ],
                             ),
+                            ),
                             Expanded(
+                              flex: 3,
                               child: ListView(
                                 scrollDirection: Axis.vertical,
                                 children: [
@@ -215,20 +210,6 @@ class _ItemDetailState extends State<ItemDetail> {
                                       _loadItem(widget.itemID.toString());
                                     },
                                     icon: const Icon(Icons.refresh),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      CustomText(
-                                        placeholder:
-                                            _item!['name'].toString() == ''
-                                                ? 'Item Details'
-                                                : _item!['name'].toString(),
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ],
                                   ),
                                   const SizedBox(height: 16),
                                   TextFormField(

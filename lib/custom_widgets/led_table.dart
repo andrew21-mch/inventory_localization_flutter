@@ -26,13 +26,17 @@ class LedTableWidgetState extends State<LedTableWidget> {
 
   void _loadMessage() async {
     final message = await DatabaseProvider().getMessage();
-    _setMessage(message);
+     _setMessage(message);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
           duration: const Duration(seconds: 2),
+          backgroundColor: smartShopYellow,
+
+
+
         ),
       );
     });

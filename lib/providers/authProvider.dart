@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:SmartShop/models/User.dart';
 import 'package:SmartShop/utils/snackMessage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import 'package:SmartShop/providers/sharePreference.dart';
 import 'package:SmartShop/screens/auth/login.dart';
 import 'package:SmartShop/screens/dashboard/dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class AuthProvider extends ChangeNotifier {
   late final BuildContext context;
@@ -26,11 +26,12 @@ class AuthProvider extends ChangeNotifier {
 
   String get failureMessage => _failureMessage;
 
-  void register({required String name,
-    required String email,
-    required String password,
-    required String passwordConfirmation,
-    required String phone}) async {
+  void register(
+      {required String name,
+      required String email,
+      required String password,
+      required String passwordConfirmation,
+      required String phone}) async {
     _isLoading = true;
     notifyListeners();
     String url = AppUrl.register;
@@ -47,7 +48,6 @@ class AuthProvider extends ChangeNotifier {
       'phone': phone,
     };
 
-
     try {
       http.Response req = await http.post(Uri.parse(url),
           headers: headers, body: json.encode(body));
@@ -62,7 +62,7 @@ class AuthProvider extends ChangeNotifier {
         notifyListeners();
         Future.delayed(const Duration(seconds: 2), () {
           Get.to(
-                () => const Login(),
+            () => const Login(),
             transition: Transition.fade,
             curve: Curves.easeOut,
             duration: const Duration(microseconds: 800),
@@ -81,7 +81,7 @@ class AuthProvider extends ChangeNotifier {
       final res = e.toString();
       _isLoading = false;
       _reqMessage =
-      '$res Check to make sure you connected to the same server as the server';
+          '$res Check to make sure you connected to the same server as the server';
       notifyListeners();
     }
   }
@@ -123,7 +123,7 @@ class AuthProvider extends ChangeNotifier {
         notifyListeners();
         Future.delayed(const Duration(seconds: 2), () {
           Get.to(
-                () => const DashboardScreen(),
+            () => const DashboardScreen(),
             transition: Transition.fade,
             curve: Curves.easeOut,
             duration: const Duration(microseconds: 800),
@@ -142,7 +142,7 @@ class AuthProvider extends ChangeNotifier {
       final res = e.toString();
       _isLoading = false;
       _reqMessage =
-      '$res Check to make sure you connected to the same server as the server';
+          '$res Check to make sure you connected to the same server as the server';
       notifyListeners();
     }
   }
@@ -152,12 +152,11 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
     String url = AppUrl.logout;
 
-
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Charset': 'utf-8',
-      'Authorization': 'Bearer ${await _prefs.then((
-          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+      'Authorization':
+          'Bearer ${await _prefs.then((SharedPreferences prefs) => prefs.getString('token') ?? '')}'
     };
     final body = {};
 
@@ -187,7 +186,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-
   void resetPassword({required String phone}) async {
     _isLoading = true;
     notifyListeners();
@@ -214,7 +212,7 @@ class AuthProvider extends ChangeNotifier {
         _reqMessage = res['message'];
         notifyListeners();
         Get.to(
-              () => const Login(),
+          () => const Login(),
           transition: Transition.fade,
           curve: Curves.easeOut,
           duration: const Duration(microseconds: 800),
@@ -247,7 +245,6 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   Future<bool> isAuthenticated() async {
     final token = await DatabaseProvider().getToken();
     if (token == '') {
@@ -267,8 +264,109 @@ class AuthProvider extends ChangeNotifier {
         return false;
       }
     } catch (e) {
-      storeMessageToInMemory('$e Check that you are connected to the same server as the server');
+      storeMessageToInMemory(
+          '$e Check that you are connected to the same server as the server');
       return false;
     }
+  }
+
+//  get user profile
+  Future<Map<String, dynamic>> getProfile() async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization':
+          'Bearer ${await _prefs.then((SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    String url = AppUrl.profile;
+
+    try {
+      http.Response req = await http.get(Uri.parse(url), headers: headers);
+
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        notifyListeners();
+        return res['data'];
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+        return {};
+      }
+    } catch (e) {
+      final res = e.toString();
+      _isLoading = false;
+      _reqMessage = res;
+      storeMessageToInMemory(res);
+      notifyListeners();
+      return {};
+    }
+  }
+
+//  update user profile
+  Future<List<Map<String, dynamic>>> updateProfile(
+      String? name, String? email, String? password, String? phone) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization':
+          'Bearer ${await _prefs.then((SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+    final body = {
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'password': password,
+    };
+
+    http
+        .put(Uri.parse(AppUrl.profile),
+            headers: headers, body: json.encode(body))
+        .then((value) {
+      final res = json.decode(value.body);
+      if (kDebugMode) {
+        print(res);
+      }
+      return res['data'];
+    }).catchError((e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return [];
+    });
+
+    return [];
+  }
+
+//  update Password
+  Future<bool> updatePassword(String? password) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization':
+          'Bearer ${await _prefs.then((SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+    final body = {'password': password};
+
+    http
+        .put(Uri.parse(AppUrl.updatePassword),
+            headers: headers, body: json.encode(body))
+        .then((value) {
+      final res = json.decode(value.body);
+      if (kDebugMode) {
+        print(res);
+      }
+      return true;
+    }).catchError((e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return false;
+    });
+
+    return false;
   }
 }

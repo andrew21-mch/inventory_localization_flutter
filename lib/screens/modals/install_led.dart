@@ -76,18 +76,19 @@ class _LedFormState extends State<LedForm> {
             context: context,
             builder: (context) => AlertDialog(
               scrollable: true,
-              title: Row(
+              title:  Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomText(
-                      placeholder: 'Install LED',
-                      color: smartShopYellow,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                        placeholder: 'Install LED',
+                        color: smartShopYellow,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
                   const SizedBox(width: 10),
-                  const Icon(Icons.add_circle_outline),
-                  const Icon(
+                  Icon(
                     Icons.lightbulb,
-                    color: Colors.yellow,
+                    color: smartShopYellow,
                   )
                 ],
               ),
