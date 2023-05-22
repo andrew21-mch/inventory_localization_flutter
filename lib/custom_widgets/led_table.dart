@@ -62,6 +62,10 @@ class LedTableWidgetState extends State<LedTableWidget> {
     });
   }
 
+  void _onFilter(DateTime? from, DateTime? to) async {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
@@ -73,14 +77,14 @@ class LedTableWidgetState extends State<LedTableWidget> {
       child: Column(
         children: [
           const SizedBox(height: 10),
-          CustomSearchBar(onSearch: _onSearch),
+          CustomSearchBar(onSearch: _onSearch, onFilter: _onFilter),
           const SizedBox(height: 10),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: DataTable(
               columnSpacing: isMobile
                   ? 10
-                  : (MediaQuery.of(context).size.width / 3.5) - 220,
+                  : (MediaQuery.of(context).size.width / 3) - 220,
               headingRowColor: MaterialStateColor.resolveWith(
                 (states) => smartShopYellow,
               ),

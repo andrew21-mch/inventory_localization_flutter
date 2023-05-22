@@ -35,22 +35,12 @@ class CustomButton extends StatelessWidget {
             backgroundColor: color ?? smartShopYellow,
           ),
           onPressed: method,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+          child:
               CustomText(
                 placeholder: placeholder!,
                 fontWeight: FontWeight.bold,
                 color: smartShopWhite,
-                fontSize: 16,
-              ),
-              icon != null
-                  ? Icon(
-                      icon,
-                      color: smartShopWhite,
-                    )
-                  : const SizedBox(),
-            ],
+                fontSize: 14,
           ),
         ),
       ),

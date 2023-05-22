@@ -39,7 +39,7 @@ class OutOfStockProvider extends ChangeNotifier {
 
       if (req.statusCode == 200) {
         final res = json.decode(req.body);
-        // print(res);
+        print(res);
 
         _isLoading = false;
         notifyListeners();
@@ -139,6 +139,44 @@ class OutOfStockProvider extends ChangeNotifier {
       notifyListeners();
       storeMessageToInMemory(_reqMessage);
       return false;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> filter(DateTime from, DateTime to) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.outOfStocks}/search/sales_by_date?from=$from&to=$to';
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization': 'Bearer ${await _prefs.then((
+          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    try {
+      http.Response req = await http.get(Uri.parse(url), headers: headers);
+
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+
+        _isLoading = false;
+        notifyListeners();
+        return List<Map<String, dynamic>>.from(res['data']);
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+
+        return [];
+      }
+    } catch (e) {
+      final res = json.decode(e.toString());
+      _isLoading = false;
+      _reqMessage = res;
+      notifyListeners();
+      return [];
     }
   }
 

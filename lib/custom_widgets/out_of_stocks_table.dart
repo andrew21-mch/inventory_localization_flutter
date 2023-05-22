@@ -36,6 +36,15 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
     });
   }
 
+  void _onFilter(DateTime? from, DateTime? to) async {
+    final searchResults = await OutOfStockProvider().filter(from!, to!);
+    setState(() {
+      _items = searchResults;
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
@@ -47,13 +56,13 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
         elevation: 0,
         child: Column(children: [
           const SizedBox(height: 10),
-          CustomSearchBar(onSearch: _onSearch),
+          CustomSearchBar(onSearch: _onSearch, onFilter: _onFilter),
           const SizedBox(height: 10),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: DataTable(
               columnSpacing:
-                  isMobile ? 10 : (MediaQuery.of(context).size.width / 3) - 220,
+                  isMobile ? 10 : (MediaQuery.of(context).size.width / 4) - 220,
               headingRowColor: MaterialStateColor.resolveWith(
                 (states) => smartShopYellow,
               ),

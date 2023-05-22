@@ -69,7 +69,7 @@ class _LedFormState extends State<LedForm> {
       key: formKey,
       child: CustomButton(
         placeholder: 'Install LED',
-        width: isMobile ? 250 : 400,
+        width: isMobile ? 200 : 300,
         color: smartShopYellow,
         method: () {
           showDialog(

@@ -64,7 +64,7 @@ class _LedsState extends State<Leds> {
 
     final cardWidth = isMobile
         ? MediaQuery.of(context).size.width
-        : (MediaQuery.of(context).size.width) / 3;
+        : (MediaQuery.of(context).size.width / 2) - 32;
 
     final cards = [
       // first card
@@ -93,7 +93,32 @@ class _LedsState extends State<Leds> {
             ),
           ),
         ),
-      // second card
+      // suggest another card here
+
+      Card(
+        margin: const EdgeInsets.all(16),
+        child: SizedBox(
+          width: cardWidth,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                const Icon(Icons.smart_button, size: 64, color: Colors.green),
+
+                const SizedBox(height: 16),
+                const CustomText(placeholder: 'Leds Connected'),
+                const SizedBox(height: 8),
+                CustomText(placeholder:
+                  _totalLeds.toString(),
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     ];
 
     if (isMobile) {
@@ -131,7 +156,14 @@ class _LedsState extends State<Leds> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ...cards,
+                  Expanded(
+                    flex: 3,
+                    child: cards[0],
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: cards[1],
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
