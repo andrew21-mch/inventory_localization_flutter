@@ -288,9 +288,7 @@ class ProfileState extends State<Profile> {
                     : Padding(
                         padding: const EdgeInsets.all(16),
                         child: Responsive.isMobile(context)
-                            ? ListView(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
+                            ? Column(
                                 children: [
                                   _buildProfileImage(),
                                   const SizedBox(height: 16),
@@ -328,8 +326,7 @@ class ProfileState extends State<Profile> {
                                   )
                                 ],
                               )
-                            : ListView(
-                                shrinkWrap: true,
+                            : Column(
                                 children: [
                                   Row(
                                     children: [
