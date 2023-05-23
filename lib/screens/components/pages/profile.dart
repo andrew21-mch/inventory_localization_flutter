@@ -5,6 +5,7 @@ import 'package:SmartShop/responsive.dart';
 import 'package:SmartShop/screens/customs/button.dart';
 import 'package:SmartShop/screens/dashboard/pagescafold.dart';
 import 'package:SmartShop/styles/colors.dart';
+import 'package:SmartShop/utils/snackMessage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartShop/providers/sharePreference.dart';
@@ -145,9 +146,6 @@ class ProfileState extends State<Profile> {
         }
         return null;
       },
-      onSaved: (value) {
-        _user![0]['name'] = value;
-      },
     );
   }
 
@@ -262,7 +260,6 @@ class ProfileState extends State<Profile> {
 
   void _loadUserProfile() async {
     final user = await AuthProvider().getProfile();
-    print(user);
     setState(() {
       _user = user;
       nameController.text = user['name'].toString();
@@ -308,11 +305,10 @@ class ProfileState extends State<Profile> {
                                         var name = nameController.text;
                                         var email = emailController.text;
                                         var phone = phoneController.text;
-                                        var password = passwordController.text;
 
                                         final success = await AuthProvider()
                                             .updateProfile(
-                                                name, email, phone, password);
+                                                name, email, phone);
                                         if (success != null) {
                                           _loadUserProfile();
                                           _setMessage(
@@ -361,16 +357,14 @@ class ProfileState extends State<Profile> {
                                                       emailController.text;
                                                   var phone =
                                                       phoneController.text;
-                                                  var password =
-                                                      passwordController.text;
 
                                                   final success =
                                                       await AuthProvider()
                                                           .updateProfile(
                                                               name,
                                                               email,
-                                                              phone,
-                                                              password);
+                                                              phone
+                                                              );
                                                   if (success != null) {
                                                     _loadUserProfile();
                                                     _setMessage(
@@ -425,6 +419,8 @@ class ProfileState extends State<Profile> {
                                       if (formKey2.currentState!.validate()) {
                                         formKey2.currentState!.save();
 
+                                        var oldPassword =
+                                            passwordController.text;
                                         var newPassword =
                                             newPasswordController.text;
                                         var newPasswordConfirm =
@@ -436,20 +432,18 @@ class ProfileState extends State<Profile> {
                                         }
 
                                         final success = await AuthProvider()
-                                            .updatePassword(newPassword);
+                                            .updatePassword(
+                                            oldPassword,
+                                            newPasswordConfirm,
+                                            newPassword);
                                         if (success) {
                                           _loadUserProfile();
-                                          _setMessage(
-                                              'Password updated successfully');
-                                          //  reload page
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       Profile()));
                                         } else {
-                                          _setMessage(
-                                              'Error updating password');
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
@@ -490,6 +484,8 @@ class ProfileState extends State<Profile> {
                                                     .validate()) {
                                                   formKey2.currentState!.save();
 
+                                                  var oldPassword =
+                                                      passwordController.text;
                                                   var newPassword =
                                                       newPasswordController
                                                           .text;
@@ -505,18 +501,20 @@ class ProfileState extends State<Profile> {
                                                   }
 
                                                   final success =
-                                                      await AuthProvider()
-                                                          .updatePassword(
-                                                              newPassword);
+                                                  await AuthProvider()
+                                                      .updatePassword(
+                                                      oldPassword,
+                                                      newPasswordConfirm,
+                                                      newPassword);
                                                   if (success) {
                                                     _loadUserProfile();
-                                                    _setMessage(
-                                                        'Password updated successfully');
                                                   } else {
-                                                    _setMessage(
-                                                        'Error updating password');
+                                                    _loadUserProfile();
                                                   }
+                                                  _loadMessage();
+
                                                 }
+
                                               },
                                               placeholder: 'Update Password',
                                             ),

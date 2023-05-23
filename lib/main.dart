@@ -1,3 +1,6 @@
+import 'package:SmartShop/providers/ledProvider.dart';
+import 'package:SmartShop/providers/outOfStockProvider.dart';
+import 'package:SmartShop/providers/salesProvider.dart';
 import 'package:SmartShop/screens/components/pages/no_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +25,9 @@ void main() {
 
 final authProvider = ChangeNotifierProvider((ref) => AuthProvider());
 final userProvider = ChangeNotifierProvider((ref) => UserModel());
-// final ledProvider = ChangeNotifierProvider((ref) => LedProvider());
+final ledProvider = ChangeNotifierProvider((ref) => LedProvider());
+final salesProvider = ChangeNotifierProvider((ref) => SalesProvider());
+final stocksProvider = ChangeNotifierProvider((ref) => OutOfStockProvider());
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);

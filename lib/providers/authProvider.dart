@@ -308,7 +308,7 @@ class AuthProvider extends ChangeNotifier {
 
 //  update user profile
   Future<List<Map<String, dynamic>>> updateProfile(
-      String? name, String? email, String? password, String? phone) async {
+      String? name, String? email, String? phone) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Charset': 'utf-8',
@@ -319,7 +319,6 @@ class AuthProvider extends ChangeNotifier {
       'name': name,
       'email': email,
       'phone': phone,
-      'password': password,
     };
 
     http
@@ -342,31 +341,36 @@ class AuthProvider extends ChangeNotifier {
   }
 
 //  update Password
-  Future<bool> updatePassword(String? password) async {
+  Future<bool> updatePassword(
+      String? oldPassword,
+      String? newPassword,
+      String? newPasswordConfirm,
+      ) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Charset': 'utf-8',
       'Authorization':
           'Bearer ${await _prefs.then((SharedPreferences prefs) => prefs.getString('token') ?? '')}'
     };
-    final body = {'password': password};
-
+    final body = {
+      "old_password": oldPassword,
+      'password': newPassword,
+      'password_confirmation': newPasswordConfirm,
+    };
     http
         .put(Uri.parse(AppUrl.updatePassword),
             headers: headers, body: json.encode(body))
         .then((value) {
       final res = json.decode(value.body);
-      if (kDebugMode) {
-        print(res);
-      }
+      storeMessageToInMemory(res['message']);
       return true;
     }).catchError((e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      storeMessageToInMemory(e.toString());
       return false;
     });
 
+    storeMessageToInMemory('Something went wrong');
+    notifyListeners();
     return false;
   }
 }
