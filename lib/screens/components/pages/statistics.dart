@@ -343,7 +343,7 @@ class _StatisticsState extends State<Statistics> {
                 if (_statisticsData != null)
                   CustomText(
                       placeholder:
-                          '${_statisticsData![0]['data']['total_profit']}' +
+                          '${_statisticsData![0]['data']['expenditure']}' +
                               ' XAF',
                       color: smartShopYellow,
                       fontSize: 24,

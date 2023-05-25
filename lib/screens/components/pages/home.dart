@@ -174,7 +174,7 @@ class AuthHomeState extends State<AuthHome> {
                   if (_statisticsData != null)
                     CustomText(
                         placeholder:
-                            '${_statisticsData![0]['data']['total_profit']}' +
+                            '${_statisticsData![0]['data']['expenditure']}' +
                                 ' XAF',
                         color: smartShopRed,
                         fontSize: 22,
