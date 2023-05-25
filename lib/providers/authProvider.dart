@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:SmartShop/models/User.dart';
 import 'package:SmartShop/utils/snackMessage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:SmartShop/constants/app_url.dart';
@@ -143,7 +141,6 @@ class AuthProvider extends ChangeNotifier {
       'Authorization':
           'Bearer ${await _prefs.then((SharedPreferences prefs) => prefs.getString('token') ?? '')}'
     };
-    final body = {};
 
     http.Response req = await http.post(Uri.parse(url),
         headers: headers, body: json.encode(''));
@@ -202,6 +199,7 @@ class AuthProvider extends ChangeNotifier {
       } else {
         final res = json.decode(req.body);
         _isLoading = false;
+        _reqMessage = res['message'];
         notifyListeners();
       }
     } catch (e) {
@@ -212,12 +210,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  void navigateToPage(BuildContext context, Widget page) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
-  }
 
   void clear() {
     _reqMessage = '';
