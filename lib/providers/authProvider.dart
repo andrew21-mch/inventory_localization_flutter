@@ -54,9 +54,6 @@ class AuthProvider extends ChangeNotifier {
 
       if (req.statusCode == 200 || req.statusCode == 201) {
         final res = json.decode(req.body);
-        if (kDebugMode) {
-          print(res);
-        }
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
@@ -73,9 +70,7 @@ class AuthProvider extends ChangeNotifier {
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
-        if (kDebugMode) {
-          print(res);
-        }
+
       }
     } catch (e) {
       final res = e.toString();
@@ -112,14 +107,7 @@ class AuthProvider extends ChangeNotifier {
         DatabaseProvider().saveToken(token);
         final id = res['user']['id'];
         DatabaseProvider().saveId(id);
-        if (kDebugMode) {
-          print(id);
-          print(res['user']);
-        }
         DatabaseProvider().saveUserName(res['user']['name']);
-        if (kDebugMode) {
-          print(token);
-        }
         notifyListeners();
         Future.delayed(const Duration(seconds: 2), () {
           Get.to(
@@ -134,9 +122,6 @@ class AuthProvider extends ChangeNotifier {
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
-        if (kDebugMode) {
-          print(res);
-        }
       }
     } catch (e) {
       final res = e.toString();
@@ -205,9 +190,6 @@ class AuthProvider extends ChangeNotifier {
     try {
       if (req.statusCode == 200 || req.statusCode == 201) {
         final res = json.decode(req.body);
-        if (kDebugMode) {
-          print(res);
-        }
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
@@ -221,9 +203,6 @@ class AuthProvider extends ChangeNotifier {
         final res = json.decode(req.body);
         _isLoading = false;
         notifyListeners();
-        if (kDebugMode) {
-          print(res);
-        }
       }
     } catch (e) {
       final res = json.decode(req.body);
@@ -326,14 +305,8 @@ class AuthProvider extends ChangeNotifier {
             headers: headers, body: json.encode(body))
         .then((value) {
       final res = json.decode(value.body);
-      if (kDebugMode) {
-        print(res);
-      }
       return res['data'];
     }).catchError((e) {
-      if (kDebugMode) {
-        print(e);
-      }
       return [];
     });
 
