@@ -24,9 +24,9 @@ class ItemProvider extends ChangeNotifier {
 
   Future<bool> addItem({required String name,
     required String description,
+    required String cost,
     required String price,
     required String quantity,
-    required String cost,
     required String location,
     required String supplierId,
 
@@ -44,9 +44,9 @@ class ItemProvider extends ChangeNotifier {
     final body = {
       'name': name,
       'description': description,
-      'price': price,
+      'cost_price_per_unit': cost, // 'cost' is 'price_per_unit
+      'price_per_unit': price,
       'quantity': quantity,
-      'price_per_unit': cost, // 'cost' is 'price_per_unit
       'location': location,
       'supplier_id': supplierId,
     };
@@ -114,9 +114,9 @@ class ItemProvider extends ChangeNotifier {
     final body = {
       'name': name,
       'description': description,
-      'price': price,
+      'cost_price_per_unit': cost, // 'cost' is 'price_per_unit
+      'price_per_unit': price,
       'quantity': quantity,
-      'cost': cost,
       'location': location,
       'supplier_id': supplierId,
     };

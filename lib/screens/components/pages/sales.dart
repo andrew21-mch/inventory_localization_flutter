@@ -223,7 +223,11 @@ class _SalesState extends State<Sales> {
     if (isMobile) {
       return PageScaffold(
         title: 'Sales Page',
-        body: ListView(
+        body: _statisticsData == null || _salesData == null ||
+                _errorMessage != null
+            ? const Center(child: RefreshProgressIndicator())
+            :
+        ListView(
           scrollDirection: Axis.vertical,
           children: [
             ...cards,
@@ -236,7 +240,11 @@ class _SalesState extends State<Sales> {
     } else {
       return PageScaffold(
         title: 'Sales Page',
-        body: SizedBox(
+        body: _statisticsData == null || _salesData == null ||
+                _errorMessage != null
+            ? const Center(child: RefreshProgressIndicator())
+            :
+        SizedBox(
           // width: double.infinity,
           child: ListView(
             // mainAxisAlignment: MainAxisAlignment.start,

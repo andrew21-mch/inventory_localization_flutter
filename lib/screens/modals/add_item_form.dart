@@ -55,8 +55,8 @@ class _MyFormState extends State<MyForm> {
 
   final formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
-  TextEditingController costController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
+  TextEditingController costPriceController = TextEditingController();
+  TextEditingController sellingPriceController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   TextEditingController pinNumberController = TextEditingController();
   TextEditingController supplierController = TextEditingController();
@@ -64,8 +64,8 @@ class _MyFormState extends State<MyForm> {
 
   clearInput() {
     nameController.clear();
-    costController.clear();
-    priceController.clear();
+    costPriceController.clear();
+    sellingPriceController.clear();
     quantityController.clear();
     pinNumberController.clear();
     supplierController.clear();
@@ -161,13 +161,13 @@ class _MyFormState extends State<MyForm> {
                           ),
                         ),
                         TextFormField(
-                          controller: costController,
+                          controller: costPriceController,
                           decoration: const InputDecoration(
                             hintText: 'Bought At',
                           ),
                         ),
                         TextFormField(
-                          controller: priceController,
+                          controller: sellingPriceController,
                           decoration: const InputDecoration(
                             hintText: 'Selling At',
                           ),
@@ -257,8 +257,8 @@ class _MyFormState extends State<MyForm> {
                           if (await ItemProvider().addItem(
                             name: nameController.text,
                             description: descriptionController.text,
-                            cost: costController.text,
-                            price: priceController.text,
+                            cost: costPriceController.text,
+                            price: sellingPriceController.text,
                             quantity: quantityController.text,
                             location: _selectedLed!,
                             supplierId: selectedSupplier!,

@@ -78,6 +78,7 @@ class _StocksState extends State<Stocks> {
         ? MediaQuery.of(context).size.width
         : (MediaQuery.of(context).size.width - 80) / 3;
 
+
     final cards = [
       // first card
       Card(
@@ -177,7 +178,9 @@ class _StocksState extends State<Stocks> {
     if (isMobile) {
       return PageScaffold(
         title: 'Stocks Page',
-        body: ListView(
+        body: _statisticsData == null || _outOfStocksData == null ? const Center(child: RefreshProgressIndicator())
+            :
+        ListView(
           scrollDirection: Axis.vertical,
           children: [
             ...cards,
@@ -198,7 +201,9 @@ class _StocksState extends State<Stocks> {
     } else {
       return PageScaffold(
         title: 'Stocks Page',
-        body: ListView(
+        body: _statisticsData == null || _outOfStocksData == null ? const Center(child: RefreshProgressIndicator())
+            :
+        ListView(
           scrollDirection: Axis.vertical,
           children: [
             Column(

@@ -170,6 +170,8 @@ class _StatisticsState extends State<Statistics> {
         ? MediaQuery.of(context).size.width
         : (MediaQuery.of(context).size.width - 80) / 3;
 
+    //check if all data is loaded
+
     final cards2 = [
       // first card
       Card(
@@ -340,7 +342,7 @@ class _StatisticsState extends State<Statistics> {
                 const Icon(Icons.credit_card,
                     size: 64, color: Colors.redAccent),
                 const SizedBox(height: 16),
-                if (_statisticsData != null)
+                if ( _statisticsData != null)
                   CustomText(
                       placeholder:
                           '${_statisticsData![0]['data']['expenditure']}' +
@@ -424,7 +426,10 @@ class _StatisticsState extends State<Statistics> {
     if (isMobile) {
       return PageScaffold(
         title: 'Statistics',
-        body: ListView(
+        body: _statisticsData == null || _salesStatisticsData == null || _salesData == null
+            ? const Center(child: RefreshProgressIndicator())
+            :
+        ListView(
           scrollDirection: Axis.vertical,
           children: [
             ...cards,
@@ -437,7 +442,10 @@ class _StatisticsState extends State<Statistics> {
     } else {
       return PageScaffold(
         title: 'Dashboard',
-        body: ListView(
+        body: _statisticsData == null || _salesStatisticsData == null || _salesData == null
+            ? const Center(child: RefreshProgressIndicator())
+            :
+        ListView(
           scrollDirection: Axis.vertical,
           children: [
             Row(

@@ -58,9 +58,9 @@ class StatisticProvider extends ChangeNotifier {
         return [];
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
       return [];
     }
@@ -102,9 +102,9 @@ class StatisticProvider extends ChangeNotifier {
         return [];
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
       return [];
     }
@@ -150,9 +150,9 @@ class StatisticProvider extends ChangeNotifier {
         return [];
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
       return [];
     }

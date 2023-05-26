@@ -171,7 +171,7 @@ class AuthHomeState extends State<AuthHome> {
                   const Icon(Icons.credit_card,
                       size: 64, color: Colors.redAccent),
                   const SizedBox(height: 16),
-                  if (_statisticsData != null)
+                  if (_statisticsData != null && _statisticsData!.isNotEmpty)
                     CustomText(
                         placeholder:
                             '${_statisticsData![0]['data']['expenditure']}' +
@@ -207,7 +207,7 @@ class AuthHomeState extends State<AuthHome> {
                         //rotate the ic
                         ),
                   const SizedBox(height: 16),
-                  if (_statisticsData != null)
+                  if (_statisticsData != null && _statisticsData!.isNotEmpty)
                     CustomText(
                         placeholder:
                             '${_statisticsData![0]['data']['total_profit']}' +
@@ -239,7 +239,7 @@ class AuthHomeState extends State<AuthHome> {
                 children: [
                   const Icon(Icons.all_inbox, size: 64, color: Colors.green),
                   const SizedBox(height: 16),
-                  if (_statisticsData != null)
+                  if (_statisticsData != null && _statisticsData!.isNotEmpty)
                     CustomText(
                         placeholder:
                             '${_statisticsData![0]['data']['total_components']}',
@@ -262,7 +262,8 @@ class AuthHomeState extends State<AuthHome> {
     if (isMobile) {
       return PageScaffold(
         title: 'Dashboard',
-        body: ListView(
+        body: _statisticsData != null && _statisticsData!.isNotEmpty ?
+        ListView(
           scrollDirection: Axis.vertical,
           children: [
             Card(
@@ -292,12 +293,15 @@ class AuthHomeState extends State<AuthHome> {
             const DataTableWidget(),
             const Padding(padding: EdgeInsets.all(32)),
           ],
+        ) : const Center(
+          child: RefreshProgressIndicator(),
         ),
       );
     } else {
       return PageScaffold(
         title: 'Dashboard',
-        body: ListView(
+        body:         _statisticsData != null && _statisticsData!.isNotEmpty ?
+        ListView(
           scrollDirection: Axis.vertical,
           children: [
             Row(
@@ -332,7 +336,7 @@ class AuthHomeState extends State<AuthHome> {
               ],
             ),
           ],
-        ),
+        ) : const Center(child: RefreshProgressIndicator()),
       );
     }
   }
