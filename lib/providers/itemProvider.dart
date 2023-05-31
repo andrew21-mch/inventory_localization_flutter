@@ -326,7 +326,7 @@ class ItemProvider extends ChangeNotifier {
       } else {
         final res = json.decode(req.body);
         _isLoading = false;
-        storeMessageToInMemory(res['errors'].toString());
+        storeMessageToInMemory(res['message'].toString());
         notifyListeners();
         return false;
       }

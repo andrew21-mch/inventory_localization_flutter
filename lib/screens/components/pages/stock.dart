@@ -109,7 +109,8 @@ class _StocksState extends State<Stocks> {
                     ),
                   )
                 else if (_errorMessage == null)
-                  const SizedBox(height: 200, child: RefreshProgressIndicator())
+                   const SizedBox(height: 200, child: CustomText(placeholder: 'Nothing To Show',)
+                   )
                 else
                   CustomText(
                     placeholder: _errorMessage!,
@@ -152,7 +153,7 @@ class _StocksState extends State<Stocks> {
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: CustomText(
-                        placeholder: _outOfStocksData!.length.toString(),
+                        placeholder: _outOfStocksData!.isNotEmpty ? _outOfStocksData!.length.toString() : '0',
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: smartShopRed,
@@ -161,10 +162,10 @@ class _StocksState extends State<Stocks> {
                   else if (_errorMessage == null)
                     const RefreshProgressIndicator()
                   else
-                    CustomText(
+                    Center(child: CustomText(
                       placeholder: _errorMessage!,
                       color: Colors.red,
-                    )
+                    ))
                 ],
               ),
             ),
@@ -193,7 +194,7 @@ class _StocksState extends State<Stocks> {
                 color: smartShopRed,
               ),
             ),
-            const OutOfStockTableWidget(),
+            _statisticsData == [] ? const Center(child: RefreshProgressIndicator()) : const OutOfStockTableWidget(),
             const SizedBox(height: 16),
           ],
         ),
@@ -231,7 +232,7 @@ class _StocksState extends State<Stocks> {
                       color: smartShopRed,
                     ),
                     const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
-                    const OutOfStockTableWidget(),
+                    _statisticsData!.isNotEmpty ? const OutOfStockTableWidget(): const Center(child: RefreshProgressIndicator()),
                   ],
                 )
               ],

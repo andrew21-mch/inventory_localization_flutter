@@ -1,4 +1,5 @@
 import 'package:SmartShop/providers/itemProvider.dart';
+import 'package:SmartShop/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:SmartShop/providers/ledProvider.dart';
@@ -19,7 +20,7 @@ class DataTableWidget extends StatefulWidget {
 }
 
 class DataTableWidgetState extends State<DataTableWidget> {
-  List<Map<String, dynamic>> _items = [];
+  List<Map<String, dynamic>>? _items;
   String? message;
 
   @override
@@ -39,16 +40,20 @@ class DataTableWidgetState extends State<DataTableWidget> {
 
   void _onSearch(String query) async {
     final searchResults = await ItemProvider().search(query);
-    setState(() {
-      _items = searchResults;
-    });
+    if(mounted){
+      setState(() {
+        _items = searchResults;
+      });
+    }
   }
 
   void _onFilter(DateTime? startDate, DateTime? endDate) async {
     final filterResults = await ItemProvider().filter(startDate, endDate);
-    setState(() {
-      _items = filterResults;
-    });
+    if(mounted) {
+      setState(() {
+        _items = filterResults;
+      });
+    }
   }
 
   void _setMessage(String newMessage) {
@@ -85,190 +90,206 @@ class DataTableWidgetState extends State<DataTableWidget> {
         ),
         color: smartShopWhite,
         elevation: 0,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(padding: EdgeInsets.only(top: 10)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                !isMobile
-                    ? IconButton(
-                        onPressed: () {
-                          _loadItems();
-                        },
-                        icon: Icon(Icons.refresh, color: smartShopGreen),
-                      )
-                    : Container(),
-                !isMobile ? const MyForm(width: 200) : Container(),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.only(top: 10)),
-            CustomSearchBar(onSearch: _onSearch, onFilter: _onFilter),
-            const Padding(padding: EdgeInsets.only(top: 15)),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: _items.isEmpty
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        color: smartShopGreen,
-                      ),
-                    )
-                  : DataTable(
-                      columnSpacing: isMobile
-                          ? 10
-                          : (MediaQuery.of(context).size.width / 3.5) - 220,
-                      headingRowColor: MaterialStateColor.resolveWith(
-                        (states) => smartShopYellow,
-                      ),
-                      columns: [
-                        DataColumn(
-                          label: CustomText(
-                            placeholder: 'NAME',
-                            color: smartShopWhite,
-                          ),
-                        ),
-                        DataColumn(
-                          label: CustomText(
-                            placeholder: 'DESCRIPTION',
-                            color: smartShopWhite,
-                          ),
-                        ),
-                        DataColumn(
-                          label: CustomText(
-                            placeholder: 'STATUS',
-                            color: smartShopWhite,
-                          ),
-                        ),
-                        DataColumn(
-                          label: CustomText(
-                            placeholder: 'ACTIONS',
-                            color: smartShopWhite,
-                          ),
-                        ),
-                      ],
-                      rows: _items.map((item) {
-                        return DataRow(
-                          cells: [
-                            DataCell(
-                              SizedBox(
-                                width: isMobile ? 60 : 150,
-                                child: CustomText(
-                                  placeholder: item['name'].toString(),
+        child: _items == null
+            ? const LinearProgressIndicator()
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      !isMobile
+                          ? IconButton(
+                              onPressed: () {
+                                _loadItems();
+                              },
+                              icon: Icon(Icons.refresh, color: smartShopGreen),
+                            )
+                          : Container(),
+                      !isMobile ? const MyForm(width: 200) : Container(),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  CustomSearchBar(onSearch: _onSearch, onFilter: _onFilter),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: _items!.isEmpty
+                        ? RefreshProgressIndicator(
+                              color: smartShopGreen,
+                            )
+                        : DataTable(
+                      sortColumnIndex: 1,
+                            columnSpacing: Responsive.isMobile(context) ? 10 : Responsive.isTablet(context) ? 20 : (MediaQuery.of(context).size.width / 4) - 250,
+                            headingRowColor: MaterialStateColor.resolveWith(
+                              (states) => smartShopYellow,
+                            ),
+                            columns: [
+                              DataColumn(
+                                label: CustomText(
+                                  placeholder: 'NAME',
+                                  color: smartShopWhite,
                                 ),
                               ),
-                            ),
-                            DataCell(SizedBox(
-                                width: isMobile ? 60 : 150,
-                                child: CustomText(
-                                  placeholder: item['description'].toString(),
-                                ))),
-                            DataCell(
-                              Container(
-                                width: isMobile ? 50 : 150,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: item['status'].toString() == 'high'
-                                      ? smartShopGreen.withOpacity(0.2)
-                                      : smartShopRed.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(10),
+                              DataColumn(
+                                label: CustomText(
+                                  placeholder: 'DESCRIPTION',
+                                  color: smartShopWhite,
                                 ),
-                                child: CustomText(
-                                    placeholder: isMobile
-                                        ? (item['status'].toString() == 'high'
-                                            ? 'high'
-                                            : 'low')
-                                        : (item['status'].toString() == 'high'
-                                            ? 'In stock'
-                                            : 'Out of stock'),
-                                    color: item['status'] == 'high'
-                                        ? smartShopGreen
-                                        : smartShopRed),
                               ),
-                            ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: item['led'] != null &&
-                                            item['led']!['status'] == 'on'
-                                        ? Icon(
-                                            Icons.lightbulb,
-                                            color: smartShopGreen,
-                                          )
-                                        : Icon(
-                                            Icons.lightbulb,
-                                            color: smartShopRed,
-                                          ),
-                                    onPressed: () {
-                                      LedProvider()
-                                          .showItem(
-                                              item['led'] != null &&
+                              DataColumn(
+                                label: CustomText(
+                                  placeholder: 'PRICE',
+                                  color: smartShopWhite,
+                                ),
+                              ),
+                              DataColumn(
+                                label: CustomText(
+                                  placeholder: 'STATUS',
+                                  color: smartShopWhite,
+                                ),
+                              ),
+                              DataColumn(
+                                label: CustomText(
+                                  placeholder: 'ACTIONS',
+                                  color: smartShopWhite,
+                                ),
+                              ),
+                            ],
+                            rows: _items!.map((item) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(
+                                    SizedBox(
+                                      width: isMobile ? 60 : 150,
+                                      child: CustomText(
+                                        placeholder: item['name'].toString(),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(SizedBox(
+                                      width: isMobile ? 60 : 150,
+                                      child: CustomText(
+                                        placeholder:
+                                            item['description'].toString(),
+                                      ))),
+                                  DataCell(SizedBox(
+                                      width: isMobile ? 60 : 150,
+                                      child: CustomText(
+                                        placeholder:
+                                        '${item['price_per_unit']} XAF'
+                                      ))),
+                                  DataCell(
+                                    Container(
+                                      width: isMobile ? 50 : 150,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 5),
+                                      decoration: BoxDecoration(
+                                        color: item['status'].toString() ==
+                                                'high'
+                                            ? smartShopGreen.withOpacity(0.2)
+                                            : smartShopRed.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: CustomText(
+                                          placeholder: isMobile
+                                              ? (item['status'].toString() ==
+                                                      'high'
+                                                  ? 'high'
+                                                  : 'low')
+                                              : (item['status'].toString() ==
+                                                      'high'
+                                                  ? 'In stock'
+                                                  : 'Out of stock'),
+                                          color: item['status'] == 'high'
+                                              ? smartShopGreen
+                                              : smartShopRed),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: item['led'] != null &&
+                                                  item['led']!['status'] == 'on'
+                                              ? Icon(
+                                                  Icons.lightbulb,
+                                                  color: smartShopGreen,
+                                                )
+                                              : Icon(
+                                                  Icons.lightbulb,
+                                                  color: smartShopRed,
+                                                ),
+                                          onPressed: () {
+                                            LedProvider()
+                                                .showItem(
+                                                    item['led'] != null &&
+                                                            item['led']![
+                                                                    'led_unique_number'] !=
+                                                                null
+                                                        ? item['led']![
+                                                            'led_unique_number']
+                                                        : '',
+                                                    item['led'] != null &&
+                                                            item['led']![
+                                                                    'status'] ==
+                                                                'on'
+                                                        ? 'off'
+                                                        : 'on',
+                                                    item['led'] != null
+                                                        ? item['led']!['id']
+                                                        : 0)
+                                                .then((value) {
+                                              print(item['led'] != null &&
                                                       item['led']![
                                                               'led_unique_number'] !=
                                                           null
                                                   ? item['led']![
                                                       'led_unique_number']
-                                                  : '',
-                                              item['led'] != null &&
-                                                      item['led']!['status'] ==
-                                                          'on'
-                                                  ? 'off'
-                                                  : 'on',
-                                              item['led'] != null
-                                                  ? item['led']!['id']
-                                                  : 0)
-                                          .then((value) {
-                                        print(item['led'] != null &&
-                                                item['led']![
-                                                        'led_unique_number'] !=
-                                                    null
-                                            ? item['led']!['led_unique_number']
-                                            : '');
-                                        _loadItems();
-                                        _loadMessage();
-                                      });
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: smartShopYellow,
+                                                  : '');
+                                              _loadItems();
+                                              _loadMessage();
+                                            });
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: smartShopYellow,
+                                          ),
+                                          onPressed: () {
+                                            Get.to(
+                                                () => ItemDetail(
+                                                    itemID: item['id']!),
+                                                transition:
+                                                    Transition.rightToLeft);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: smartShopRed,
+                                          ),
+                                          onPressed: () async {
+                                            if (await ItemProvider()
+                                                .deleteItem(item['id'])) {
+                                              _loadMessage();
+                                            } else {
+                                              _loadMessage();
+                                            }
+                                           _loadItems();
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    onPressed: () {
-                                      Get.to(
-                                          () => ItemDetail(itemID: item['id']!),
-                                          transition: Transition.rightToLeft);
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: smartShopRed,
-                                    ),
-                                    onPressed: () async {
-                                      if (await ItemProvider()
-                                          .deleteItem(item['id'])) {
-                                        _loadMessage();
-                                      } else {
-                                        _loadMessage();
-                                      }
-                                      setState(() async {
-                                        _items =
-                                            await ItemProvider().getItems();
-                                      });
-                                    },
                                   ),
                                 ],
-                              ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-            )
-          ],
-        ));
+                              );
+                            }).toList(),
+                          ),
+                  )
+                ],
+              ));
   }
 }

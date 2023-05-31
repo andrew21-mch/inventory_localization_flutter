@@ -232,7 +232,7 @@ class _SalesState extends State<Sales> {
           children: [
             ...cards,
             const SizedBox(height: 16),
-            const SalesTableWidget(),
+            _salesData!.isNotEmpty ? const SalesTableWidget() : const LinearProgressIndicator(),
             const SizedBox(height: 16),
           ],
         ),
@@ -265,7 +265,7 @@ class _SalesState extends State<Sales> {
                     ],
                   ),
                   const SizedBox(height: 32),
-                  const SalesTableWidget(),
+                  _salesData!.isNotEmpty ? const SalesTableWidget() : const LinearProgressIndicator(),
                 ],
               ),
             ],

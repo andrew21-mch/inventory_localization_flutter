@@ -40,10 +40,12 @@ class _StocksLineChartWidgetState extends State<StocksLineChartWidget> {
 
   void _setMaxValue() {
     final List<int> quantities = widget.data.map((datum) => datum['quantity'] as int).toList();
-    final int maxValue = quantities.reduce((value, element) => value > element ? value : element);
-    setState(() {
-      _maxValue = maxValue;
-    });
+    final int maxValue = quantities.isNotEmpty ?
+    quantities.reduce((value, element) => value > element ? value : element): 0;
+      setState(() {
+        _maxValue = maxValue;
+      });
+
   }
 
   @override

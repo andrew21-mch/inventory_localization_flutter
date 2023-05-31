@@ -130,12 +130,6 @@ class _StatisticsState extends State<Statistics> {
     try {
       final data = await SalesProvider().getSales();
       //check if data is empty
-      if (data.isEmpty) {
-        setState(() {
-          _errorMessage = 'No sales data';
-        });
-        return;
-      }
       _setSalesData(data);
     } catch (e) {
       setState(() {
@@ -303,7 +297,7 @@ class _StatisticsState extends State<Statistics> {
                     ),
                   ),
                 ),
-                if (_salesData !=
+                if (_salesStatisticsData !=
                     null) // check if _salesData is not null and has at least one item
                   SizedBox(
                     height: 200, // Replace with desired height
@@ -441,8 +435,8 @@ class _StatisticsState extends State<Statistics> {
       );
     } else {
       return PageScaffold(
-        title: 'Dashboard',
-        body: _statisticsData == null || _salesStatisticsData == null || _salesData == null
+        title: 'Statistics',
+        body: _statisticsData == null || _salesStatisticsData == null
             ? const Center(child: RefreshProgressIndicator())
             :
         ListView(

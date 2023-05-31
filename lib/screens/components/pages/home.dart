@@ -180,7 +180,7 @@ class AuthHomeState extends State<AuthHome> {
                         fontSize: 22,
                         fontWeight: FontWeight.bold)
                   else
-                    const RefreshProgressIndicator(),
+                    const LinearProgressIndicator(),
                   const SizedBox(height: 8),
                   const CustomText(placeholder: 'Total Expenses'),
                 ],
@@ -216,7 +216,7 @@ class AuthHomeState extends State<AuthHome> {
                         fontSize: 22,
                         fontWeight: FontWeight.bold)
                   else
-                    const RefreshProgressIndicator(),
+                    const LinearProgressIndicator(),
                   const SizedBox(height: 8),
                   const CustomText(placeholder: 'Total Profits'),
                 ],
@@ -262,7 +262,7 @@ class AuthHomeState extends State<AuthHome> {
     if (isMobile) {
       return PageScaffold(
         title: 'Dashboard',
-        body: _statisticsData != null && _statisticsData!.isNotEmpty ?
+        body: _statisticsData != null ?
         ListView(
           scrollDirection: Axis.vertical,
           children: [
@@ -290,7 +290,7 @@ class AuthHomeState extends State<AuthHome> {
                 ],
               ),
             ),
-            const DataTableWidget(),
+             _statisticsData!.isNotEmpty ?  const DataTableWidget() :const LinearProgressIndicator(),
             const Padding(padding: EdgeInsets.all(32)),
           ],
         ) : const Center(
@@ -300,7 +300,7 @@ class AuthHomeState extends State<AuthHome> {
     } else {
       return PageScaffold(
         title: 'Dashboard',
-        body:         _statisticsData != null && _statisticsData!.isNotEmpty ?
+        body:         _statisticsData != null  ?
         ListView(
           scrollDirection: Axis.vertical,
           children: [
@@ -316,7 +316,7 @@ class AuthHomeState extends State<AuthHome> {
                 ...cards2,
               ],
             ),
-            const DataTableWidget(),
+            _statisticsData!.isNotEmpty ?  const DataTableWidget() :const LinearProgressIndicator(),
             Flex(
               direction: Axis.horizontal,
               mainAxisAlignment: MainAxisAlignment.center,
