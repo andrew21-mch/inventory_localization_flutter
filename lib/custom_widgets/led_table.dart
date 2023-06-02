@@ -164,7 +164,7 @@ class LedTableWidgetState extends State<LedTableWidget> {
                                   onPressed: () {
                                     LedProvider()
                                         .showItem(
-                                            item['led_unique_number'],
+                                            item['id'].toString(),
                                             item['status'] == 'on'
                                                 ? 'off'
                                                 : 'on',

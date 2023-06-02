@@ -44,7 +44,7 @@ class LedProvider extends ChangeNotifier {
   }
 
   Future<bool>
-  installLed(String shelfNumber, String ledUniqueNumber
+  installLed(String shelfNumber, String micronControllerId, String pinId
       ) async {
     _isLoading = true;
     notifyListeners();
@@ -58,7 +58,8 @@ class LedProvider extends ChangeNotifier {
     };
     final body = {
       'shelf_number': shelfNumber,
-      'led_unique_number': ledUniqueNumber,
+      'microcontroller_id': micronControllerId,
+      'pin_id': pinId,
     };
 
     try {
@@ -377,4 +378,91 @@ class LedProvider extends ChangeNotifier {
       return false;
     }
   }
+
+
+//  get MCUs
+  Future<List<Map<String, dynamic>>> getMicroControllers() async {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.leds}/microcontrollers/get';
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization': 'Bearer ${await _prefs.then((
+          SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    try {
+      http.Response req = await http.get(Uri.parse(url), headers: headers);
+
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+
+        _isLoading = false;
+        notifyListeners();
+        return List<Map<String, dynamic>>.from(res['data']);
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+
+        return [];
+      }
+    } catch (e) {
+      final res = e.toString();
+      _isLoading = false;
+      _reqMessage = res;
+      notifyListeners();
+      return [];
+    }
+  }
+
+  // get a list of pins for a given mcuId
+
+  Future<List<Map<String, dynamic>>>
+  getPins(String? $mcuId) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.leds}/pins/load/${$mcuId}';
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization': 'Bearer ${await _prefs.then((SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    try {
+      http.Response req = await http.get(Uri.parse(url), headers: headers);
+
+      if (req.statusCode == 200 || req.statusCode == 201) {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        notifyListeners();
+        return List<Map<String, dynamic>>.from(res['data']);
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+
+        print('Pins error: $_reqMessage'); // Print the error message
+
+        return [];
+      }
+    } catch (e) {
+      final res = e.toString();
+      _isLoading = false;
+      _reqMessage = res;
+      notifyListeners();
+
+      print('Pins exception: $_reqMessage'); // Print the exception message
+
+      return [];
+    }
+  }
+
+
+
 }
