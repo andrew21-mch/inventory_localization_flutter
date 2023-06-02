@@ -84,35 +84,36 @@ class _LedFormState extends State<LedForm> {
     return _pins == null
         ? const Center(child: CircularProgressIndicator())
         : _pins!.isEmpty
-        ? const Center(child: Text('No pins found'))
-        : DropdownButtonFormField<String>(
-      hint: const CustomText(placeholder: 'Select Pin'),
-      value: _selectedPin,
-      isExpanded: true,
-      icon: const Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
-      onChanged: (String? newValue) {
-        setState(() {
-          _selectedPin = newValue;
-        });
-      },
-      items: _pins != null
-          ? _pins!.map<DropdownMenuItem<String>>((pin) {
-        return DropdownMenuItem<String>(
-          value: pin['pinNumber'].toString(),
-          child: Text('MCU ${pin['microcontroller_id']} - Pin ${pin['pinNumber']}'),
-        );
-      }).toList()
-          : [],
-      validator: (value) {
-        if (value == null) {
-          return 'Please select pin';
-        }
-        return null;
-      },
-    );
+            ? const Center(child: Text('No pins found'))
+            : DropdownButtonFormField<String>(
+                hint: const CustomText(placeholder: 'Select Pin'),
+                value: _selectedPin,
+                isExpanded: true,
+                icon: const Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: const TextStyle(color: Colors.deepPurple),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedPin = newValue;
+                  });
+                },
+                items: _pins != null
+                    ? _pins!.map<DropdownMenuItem<String>>((pin) {
+                        return DropdownMenuItem<String>(
+                          value: pin['pinNumber'].toString(),
+                          child: Text(
+                              'MCU ${pin['microcontroller_id']} - Pin ${pin['pinNumber']}'),
+                        );
+                      }).toList()
+                    : [],
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select pin';
+                  }
+                  return null;
+                },
+              );
   }
 
   String? _selectedLed;
@@ -158,46 +159,7 @@ class _LedFormState extends State<LedForm> {
                       width: isMobile ? null : 600,
                       child: Column(
                         children: [
-                          DropdownButtonFormField<String>(
-                            hint: const CustomText(placeholder: 'Select MCU'),
-                            value: _selectedLed,
-                            isExpanded: true,
-                            icon: const Icon(Icons.arrow_downward),
-                            iconSize: 24,
-                            elevation: 16,
-                            style: const TextStyle(color: Colors.deepPurple),
-                            onChanged: (newValue) {
-                              if (newValue == null) return;
-                              setState(() {
-                                _selectedLed = newValue;
-                                _selectedPin = null; // Reset the selected pin when the MCU changes
-                                _loadPins(newValue).then((pins) {
-                                  setState(() {
-                                    _pins = pins;
-                                  });
-                                });
-                              });
-                            },
-                            items: _mcus != null && _mcus!.isNotEmpty
-                                ? _mcus!.map<DropdownMenuItem<String>>(
-                                    (Map<String, dynamic> value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value['id'].toString(),
-                                    child: CustomText(
-                                      placeholder:
-                                      '${value['Name']} - ${value['description']}',
-                                    ),
-                                  );
-                                }).toList()
-                                : const [
-                              DropdownMenuItem<String>(
-                                value: 'loading',
-                                child: CustomText(
-                                  placeholder: 'Loading LEDs...',
-                                ),
-                              ),
-                            ],
-                          ),
+                          buildDropdownButtonFormField(setState),
                           const SizedBox(height: 10),
                           _buildPinDropdown(),
                           const SizedBox(height: 10),
@@ -221,8 +183,7 @@ class _LedFormState extends State<LedForm> {
                 TextButton(
                   onPressed: () => Navigator.pop(context),
                   style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all(smartShopYellow),
+                    backgroundColor: MaterialStateProperty.all(smartShopYellow),
                   ),
                   child: const Text(
                     'Cancel',
@@ -255,8 +216,7 @@ class _LedFormState extends State<LedForm> {
                     }
                   },
                   style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all(smartShopYellow),
+                    backgroundColor: MaterialStateProperty.all(smartShopYellow),
                   ),
                   child: const Text(
                     'Add',
@@ -268,6 +228,48 @@ class _LedFormState extends State<LedForm> {
           );
         },
       ),
+    );
+  }
+
+  DropdownButtonFormField<String> buildDropdownButtonFormField(
+      StateSetter setState) {
+    return DropdownButtonFormField<String>(
+      hint: const CustomText(placeholder: 'Select MCU'),
+      value: _selectedLed,
+      isExpanded: true,
+      icon: const Icon(Icons.arrow_downward),
+      iconSize: 24,
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      onChanged: (newValue) {
+        if (newValue == null) return;
+        setState(() {
+          _selectedLed = newValue;
+          _selectedPin = null; // Reset the selected pin when the MCU changes
+          _loadPins(newValue).then((pins) {
+            setState(() {
+              _pins = pins;
+            });
+          });
+        });
+      },
+      items: _mcus != null && _mcus!.isNotEmpty
+          ? _mcus!.map<DropdownMenuItem<String>>((Map<String, dynamic> value) {
+              return DropdownMenuItem<String>(
+                value: value['id'].toString(),
+                child: CustomText(
+                  placeholder: '${value['Name']} - ${value['description']}',
+                ),
+              );
+            }).toList()
+          : const [
+              DropdownMenuItem<String>(
+                value: 'loading',
+                child: CustomText(
+                  placeholder: 'Loading LEDs...',
+                ),
+              ),
+            ],
     );
   }
 }
