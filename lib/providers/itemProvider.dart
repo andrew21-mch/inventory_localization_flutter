@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:SmartShop/utils/snackMessage.dart';
 import 'package:flutter/foundation.dart';
@@ -29,6 +30,7 @@ class ItemProvider extends ChangeNotifier {
     required String quantity,
     required String location,
     required String supplierId,
+    String? imageUri,
 
   }) async {
     _isLoading = true;
@@ -49,6 +51,7 @@ class ItemProvider extends ChangeNotifier {
       'quantity': quantity,
       'location': location,
       'supplier_id': supplierId,
+      'image_uri': imageUri,
     };
 
 
@@ -374,6 +377,7 @@ class ItemProvider extends ChangeNotifier {
       return [];
     }
   }
+
 
   Future<List<Map<String, dynamic>>> filter(DateTime? startDate, DateTime? endDate) {
     _isLoading = true;

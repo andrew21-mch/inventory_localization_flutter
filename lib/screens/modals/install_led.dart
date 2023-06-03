@@ -2,7 +2,6 @@ import 'package:SmartShop/providers/sharePreference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:SmartShop/custom_widgets/CustomText.dart';
 import 'package:SmartShop/providers/ledProvider.dart';
 import 'package:SmartShop/screens/components/pages/led_page_view.dart';

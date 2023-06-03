@@ -1,4 +1,7 @@
+import 'package:SmartShop/custom_widgets/out_of_stocks_table.dart';
+import 'package:SmartShop/providers/outOfStockProvider.dart';
 import 'package:SmartShop/providers/sharePreference.dart';
+import 'package:SmartShop/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartShop/custom_widgets/CustomText.dart';
 import 'package:SmartShop/custom_widgets/StocksLineChart.dart';
@@ -38,6 +41,134 @@ class _StatisticsState extends State<Statistics> {
     _startDate = DateTime.now();
     _endDate = DateTime.now();
   }
+
+  Future<List<Map<String, dynamic>>> _getRecommendationsFromDatabase() async {
+    // Sample items
+    final items = [
+      {
+        'name': 'Item 1',
+        'price': 100,
+      },
+      {
+        'name': 'Item 2',
+        'price': 200,
+      },
+      {
+        'name': 'Item 3',
+        'price': 300,
+      },
+      {
+        'name': 'Item 4',
+        'price': 400,
+      },
+      {
+        'name': 'Item 5',
+        'price': 500,
+      },
+      {
+        'name': 'Item 6',
+        'price': 600,
+      },
+      {
+        'name': 'Item 7',
+        'price': 700,
+      },
+      {
+        'name': 'Item 8',
+        'price': 800,
+      },
+      {
+        'name': 'Item 9',
+        'price': 900,
+      },
+      {
+        'name': 'Item 10',
+        'price': 1000,
+      },
+    ];
+
+    return items;
+  }
+
+  Widget _buildRecommendations() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          const CustomText(
+            placeholder: "Recommendations based on your sales",
+            fontSize: 20,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            height: 200,
+            child: FutureBuilder<List<Map<String, dynamic>>>(
+              future: _getRecommendationsFromDatabase(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final recommendations = snapshot.data!;
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: recommendations.length,
+                    itemBuilder: (context, index) {
+                      final product = recommendations[index];
+                      return Center(
+                        child: SizedBox(
+                          width: 200,
+                          child: Card(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 100,
+                                  width: 200,
+                                  child: Image.network(
+                                    'https://picsum.photos/200/300', // Use random images from the internet
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                CustomText(
+                                  placeholder: product['name'], // Use the product name from the database
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                CustomText(
+                                  placeholder: "\$${product['price']}", // Use the product price from the database
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return const Center(child: Text('Error loading recommendations'));
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
   void _setMessage(String newMessage) {
     setState(() {
@@ -181,6 +312,82 @@ class _StatisticsState extends State<Statistics> {
                     placeholder: 'Stocks Stats',
                     color: smartShopYellow,
                     fontSize: 24),
+                Flexible(
+                  flex: 1,
+                  child: IconButton(
+                    icon: const Icon(Icons.filter_list),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const CustomText(
+                            placeholder: 'Filter by date',
+                            textAlign: TextAlign.center,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                        content:
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                          FractionallySizedBox(
+                            widthFactor: 0.3,
+                            child: GestureDetector(
+                              onTap: () => _selectDate(context, true),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: TextEditingController(
+                                      text: _startDate != null
+                                          ? DateFormat('yyyy-MM-dd')
+                                              .format(_startDate!)
+                                          : ''),
+                                  decoration: const InputDecoration(
+                                    labelText: 'From',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          FractionallySizedBox(
+                            widthFactor: 0.3,
+                            child: GestureDetector(
+                              onTap: () => _selectDate(context, false),
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  controller: TextEditingController(
+                                      text: _endDate != null
+                                          ? DateFormat('yyyy-MM-dd')
+                                              .format(_endDate!)
+                                          : ''),
+                                  decoration: const InputDecoration(
+                                    labelText: 'To',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          FractionallySizedBox(
+                            widthFactor: 0.3,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: smartShopYellow,
+                                  onPrimary: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32.0),
+                                  ),
+                                ),
+                                onPressed: () =>
+                                    _onFilter(_startDate, _endDate),
+                                child: CustomText(
+                                  placeholder: 'Filter',
+                                  color: smartShopWhite,
+                                )),
+                          ),
+                        ]),
+                      ),
+                    ),
+                  ),
+                ),
                 if (_statisticsData != null && _errorMessage == null)
                   SizedBox(
                     height: 200, // Replace with desired height
@@ -336,7 +543,7 @@ class _StatisticsState extends State<Statistics> {
                 const Icon(Icons.credit_card,
                     size: 64, color: Colors.redAccent),
                 const SizedBox(height: 16),
-                if ( _statisticsData != null)
+                if (_statisticsData != null)
                   CustomText(
                       placeholder:
                           '${_statisticsData![0]['data']['expenditure']}' +
@@ -414,83 +621,140 @@ class _StatisticsState extends State<Statistics> {
           ),
         ),
       ),
+      // a card that display a table of all items out of stock
+      Card(
+        margin: const EdgeInsets.all(16),
+        child: SizedBox(
+          width: cardWidth,
+          child: const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: OutOfStockTableWidget(),
+          ),
+        ),
+      ),
       // fourth card
     ];
 
     if (isMobile) {
       return PageScaffold(
         title: 'Statistics',
-        body: _statisticsData == null || _salesStatisticsData == null || _salesData == null
+        body: _statisticsData == null ||
+                _salesStatisticsData == null ||
+                _salesData == null
             ? const Center(child: RefreshProgressIndicator())
-            :
-        ListView(
-          scrollDirection: Axis.vertical,
-          children: [
-            ...cards,
-            const SizedBox(height: 16),
-            const DataTableWidget(),
-            const SizedBox(height: 16),
-          ],
-        ),
+            : ListView(
+                scrollDirection: Axis.vertical,
+                children: [
+                  ...cards,
+                  const SizedBox(height: 16),
+                  const DataTableWidget(),
+                  const SizedBox(height: 16),
+                ],
+              ),
+      );
+    } else if (Responsive.isTablet(context)) {
+      return PageScaffold(
+        title: 'Statistics',
+        body: _statisticsData == null ||
+                _salesStatisticsData == null ||
+                _salesData == null
+            ? const Center(child: RefreshProgressIndicator())
+            : ListView(
+                scrollDirection: Axis.vertical,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: cards[0],
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: cards[1],
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: cards[2],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const DataTableWidget(),
+                  const SizedBox(height: 16),
+                ],
+              ),
       );
     } else {
       return PageScaffold(
         title: 'Statistics',
-        body: _statisticsData == null || _salesStatisticsData == null
+        body: _statisticsData == null ||
+                _salesStatisticsData == null ||
+                _salesData == null
             ? const Center(child: RefreshProgressIndicator())
-            :
-        ListView(
-          scrollDirection: Axis.vertical,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: cards[0],
-                ),
-                Expanded(
-                  flex: 2,
-                  child: cards[1],
-                ),
-                Expanded(
-                  flex: 2,
-                  child: cards[2],
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: cards2[0],
-                ),
-                Expanded(
-                  flex: 2,
-                  child: cards2[1],
-                ),
-              ],
-            ),
-            const DataTableWidget(),
-            const Padding(padding: EdgeInsets.all(32)),
-            Flex(
-              direction: Axis.horizontal,
-              children: [
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      MyForm(),
-                      RestockForm(),
+            : ListView(
+                scrollDirection: Axis.vertical,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: cards[0],
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: cards[1],
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: cards[2],
+                      ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.all(32)),
-          ],
-        ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: cards2[0],
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: cards2[1],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: _buildRecommendations(),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const DataTableWidget(),
+                  const SizedBox(height: 16),
+                  Flex(
+                    direction: Axis.horizontal,
+                    children: [
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            MyForm(),
+                            RestockForm(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.all(32)),
+                ],
+              ),
       );
     }
   }

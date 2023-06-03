@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:SmartShop/custom_widgets/CustomText.dart';
 import 'package:SmartShop/responsive.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:SmartShop/providers/UserProvider.dart';
@@ -9,6 +13,7 @@ import 'package:SmartShop/screens/customs/button.dart';
 import 'package:SmartShop/screens/dashboard/dashboard.dart';
 import 'package:SmartShop/styles/colors.dart';
 import 'package:SmartShop/utils/snackMessage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyForm extends StatefulWidget {
@@ -24,11 +29,23 @@ class _MyFormState extends State<MyForm> {
   List<Map<String, dynamic>> _suppliers = [];
   List<Map<String, dynamic>> _leds = [];
   String? message;
+  File? _image;
+  String? _imagePath;
 
   void _setMessage(String newMessage) {
     setState(() {
       message = newMessage;
     });
+  }
+
+  _filePickerForDesktop(StateSetter setState) async {
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result != null) {
+      setState(() {
+        _image = File(result.files.single.path!);
+      });
+    }
   }
 
   void _loadMessageAndCloseModal() async {
@@ -61,6 +78,7 @@ class _MyFormState extends State<MyForm> {
   TextEditingController pinNumberController = TextEditingController();
   TextEditingController supplierController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  //image picker
 
   clearInput() {
     nameController.clear();
@@ -123,18 +141,17 @@ class _MyFormState extends State<MyForm> {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
+                backgroundColor: smartShopWhite,
                 scrollable: true,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-
                   children: [
                     widget.id != null
                         ? const Icon(Icons.edit)
                         : const Icon(Icons.add_circle_outline),
                     Text(widget.id != null ? 'Edit' : 'Add',
-
                         style: TextStyle(
-                          decoration: TextDecoration.underline,
+                            decoration: TextDecoration.underline,
                             overflow: TextOverflow.ellipsis,
                             color: smartShopYellow,
                             fontSize: Responsive.isMobile(context) ? 20 : 30,
@@ -142,104 +159,164 @@ class _MyFormState extends State<MyForm> {
                     const SizedBox(width: 10),
                   ],
                 ),
-                backgroundColor: smartShopLight,
-                content: SingleChildScrollView(
-                  child: SizedBox(
-                    width: isMobile ? null : 600,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: nameController,
-                          decoration: const InputDecoration(
-                            hintText: 'Item Name',
+                content: StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return SizedBox(
+                      width: isMobile ? null : 600,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: nameController,
+                            decoration: const InputDecoration(
+                              hintText: 'Item Name',
+                            ),
                           ),
-                        ),
-                        TextFormField(
-                          controller: descriptionController,
-                          decoration: const InputDecoration(
-                            hintText: 'Description',
+                          TextFormField(
+                            controller: descriptionController,
+                            decoration: const InputDecoration(
+                              hintText: 'Description',
+                            ),
                           ),
-                        ),
-                        TextFormField(
-                          controller: costPriceController,
-                          decoration: const InputDecoration(
-                            hintText: 'Bought At',
+                          TextFormField(
+                            controller: costPriceController,
+                            decoration: const InputDecoration(
+                              hintText: 'Bought At',
+                            ),
                           ),
-                        ),
-                        TextFormField(
-                          controller: sellingPriceController,
-                          decoration: const InputDecoration(
-                            hintText: 'Selling At',
+                          TextFormField(
+                            controller: sellingPriceController,
+                            decoration: const InputDecoration(
+                              hintText: 'Selling At',
+                            ),
                           ),
-                        ),
-                        TextFormField(
-                          controller: quantityController,
-                          decoration: const InputDecoration(
-                            hintText: 'Quantity',
+                          TextFormField(
+                            controller: quantityController,
+                            decoration: const InputDecoration(
+                              hintText: 'Quantity',
+                            ),
                           ),
-                        ),
-                        DropdownButtonFormField(
-                          hint: const Text('Select Supplier'),
-                          isExpanded: true,
-                          value: selectedSupplier,
-                          icon: const Icon(Icons.arrow_downward),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.deepPurple),
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedSupplier = newValue;
-                            });
-                            print(selectedSupplier);
-                          },
-                          items: _suppliers.isNotEmpty
-                              ? _suppliers.map((value) {
-                                  return DropdownMenuItem(
-                                    value: value['id'].toString(),
-                                    child: Text(value['name'].toString()),
-                                  );
-                                }).toList()
-                              : [
-                                  const DropdownMenuItem<String>(
-                                    value: 'loading',
-                                    child: Text('Loading suppliers...'),
-                                  ),
-                                ],
-                        ),
+                          //image picker
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: smartShopYellow),
+                              borderRadius: BorderRadius.circular(5),
+                              color: smartShopWhite,
+                            ),
+                            child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+
+                            children: [
+                              CustomText(placeholder: 'Select Image', color: smartShopYellow, fontSize: 20, fontWeight: FontWeight.bold,),
+                              _image == null
+                                  ? const SizedBox()
+                                  : IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {
+                                        setState(() {
+                                          _image = null;
+                                        });
+                                      },
+                                      tooltip: 'Delete Image',
+                                    ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+
+                              IconButton(
+                                icon: const Icon(Icons.image),
+                                onPressed: () {
+                                  _filePickerForDesktop(setState);
+                                },
+                                tooltip: 'Pick Image',
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              //  preivew the image here
+                              _image == null
+                                  ? SizedBox(
+                                      width: Responsive.isMobile(context)
+                                          ? 100
+                                          : 200,
+                                      height: Responsive.isMobile(context)
+                                          ? 100
+                                          : 200,
+                                      child: Icon(Icons.image),
+                                    )
+                                  : SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Image.file(_image!),
+                                    ),
+                            ],
+                          ),
+                          ),
+
+                          DropdownButtonFormField(
+                            hint: const Text('Select Supplier'),
+                            isExpanded: true,
+                            value: selectedSupplier,
+                            icon: const Icon(Icons.arrow_downward),
+                            iconSize: 24,
+                            elevation: 16,
+                            style: const TextStyle(color: Colors.deepPurple),
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedSupplier = newValue;
+                              });
+                              print(selectedSupplier);
+                            },
+                            items: _suppliers.isNotEmpty
+                                ? _suppliers.map((value) {
+                                    return DropdownMenuItem(
+                                      value: value['id'].toString(),
+                                      child: Text(value['name'].toString()),
+                                    );
+                                  }).toList()
+                                : [
+                                    const DropdownMenuItem<String>(
+                                      value: 'loading',
+                                      child: Text('Loading suppliers...'),
+                                    ),
+                                  ],
+                          ),
 // Add dropdown for LEDs
-                        DropdownButtonFormField(
-                          hint: const Text('Select LED'),
-                          value: _selectedLed,
-                          isExpanded: true,
-                          icon: const Icon(Icons.arrow_downward),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.deepPurple),
-                          onChanged: (newValue) {
-                            setState(() {
-                              _selectedLed = newValue;
-                            });
-                            print(_selectedLed);
-                          },
-                          items: _leds.isNotEmpty
-                              ? _leds.map<DropdownMenuItem<String>>(
-                                  (Map<String, dynamic> value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value['id'].toString(),
-                                    child: Text(
-                                        value['led_unique_number'].toString()),
-                                  );
-                                }).toList()
-                              : [
-                                  const DropdownMenuItem<String>(
-                                    value: 'loading',
-                                    child: Text('Loading LEDs...'),
-                                  ),
-                                ],
-                        ),
-                      ],
-                    ),
-                  ),
+                          DropdownButtonFormField(
+                            hint: const Text('Select LED'),
+                            value: _selectedLed,
+                            isExpanded: true,
+                            icon: const Icon(Icons.arrow_downward),
+                            iconSize: 24,
+                            elevation: 16,
+                            style: const TextStyle(color: Colors.deepPurple),
+                            onChanged: (newValue) {
+                              setState(() {
+                                _selectedLed = newValue;
+                              });
+                              print(_selectedLed);
+                            },
+                            items: _leds.isNotEmpty
+                                ? _leds.map<DropdownMenuItem<String>>(
+                                    (Map<String, dynamic> value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value['id'].toString(),
+                                      child: Text('LED- ${value['id'].toString()} -MCU ${value['microcontroller']!['Name'] + ' - Pin ' + value['pin']['pinNumber'].toString()}'),
+                                    );
+                                  }).toList()
+                                : [
+                                    const DropdownMenuItem<String>(
+                                      value: 'loading',
+                                      child: Text('Loading LEDs...'),
+                                    ),
+                                  ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
                 actions: [
                   TextButton(
@@ -254,6 +331,17 @@ class _MyFormState extends State<MyForm> {
                   TextButton(
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
+
+                          // upload image to local storage
+                          if (_image != null) {
+                            //get the url of the image
+
+                            _imagePath = await DatabaseProvider().uploadImageToLocalStorage(
+                              imageFile: _image!,
+                            );
+                          }
+
+
                           if (await ItemProvider().addItem(
                             name: nameController.text,
                             description: descriptionController.text,
@@ -262,6 +350,7 @@ class _MyFormState extends State<MyForm> {
                             quantity: quantityController.text,
                             location: _selectedLed!,
                             supplierId: selectedSupplier!,
+                            imageUri: _imagePath,
                           )) {
                             _loadMessageAndCloseModal();
                             Navigator.of(context).pop();
