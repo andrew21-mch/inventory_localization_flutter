@@ -24,8 +24,8 @@ class _SalessHistogramChartWidgetState
 
   void _generateSeriesList() {
     print('Generating series list');
-    final data = widget.data[0]['data'];
-    print(data);
+
+    final data = widget.data != null ? widget.data[0]['data'] : [];
     _seriesList = [
       charts.Series<dynamic, String>(
         id: 'Quantity',

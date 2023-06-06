@@ -229,7 +229,7 @@ class DataTableWidgetState extends State<DataTableWidget> {
                                                                     'id'] !=
                                                                 null
                                                         ? item['led']![
-                                                            'id']
+                                                            'id'].toString()
                                                         : '',
                                                     item['led'] != null &&
                                                             item['led']![
