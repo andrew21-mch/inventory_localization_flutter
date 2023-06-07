@@ -147,8 +147,7 @@ class LedTableWidgetState extends State<LedTableWidget> {
                             SizedBox(
                                 width: isMobile ? 60 : 100,
                                 child: CustomText(
-                                  placeholder:
-                                      item['led_unique_number'].toString(),
+                                  placeholder: 'PIN ${item['pin']!['pinNumber'].toString() }  MCU ${item['microcontroller_id'].toString() }',
                                   maxLines: 4,
                                 )),
                           ),

@@ -1,7 +1,8 @@
 import 'package:SmartShop/custom_widgets/out_of_stocks_table.dart';
-import 'package:SmartShop/providers/outOfStockProvider.dart';
+import 'package:SmartShop/providers/itemProvider.dart';
 import 'package:SmartShop/providers/sharePreference.dart';
 import 'package:SmartShop/responsive.dart';
+import 'package:SmartShop/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartShop/custom_widgets/CustomText.dart';
 import 'package:SmartShop/custom_widgets/StocksLineChart.dart';
@@ -12,7 +13,6 @@ import 'package:SmartShop/custom_widgets/items_table.dart';
 import 'package:SmartShop/screens/dashboard/pagescafold.dart';
 import 'package:SmartShop/screens/modals/add_item_form.dart';
 import 'package:SmartShop/screens/modals/restock_form.dart';
-import 'package:SmartShop/styles/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,49 +44,7 @@ class _StatisticsState extends State<Statistics> {
 
   Future<List<Map<String, dynamic>>> _getRecommendationsFromDatabase() async {
     // Sample items
-    final items = [
-      {
-        'name': 'Item 1',
-        'price': 100,
-      },
-      {
-        'name': 'Item 2',
-        'price': 200,
-      },
-      {
-        'name': 'Item 3',
-        'price': 300,
-      },
-      {
-        'name': 'Item 4',
-        'price': 400,
-      },
-      {
-        'name': 'Item 5',
-        'price': 500,
-      },
-      {
-        'name': 'Item 6',
-        'price': 600,
-      },
-      {
-        'name': 'Item 7',
-        'price': 700,
-      },
-      {
-        'name': 'Item 8',
-        'price': 800,
-      },
-      {
-        'name': 'Item 9',
-        'price': 900,
-      },
-      {
-        'name': 'Item 10',
-        'price': 1000,
-      },
-    ];
-
+    final items = await ItemProvider().getItems();
     return items;
   }
 
@@ -106,6 +64,7 @@ class _StatisticsState extends State<Statistics> {
           ),
           SizedBox(
             height: 200,
+            width: double.infinity,
             child: FutureBuilder<List<Map<String, dynamic>>>(
               future: _getRecommendationsFromDatabase(),
               builder: (context, snapshot) {
@@ -125,10 +84,9 @@ class _StatisticsState extends State<Statistics> {
                                 SizedBox(
                                   height: 100,
                                   width: 200,
-                                  child: Image.network(
-                                    'https://picsum.photos/200/300', // Use random images from the internet
-                                    fit: BoxFit.cover,
-                                  ),
+                                  child: Image.asset(
+                                    product['image'], // Use the product image from the database
+                                    fit: BoxFit.cover,)
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -143,9 +101,9 @@ class _StatisticsState extends State<Statistics> {
                                   height: 10,
                                 ),
                                 CustomText(
-                                  placeholder: "\$${product['price']}", // Use the product price from the database
+                                  placeholder: "XAF ${product['price_per_unit']}", // Use the product price from the database
                                   fontSize: 18,
-                                  color: Colors.black,
+                                  color: smartShopRed,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ],
@@ -388,7 +346,8 @@ class _StatisticsState extends State<Statistics> {
                     ),
                   ),
                 ),
-                if (_statisticsData != null && _errorMessage == null)
+                if (_statisticsData != null && _errorMessage == null &&
+                    _statisticsData!.isNotEmpty)
                   SizedBox(
                     height: 200, // Replace with desired height
                     child: StocksLineChartWidget(
@@ -621,18 +580,6 @@ class _StatisticsState extends State<Statistics> {
           ),
         ),
       ),
-      // a card that display a table of all items out of stock
-      Card(
-        margin: const EdgeInsets.all(16),
-        child: SizedBox(
-          width: cardWidth,
-          child: const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: OutOfStockTableWidget(),
-          ),
-        ),
-      ),
-      // fourth card
     ];
 
     if (isMobile) {
@@ -647,6 +594,15 @@ class _StatisticsState extends State<Statistics> {
                 children: [
                   ...cards,
                   const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: _buildRecommendations(),
+                      ),
+                    ],
+                  ),
                   const DataTableWidget(),
                   const SizedBox(height: 16),
                 ],
@@ -680,6 +636,15 @@ class _StatisticsState extends State<Statistics> {
                     ],
                   ),
                   const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: _buildRecommendations(),
+                      ),
+                    ],
+                  ),
                   const DataTableWidget(),
                   const SizedBox(height: 16),
                 ],

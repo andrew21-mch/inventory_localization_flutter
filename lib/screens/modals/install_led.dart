@@ -80,9 +80,7 @@ class _LedFormState extends State<LedForm> {
   }
 
   _buildPinDropdown() {
-    return _pins == null
-        ? const Center(child: CircularProgressIndicator())
-        : _pins!.isEmpty
+    return _pins == null || _pins!.isEmpty
             ? const Center(child: Text('No pins found'))
             : DropdownButtonFormField<String>(
                 hint: const CustomText(placeholder: 'Select Pin'),
