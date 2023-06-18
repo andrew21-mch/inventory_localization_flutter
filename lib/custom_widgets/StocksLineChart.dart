@@ -24,10 +24,18 @@ class _StocksLineChartWidgetState extends State<StocksLineChartWidget> {
 
   void _generateSeriesList() {
     _seriesList = [
-      charts.Series<Map<String, dynamic>, num>(
+      charts.Series<Map<String, dynamic>, int>(
         id: 'Quantity',
-        data: widget.data,
-        domainFn: (datum, index) => index as num,
+
+        data: widget.data.map((datum) {
+          print(datum);
+          return {
+            'id': datum['id'] != null ? datum['id'] as int : 0,
+            'quantity': datum['quantity'],
+            'name': datum['component_name']
+          };
+        }).toList(),
+        domainFn: (datum, index) => datum['id'] as int,
         measureFn: (datum, index) => datum['quantity'] as int,
         colorFn: (datum, index) {
           final quantity = datum['quantity'] as int;
@@ -37,6 +45,11 @@ class _StocksLineChartWidgetState extends State<StocksLineChartWidget> {
       )
     ];
   }
+
+
+
+
+
 
   void _setMaxValue() {
     final List<int> quantities = widget.data.map((datum) => datum['quantity'] as int).toList();
@@ -48,7 +61,6 @@ class _StocksLineChartWidgetState extends State<StocksLineChartWidget> {
 
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return charts.LineChart(
@@ -68,13 +80,13 @@ class _StocksLineChartWidgetState extends State<StocksLineChartWidget> {
             charts.OutsideJustification.middleDrawArea),
       ],
       domainAxis: charts.NumericAxisSpec(
-        tickProviderSpec: charts.BasicNumericTickProviderSpec(
-          desiredTickCount:  widget.data.length,
-        ),
+        tickProviderSpec: const charts.BasicNumericTickProviderSpec(desiredTickCount: 1),
+        viewport: charts.NumericExtents(widget.data.first['id'] as int, widget.data.last['id'] as int),
+
       ),
       primaryMeasureAxis: const charts.NumericAxisSpec(
         tickProviderSpec: charts.BasicNumericTickProviderSpec(
-          desiredTickCount: 5,
+          desiredTickCount:  5,
         ),
         renderSpec: charts.GridlineRendererSpec(
           labelOffsetFromAxisPx: 12,
