@@ -136,13 +136,16 @@ class _SalesState extends State<Sales> {
                 if (_statisticsData != null)
                   SizedBox(
                     height: 200, // Replace with desired height
-                    child: SalessHistogramChartWidget(
+                    child: _statisticsData != null
+                        ? SalessHistogramChartWidget(
                       _statisticsData!
                           .map<Map<String, dynamic>>(
                               (item) => Map<String, dynamic>.from(item))
                           .toList(),
                       animate: true,
-                    ),
+                    )
+                        : CircularProgressIndicator(), // Show a loading indicator while data is being fetched
+
                   )
                 else if (_errorMessage == null)
                   const SizedBox(height: 200, child: RefreshProgressIndicator())

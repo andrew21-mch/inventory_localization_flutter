@@ -134,6 +134,12 @@ class DataTableWidgetState extends State<DataTableWidget> {
                               ),
                               DataColumn(
                                 label: CustomText(
+                                  placeholder: 'IDENTIFIER',
+                                  color: smartShopWhite,
+                                ),
+                              ),
+                              DataColumn(
+                                label: CustomText(
                                   placeholder: 'DESCRIPTION',
                                   color: smartShopWhite,
                                 ),
@@ -160,11 +166,20 @@ class DataTableWidgetState extends State<DataTableWidget> {
                             rows: _items!.map((item) {
                               return DataRow(
                                 cells: [
+
                                   DataCell(
                                     SizedBox(
                                       width: isMobile ? 60 : 150,
                                       child: CustomText(
                                         placeholder: item['name'].toString(),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    SizedBox(
+                                      width: isMobile ? 60 : 150,
+                                      child: CustomText(
+                                        placeholder: item['identifier'].toString(),
                                       ),
                                     ),
                                   ),
