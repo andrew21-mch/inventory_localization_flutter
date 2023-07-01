@@ -1,4 +1,4 @@
-import 'package:SmartShop/custom_widgets/out_of_stocks_table.dart';
+
 import 'package:SmartShop/providers/itemProvider.dart';
 import 'package:SmartShop/providers/sharePreference.dart';
 import 'package:SmartShop/responsive.dart';
@@ -27,6 +27,7 @@ class _StatisticsState extends State<Statistics> {
   List<Map<String, dynamic>>? _statisticsData;
   List<Map<String, dynamic>>? _salesData;
   List<Map<String, dynamic>>? _salesStatisticsData;
+
   late DateTime _startDate;
   late DateTime _endDate;
   String? _errorMessage;
@@ -43,10 +44,17 @@ class _StatisticsState extends State<Statistics> {
   }
 
   Future<List<Map<String, dynamic>>> _getRecommendationsFromDatabase() async {
-    // Sample items
-    final items = await ItemProvider().getItems();
-    return items;
+    try {
+      final items = await ItemProvider().getProductRecommendations();
+      print('Recommendations: $items');
+      return items;
+    } catch (e) {
+      print('Error retrieving recommendations: $e');
+      return [];
+    }
   }
+
+
 
   Widget _buildRecommendations() {
     return Container(
@@ -59,72 +67,74 @@ class _StatisticsState extends State<Statistics> {
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          SizedBox(
-            height: 200,
-            width: double.infinity,
-            child: FutureBuilder<List<Map<String, dynamic>>>(
-              future: _getRecommendationsFromDatabase(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final recommendations = snapshot.data!;
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: recommendations.length,
-                    itemBuilder: (context, index) {
-                      final product = recommendations[index];
-                      return Center(
-                        child: SizedBox(
-                          width: 200,
-                          child: Card(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 100,
-                                  width: 200,
-                                  child: Image.asset(
-                                    product['image'], // Use the product image from the database
-                                    fit: BoxFit.cover,)
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                CustomText(
-                                  placeholder: product['name'], // Use the product name from the database
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                CustomText(
-                                  placeholder: "XAF ${product['price_per_unit']}", // Use the product price from the database
-                                  fontSize: 18,
-                                  color: smartShopRed,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ],
+          const SizedBox(height: 10),
+          FutureBuilder<List<Map<String, dynamic>>>(
+            future: _getRecommendationsFromDatabase(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return const Center(child: Text('Error loading recommendations'));
+              } else if (snapshot.hasData) { // Check if snapshot has data
+                final recommendations = snapshot.data!;
+                if (recommendations.isEmpty) {
+                  return const Center(child: Text('No recommendations found'));
+                } else {
+                  return SizedBox(
+                    height: 200,
+                    width: double.infinity,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: recommendations.length,
+                      itemBuilder: (context, index) {
+                        final product = recommendations[index];
+                        return Center(
+                          child: SizedBox(
+                            width: 200,
+                            child: Card(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 100,
+                                    width: 200,
+                                    child: Image.asset(
+                                      product['image'],
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  CustomText(
+                                    placeholder: product['component_name'],
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  CustomText(
+                                    placeholder: "XAF ${product['price_per_unit']}",
+                                    fontSize: 18,
+                                    color: smartShopRed,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   );
-                } else if (snapshot.hasError) {
-                  return const Center(child: Text('Error loading recommendations'));
-                } else {
-                  return const Center(child: CircularProgressIndicator());
                 }
-              },
-            ),
+              }
+              return const Center(child: Text('No recommendations found'));
+            },
           ),
         ],
       ),
     );
   }
+
+
 
 
 
@@ -467,7 +477,7 @@ class _StatisticsState extends State<Statistics> {
                     null) // check if _salesData is not null and has at least one item
                   SizedBox(
                     height: 200, // Replace with desired height
-                    child: SalessHistogramChartWidget(
+                    child: SalesHistogramChartWidget(
                       _salesStatisticsData!
                           .map<Map<String, dynamic>>(
                               (item) => Map<String, dynamic>.from(item))

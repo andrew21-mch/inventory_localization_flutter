@@ -415,4 +415,45 @@ class ItemProvider extends ChangeNotifier {
     return Future.value([]);
   }
 
+  Future<List<Map<String, dynamic>>> getProductRecommendations() async {
+    _isLoading = true;
+    notifyListeners();
+    String url = AppUrl.recommendations;
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization': 'Bearer ${await SharedPreferences.getInstance().then(
+              (SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    try {
+      http.Response req = await http.get(Uri.parse(url), headers: headers);
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        notifyListeners();
+        print(res['data']);
+        return List<Map<String, dynamic>>.from(res['data'].values);
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        storeMessageToInMemory(_reqMessage);
+        notifyListeners();
+        return [];
+      }
+    } catch (e) {
+      final res = e.toString();
+      _isLoading = false;
+      _reqMessage = res;
+      notifyListeners();
+      return [];
+    }
+  }
+
+
+
+
+
 }

@@ -2,19 +2,19 @@ import 'dart:ui' as ui;
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
-class SalessHistogramChartWidget extends StatefulWidget {
+class SalesHistogramChartWidget extends StatefulWidget {
   final List<Map<String, dynamic>> data;
   final bool animate;
 
-  SalessHistogramChartWidget(this.data, {required this.animate});
+  SalesHistogramChartWidget(this.data, {required this.animate});
 
   @override
-  _SalessHistogramChartWidgetState createState() =>
-      _SalessHistogramChartWidgetState();
+  _SalesHistogramChartWidgetState createState() =>
+      _SalesHistogramChartWidgetState();
 }
 
-class _SalessHistogramChartWidgetState
-    extends State<SalessHistogramChartWidget> {
+class _SalesHistogramChartWidgetState
+    extends State<SalesHistogramChartWidget> {
   List<charts.Series<dynamic, String>> _seriesList = [];
   String? selectedBarLabel;
 
