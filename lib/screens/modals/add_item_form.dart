@@ -72,6 +72,7 @@ class _MyFormState extends State<MyForm> {
 
   final formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
+  TextEditingController uniqueIdentifierController = TextEditingController();
   TextEditingController costPriceController = TextEditingController();
   TextEditingController sellingPriceController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
@@ -82,6 +83,7 @@ class _MyFormState extends State<MyForm> {
 
   clearInput() {
     nameController.clear();
+    uniqueIdentifierController.clear();
     costPriceController.clear();
     sellingPriceController.clear();
     quantityController.clear();
@@ -169,6 +171,12 @@ class _MyFormState extends State<MyForm> {
                             controller: nameController,
                             decoration: const InputDecoration(
                               hintText: 'Item Name',
+                            ),
+                          ),
+                          TextFormField(
+                            controller: uniqueIdentifierController,
+                            decoration: const InputDecoration(
+                              hintText: 'UNIQUE ID',
                             ),
                           ),
                           TextFormField(
@@ -344,6 +352,7 @@ class _MyFormState extends State<MyForm> {
 
                           if (await ItemProvider().addItem(
                             name: nameController.text,
+                            uniqueIdentifier: uniqueIdentifierController.text,
                             description: descriptionController.text,
                             cost: costPriceController.text,
                             price: sellingPriceController.text,

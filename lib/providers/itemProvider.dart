@@ -25,11 +25,13 @@ class ItemProvider extends ChangeNotifier {
 
   Future<bool> addItem({required String name,
     required String description,
+    required String uniqueIdentifier,
     required String cost,
     required String price,
     required String quantity,
     required String location,
-    required String supplierId,
+    //supplierId is the id of the supplier which can be null
+    String? supplierId,
     String? imageUri,
 
   }) async {
@@ -45,6 +47,7 @@ class ItemProvider extends ChangeNotifier {
     };
     final body = {
       'name': name,
+      'unique_identifier': uniqueIdentifier,
       'description': description,
       'cost_price_per_unit': cost, // 'cost' is 'price_per_unit
       'price_per_unit': price,
