@@ -96,11 +96,11 @@ class _StocksState extends State<Stocks> {
                   fontWeight: FontWeight.bold,
                   color: smartShopYellow,
                 ),
-                if (_statisticsData != null)
+                if (_statisticsData != null )
                   SizedBox(
                     height: 200, // Replace with desired height
                     child: StocksLineChartWidget(
-                      _statisticsData![0]['data']
+                      _statisticsData![0]!['data']
                               ['component_with_their_quantity']
                           .map<Map<String, dynamic>>(
                               (item) => Map<String, dynamic>.from(item))

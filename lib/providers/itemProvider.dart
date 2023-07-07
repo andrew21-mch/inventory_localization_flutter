@@ -32,7 +32,7 @@ class ItemProvider extends ChangeNotifier {
     required String location,
     //supplierId is the id of the supplier which can be null
     String? supplierId,
-    String? imageUri,
+    File? imageUri,
 
   }) async {
     _isLoading = true;
@@ -54,7 +54,7 @@ class ItemProvider extends ChangeNotifier {
       'quantity': quantity,
       'location': location,
       'supplier_id': supplierId,
-      'image_uri': imageUri,
+      'image': imageUri != null ? base64Encode(await imageUri.readAsBytes()) : null
     };
 
 
@@ -84,14 +84,14 @@ class ItemProvider extends ChangeNotifier {
         return false;
       }
     } catch (e) {
-      final res = json.decode(e.toString());
+      final res = e.toString();
       _isLoading = false;
-      _reqMessage = res['message'];
+      _reqMessage = res;
       notifyListeners();
       if (kDebugMode) {
         print(res);
       }
-      storeMessageToInMemory(res['message']);
+      storeMessageToInMemory(res);
       return false;
     }
   }

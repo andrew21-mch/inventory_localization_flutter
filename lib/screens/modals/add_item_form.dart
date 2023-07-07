@@ -359,7 +359,7 @@ class _MyFormState extends State<MyForm> {
                             quantity: quantityController.text,
                             location: _selectedLed!,
                             supplierId: selectedSupplier!,
-                            imageUri: _imagePath,
+                            imageUri: _image
                           )) {
                             _loadMessageAndCloseModal();
                             Navigator.of(context).pop();

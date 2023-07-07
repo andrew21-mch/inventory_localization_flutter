@@ -98,7 +98,7 @@ class _LedFormState extends State<LedForm> {
                 items: _pins != null
                     ? _pins!.map<DropdownMenuItem<String>>((pin) {
                         return DropdownMenuItem<String>(
-                          value: pin['pinNumber'].toString(),
+                          value: pin['id'].toString(),
                           child: Text(
                               'MCU ${pin['microcontroller_id']} - Pin ${pin['pinNumber']}'),
                         );

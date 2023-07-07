@@ -62,6 +62,7 @@ class LedProvider extends ChangeNotifier {
       'pin_id': pinId,
     };
 
+    print(body);
     try {
       http.Response req = await http.post(Uri.parse(url),
           headers: headers, body: json.encode(body));

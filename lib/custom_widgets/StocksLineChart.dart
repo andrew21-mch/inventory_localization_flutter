@@ -81,7 +81,7 @@ class _StocksLineChartWidgetState extends State<StocksLineChartWidget> {
       ],
       domainAxis: charts.NumericAxisSpec(
         tickProviderSpec: const charts.BasicNumericTickProviderSpec(desiredTickCount: 1),
-        viewport: charts.NumericExtents(widget.data.first['id'] as int, widget.data.last['id'] as int),
+        viewport: charts.NumericExtents(widget.data.isNotEmpty ? widget.data.first['id'] as int : 0, widget.data.isNotEmpty ?  widget.data.last['id'] as int: 5),
 
       ),
       primaryMeasureAxis: const charts.NumericAxisSpec(

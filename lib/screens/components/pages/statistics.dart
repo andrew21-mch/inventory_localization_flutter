@@ -1,4 +1,5 @@
 
+import 'package:SmartShop/constants/app_url.dart';
 import 'package:SmartShop/providers/itemProvider.dart';
 import 'package:SmartShop/providers/sharePreference.dart';
 import 'package:SmartShop/responsive.dart';
@@ -97,8 +98,8 @@ class _StatisticsState extends State<Statistics> {
                                   SizedBox(
                                     height: 100,
                                     width: 200,
-                                    child: Image.asset(
-                                      product['image'],
+                                    child: Image.network(
+                                      '${AppUrl.serverUrl}/storage/'+product['image'],
                                       fit: BoxFit.cover,
                                     ),
                                   ),
