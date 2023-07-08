@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:SmartShop/constants/app_url.dart';
 import 'package:SmartShop/providers/authProvider.dart';
 import 'package:SmartShop/responsive.dart';
 import 'package:SmartShop/screens/customs/button.dart';
@@ -26,6 +27,7 @@ class ProfileState extends State<Profile> {
   final formKey = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -46,16 +48,27 @@ class ProfileState extends State<Profile> {
       _image = File(pickedFile!.path);
     });
   }
-
-  _filePickerForDesktop() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.image);
+  _filePickerForDesktop(StateSetter setState) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
     if (result != null) {
-      setState(() {
-        _image = File(result.files.single.path!);
-      });
+      if (result.files.isNotEmpty) {
+        String filePath = result.files.single.path!;
+        File imageFile = File(filePath);
+        if (imageFile.existsSync()) {
+          setState(() {
+            _image = imageFile;
+          });
+        } else {
+          print('Image file not found: $filePath');
+        }
+      } else {
+        print('No file selected');
+      }
+    } else {
+      print('File picker cancelled');
     }
   }
+
 
   _imgFromGallery() async {
     FilePickerResult? result =
@@ -67,37 +80,38 @@ class ProfileState extends State<Profile> {
     }
   }
 
-  _showPicker(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return SizedBox(
-            height: 150,
-            child: Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.camera_alt),
-                  title: const Text('Camera'),
-                  onTap: () {
-                    Responsive.isMobile(context)
-                        ? _openCamera()
-                        : _filePickerForDesktop();
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.photo_library),
-                  title: const Text('Gallery'),
-                  onTap: () {
-                    Responsive.isMobile(context)
-                        ? _imgFromGallery()
-                        : _filePickerForDesktop();
-                  },
-                ),
-              ],
-            ),
-          );
-        });
-  }
+  // _showPicker(context) {
+  //
+  //   showModalBottomSheet(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return SizedBox(
+  //           height: 150,
+  //           child: Column(
+  //             children: [
+  //               ListTile(
+  //                 leading: const Icon(Icons.camera_alt),
+  //                 title: const Text('Camera'),
+  //                 onTap: () {
+  //                   Responsive.isMobile(context)
+  //                       ? _openCamera()
+  //                       : _filePickerForDesktop();
+  //                 },
+  //               ),
+  //               ListTile(
+  //                 leading: const Icon(Icons.photo_library),
+  //                 title: const Text('Gallery'),
+  //                 onTap: () {
+  //                   Responsive.isMobile(context)
+  //                       ? _imgFromGallery()
+  //                       : _filePickerForDesktop();
+  //                 },
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  //       });
+  // }
 
   _buildProfileImage() {
     return Center(
@@ -105,10 +119,8 @@ class ProfileState extends State<Profile> {
         children: [
           CircleAvatar(
             backgroundColor: smartShopAmber,
-            radius: 80,
-            backgroundImage: Image.asset(
-                    _image != null ? _image!.path : 'assets/images/default.png')
-                .image,
+            radius: 100,
+            backgroundImage:  Image.network('${AppUrl.serverUrl}/storage/'+imageController.text).image
           ),
           Positioned(
             bottom: 20,
@@ -117,7 +129,7 @@ class ProfileState extends State<Profile> {
               onTap: () {},
               child: IconButton(
                 onPressed: () {
-                  _showPicker(context);
+                  _filePickerForDesktop(setState);
                 },
                 icon: Icon(
                   Icons.camera_alt,
@@ -264,6 +276,7 @@ class ProfileState extends State<Profile> {
       nameController.text = user['name'].toString();
       emailController.text = user['email'].toString();
       phoneController.text = user['phone'].toString();
+      imageController.text = user['profile_url'].toString();
     });
   }
 
@@ -274,7 +287,9 @@ class ProfileState extends State<Profile> {
       body: ListView(
         scrollDirection: Axis.vertical,
         children: [
-          Form(
+        StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Form(
             key: formKey,
             child: Card(
                 margin: const EdgeInsets.all(16),
@@ -282,114 +297,116 @@ class ProfileState extends State<Profile> {
                 child: _user == null
                     ? const Center(child: CircularProgressIndicator())
                     : Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Responsive.isMobile(context)
-                            ? Column(
-                                children: [
-                                  _buildProfileImage(),
-                                  const SizedBox(height: 16),
-                                  _buildNickname(),
-                                  const SizedBox(height: 16),
-                                  _buildEmail(),
-                                  const SizedBox(height: 16),
-                                  _buildPhone(),
-                                  const SizedBox(height: 16),
-                                  _buildPassword(),
-                                  const SizedBox(height: 16),
-                                  CustomButton(
-                                    method: () async {
-                                      if (formKey.currentState!.validate()) {
-                                        formKey.currentState!.save();
+                  padding: const EdgeInsets.all(16),
+                  child: Responsive.isMobile(context)
+                      ? Column(
+                    children: [
+                      _buildProfileImage(),
+                      const SizedBox(height: 16),
+                      _buildNickname(),
+                      const SizedBox(height: 16),
+                      _buildEmail(),
+                      const SizedBox(height: 16),
+                      _buildPhone(),
+                      const SizedBox(height: 16),
+                      _buildPassword(),
+                      const SizedBox(height: 16),
+                      CustomButton(
+                        method: () async {
+                          if (formKey.currentState!.validate()) {
+                            formKey.currentState!.save();
 
-                                        var name = nameController.text;
-                                        var email = emailController.text;
-                                        var phone = phoneController.text;
+                            var name = nameController.text;
+                            var email = emailController.text;
+                            var phone = phoneController.text;
 
-                                        final success = await AuthProvider()
-                                            .updateProfile(
-                                                name, email, phone);
-                                        if (success != null) {
-                                          _loadUserProfile();
-                                          _setMessage(
-                                              'Profile updated successfully');
-                                        } else {
-                                          _setMessage('Error updating profile');
-                                        }
+                            final success = await AuthProvider()
+                                .updateProfile(
+                                name, email, phone, _image);
+                            if (success != null) {
+                              _loadUserProfile();
+                              _setMessage(
+                                  'Profile updated successfully');
+                            } else {
+                              _setMessage('Error updating profile');
+                            }
+                          }
+                        },
+                        placeholder: 'Update Profile',
+                      )
+                    ],
+                  )
+                      : Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: _buildProfileImage(),
+                          ),
+                          const SizedBox(width: 32),
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.end,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.end,
+                              children: [
+                                _buildNickname(),
+                                const SizedBox(height: 16),
+                                _buildEmail(),
+                                const SizedBox(height: 16),
+                                _buildPhone(),
+                                const SizedBox(height: 16),
+                                CustomButton(
+                                  width: 200,
+                                  method: () async {
+                                    if (formKey.currentState!
+                                        .validate()) {
+                                      formKey.currentState!.save();
+                                      var name =
+                                          nameController.text;
+                                      var email =
+                                          emailController.text;
+                                      var phone =
+                                          phoneController.text;
+
+                                      final success =
+                                      await AuthProvider()
+                                          .updateProfile(
+                                          name,
+                                          email,
+                                          phone,
+                                          _image
+                                      );
+                                      if (success != null) {
+                                        _loadUserProfile();
+                                        _setMessage(
+                                            'Profile updated successfully');
+                                      } else {
+                                        _setMessage(
+                                            'Error updating profile');
                                       }
-                                    },
-                                    placeholder: 'Update Profile',
-                                  )
-                                ],
-                              )
-                            : Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: _buildProfileImage(),
-                                      ),
-                                      const SizedBox(width: 32),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            _buildNickname(),
-                                            const SizedBox(height: 16),
-                                            _buildEmail(),
-                                            const SizedBox(height: 16),
-                                            _buildPhone(),
-                                            const SizedBox(height: 16),
-                                            CustomButton(
-                                              width: 200,
-                                              method: () async {
-                                                if (formKey.currentState!
-                                                    .validate()) {
-                                                  formKey.currentState!.save();
-                                                  var name =
-                                                      nameController.text;
-                                                  var email =
-                                                      emailController.text;
-                                                  var phone =
-                                                      phoneController.text;
+                                    }
+                                  },
+                                  placeholder: 'Update Profile',
+                                ),
+                                const SizedBox(
+                                  height: 24,
+                                ),
+                              ],
 
-                                                  final success =
-                                                      await AuthProvider()
-                                                          .updateProfile(
-                                                              name,
-                                                              email,
-                                                              phone
-                                                              );
-                                                  if (success != null) {
-                                                    _loadUserProfile();
-                                                    _setMessage(
-                                                        'Profile updated successfully');
-                                                  } else {
-                                                    _setMessage(
-                                                        'Error updating profile');
-                                                  }
-                                                }
-                                              },
-                                              placeholder: 'Update Profile',
-                                            ),
-                                            const SizedBox(
-                                              height: 24,
-                                            ),
-                                          ],
-
-                                          //  update password fields
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                      )),
-          ),
+                              //  update password fields
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )),
+          );
+        },),
           //    password forms
           const SizedBox(height: 8),
           Form(

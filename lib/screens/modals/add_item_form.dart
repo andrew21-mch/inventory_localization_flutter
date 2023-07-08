@@ -340,16 +340,6 @@ class _MyFormState extends State<MyForm> {
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
 
-                          // upload image to local storage
-                          if (_image != null) {
-                            //get the url of the image
-
-                            _imagePath = await DatabaseProvider().uploadImageToLocalStorage(
-                              imageFile: _image!,
-                            );
-                          }
-
-
                           if (await ItemProvider().addItem(
                             name: nameController.text,
                             uniqueIdentifier: uniqueIdentifierController.text,

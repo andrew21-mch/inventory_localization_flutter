@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:SmartShop/utils/snackMessage.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,6 @@ class AuthProvider extends ChangeNotifier {
         _isLoading = false;
         _reqMessage = res['message'];
         notifyListeners();
-
       }
     } catch (e) {
       final res = e.toString();
@@ -210,7 +210,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-
   void clear() {
     _reqMessage = '';
     notifyListeners();
@@ -279,7 +278,7 @@ class AuthProvider extends ChangeNotifier {
 
 //  update user profile
   Future<List<Map<String, dynamic>>> updateProfile(
-      String? name, String? email, String? phone) async {
+      String? name, String? email, String? phone, File? image) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Charset': 'utf-8',
@@ -290,6 +289,7 @@ class AuthProvider extends ChangeNotifier {
       'name': name,
       'email': email,
       'phone': phone,
+      'image': image != null ? base64Encode(await image.readAsBytes()) : null
     };
 
     http
@@ -307,10 +307,10 @@ class AuthProvider extends ChangeNotifier {
 
 //  update Password
   Future<bool> updatePassword(
-      String? oldPassword,
-      String? newPassword,
-      String? newPasswordConfirm,
-      ) async {
+    String? oldPassword,
+    String? newPassword,
+    String? newPasswordConfirm,
+  ) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Charset': 'utf-8',
