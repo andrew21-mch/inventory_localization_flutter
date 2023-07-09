@@ -25,4 +25,5 @@ class AppUrl {
   static const String restock = '$baseUrl/restocks';
 
   static const String users = '$baseUrl/users';
+  static const String supplier = '$baseUrl/suppliers';
 }

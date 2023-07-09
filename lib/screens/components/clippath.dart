@@ -9,7 +9,7 @@ class ClipPathWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
         painter: MyPainter(),
-        size: Size(double.infinity, height != null ? height! : 200));
+        size: Size(double.infinity, height != null ? height! : 150));
   }
 }
 

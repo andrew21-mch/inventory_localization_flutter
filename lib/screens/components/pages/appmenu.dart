@@ -1,4 +1,5 @@
 import 'package:SmartShop/screens/components/pages/profile.dart';
+import 'package:SmartShop/screens/components/pages/suppliers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,8 @@ final _availablePages = <String, WidgetBuilder>{
   'Sales, sales': (_) => const Sales(),
   'Statistics, statistics': (_) => const Statistics(),
   'LEDs, lightbulb': (_) => const Leds(),
-  'Profile, user': (_) => Profile(),
+  'Suppliers, user': (_) => const Suppliers(),
+  'Profile, user': (_) => const Profile(),
 };
 
 final selectedPageNameProvider = StateProvider<String>((ref) {

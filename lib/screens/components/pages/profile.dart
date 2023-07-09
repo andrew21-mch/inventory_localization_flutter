@@ -120,7 +120,7 @@ class ProfileState extends State<Profile> {
           CircleAvatar(
             backgroundColor: smartShopAmber,
             radius: 100,
-            backgroundImage:  Image.network('${AppUrl.serverUrl}/storage/'+imageController.text).image
+            backgroundImage:  Image.network('${AppUrl.serverUrl}/storage/${imageController.text}').image
           ),
           Positioned(
             bottom: 20,
