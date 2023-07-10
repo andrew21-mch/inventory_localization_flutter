@@ -57,6 +57,7 @@ class _AddSalesFormState extends State<AddSalesForm> {
   final formKey = GlobalKey<FormState>();
   TextEditingController itemController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
+  TextEditingController buyerController = TextEditingController();
 
   clearInput() {
     itemController.clear();
@@ -164,6 +165,20 @@ class _AddSalesFormState extends State<AddSalesForm> {
                             hintText: 'Quantity',
                           ),
                         ),
+
+                        TextFormField(
+                          controller: buyerController,
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Buyer Name';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            hintText: 'Buyer name',
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -184,8 +199,9 @@ class _AddSalesFormState extends State<AddSalesForm> {
                             selectedItem != null) {
                           var componentId = selectedItem;
                           var quantity = quantityController.text;
+                          var buyer = buyerController.text;
                           if (await SalesProvider()
-                              .addSales(componentId, quantity)) {
+                              .addSales(componentId, quantity, buyer)) {
                             _loadItems();
                             selectedItem = null;
                             _loadMessageAndCloseModal();

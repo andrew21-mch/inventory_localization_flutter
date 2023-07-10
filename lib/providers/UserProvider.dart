@@ -159,4 +159,136 @@ class UserProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> updateSupplier(String? name, String? email, String? address,
+      String? phone, int id) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.supplier}/$id';
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization':
+          'Bearer ${await _prefs.then((SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+    final body = {
+      'name': name,
+      'email': email,
+      'address': address,
+      'phone': phone,
+    };
+
+    try {
+      http.Response req = await http.put(Uri.parse(url),
+          headers: headers, body: json.encode(body));
+
+      if (req.statusCode == 200 || req.statusCode == 201) {
+        final res = json.decode(req.body);
+        if (kDebugMode) {
+          print(res);
+        }
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+        storeMessageToInMemory(res['message']);
+        return true;
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+        if (kDebugMode) {
+          print(res);
+        }
+        storeMessageToInMemory(res['message']);
+        return false;
+      }
+    } catch (e) {
+      final res = e.toString();
+      _isLoading = false;
+      _reqMessage = res;
+      notifyListeners();
+      if (kDebugMode) {
+        print(res);
+      }
+      storeMessageToInMemory(res);
+      return false;
+    }
+  }
+
+  //  delete
+  Future<bool> deleteSupplier(int id) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.supplier}/$id';
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization':
+          'Bearer ${await _prefs.then((SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    try {
+      http.Response req = await http.delete(Uri.parse(url), headers: headers);
+
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        storeMessageToInMemory(res['message']);
+        notifyListeners();
+        return true;
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        storeMessageToInMemory(res['message'].toString());
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      final res = e.toString();
+      _isLoading = false;
+      storeMessageToInMemory(res);
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<Map<String, dynamic>> getSupplier(String? id) async {
+    _isLoading = true;
+    notifyListeners();
+    String url = '${AppUrl.supplier}/$id';
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Charset': 'utf-8',
+      'Authorization':
+          'Bearer ${await _prefs.then((SharedPreferences prefs) => prefs.getString('token') ?? '')}'
+    };
+
+    try {
+      http.Response req = await http.get(Uri.parse(url), headers: headers);
+
+      if (req.statusCode == 200) {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        notifyListeners();
+        return res['data'];
+      } else {
+        final res = json.decode(req.body);
+        _isLoading = false;
+        _reqMessage = res['message'];
+        notifyListeners();
+        return {};
+      }
+    } catch (e) {
+      final res = e.toString();
+      _isLoading = false;
+      _reqMessage = res;
+      storeMessageToInMemory(res);
+      notifyListeners();
+      return {};
+    }
+  }
 }

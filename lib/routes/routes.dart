@@ -23,7 +23,7 @@ class CustomRoute {
       case '/item_details':
         return MaterialPageRoute(builder: (_) => const ItemDetail());
       default:
-        return MaterialPageRoute(builder: (_) => const Splash());
+        return MaterialPageRoute(builder: (_) => const Login());
     }
   }
 }

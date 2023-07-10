@@ -1,5 +1,7 @@
 import 'package:SmartShop/custom_widgets/CustomText.dart';
 import 'package:SmartShop/providers/UserProvider.dart';
+import 'package:SmartShop/screens/components/pages/ItemDetails.dart';
+import 'package:SmartShop/screens/components/pages/edit_supplier.dart';
 import 'package:SmartShop/screens/modals/AddSale.dart';
 import 'package:SmartShop/screens/modals/add_supplier_form.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,9 @@ import 'package:SmartShop/providers/ledProvider.dart';
 import 'package:SmartShop/providers/sharePreference.dart';
 import 'package:SmartShop/screens/components/search_bar.dart';
 import 'package:SmartShop/styles/colors.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SupplierTableWidget extends StatefulWidget {
@@ -154,18 +159,24 @@ class SupplierTableWidgetState extends State<SupplierTableWidget> {
                               children: [
                                 const SizedBox(width: 10),
                                 IconButton(
-                                  icon: Icon(Icons.edit, color: smartShopGreen),
-                                  onPressed: () async {
-                                    Navigator.pushNamed(context, '/leds/edit',
-                                        arguments: item);
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: smartShopYellow,
+                                  ),
+                                  onPressed: () {
+                                    Get.to(
+                                            () => EditSupplier(
+                                            itemID: item['id']!),
+                                        transition:
+                                        Transition.rightToLeft);
                                   },
                                 ),
                                 const SizedBox(width: 10),
                                 IconButton(
                                   icon: Icon(Icons.delete, color: smartShopRed),
                                   onPressed: () async {
-                                    if (await LedProvider()
-                                        .deleteLed(item['id'])) {
+                                    if (await UserProvider()
+                                        .deleteSupplier(item['id'])) {
                                       setState(() {
                                         _itemsFuture =
                                             UserProvider().getUsers();
