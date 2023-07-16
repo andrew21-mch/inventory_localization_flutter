@@ -6,6 +6,11 @@ import 'package:SmartShop/providers/statisticsProvider.dart';
 import 'package:SmartShop/screens/dashboard/pagescafold.dart';
 import 'package:SmartShop/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../providers/sharePreference.dart';
 
 class Stocks extends StatefulWidget {
   const Stocks({Key? key});
@@ -18,12 +23,38 @@ class _StocksState extends State<Stocks> {
   List<Map<String, dynamic>>? _statisticsData;
   List<Map<String, dynamic>>? _outOfStocksData;
   String? _errorMessage;
+  String? message;
+
 
   @override
   void initState() {
     super.initState();
+    _loadMessage();
     _loadStatisticsData();
     _loadOutOfStocksData();
+  }
+
+  void _setMessage(String newMessage) {
+    setState(() {
+      message = newMessage;
+    });
+  }
+  void _loadMessage() async {
+    final message = await DatabaseProvider().getMessage();
+    _setMessage(message);
+
+    Get.snackbar(
+      'Message',
+      message ?? 'Error loading message',
+      snackPosition: SnackPosition.BOTTOM,
+      maxWidth: 600.0,
+
+      duration: const Duration(seconds: 2),
+    );
+
+    //  clear message
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('message');
   }
 
   Future<void> _loadStatisticsData() async {

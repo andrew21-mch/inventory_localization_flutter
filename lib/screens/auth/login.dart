@@ -1,5 +1,6 @@
 import 'package:SmartShop/screens/auth/register.dart';
 import 'package:SmartShop/screens/auth/reset_password.dart';
+import 'package:SmartShop/utils/message_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:SmartShop/providers/authProvider.dart';
@@ -22,6 +23,21 @@ class _LoginState extends State<Login> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  String? message;
+
+  @override
+  void initState() {
+    super.initState();
+    // Autofill phone and password values if available
+    phoneController.text = '67000000';
+    passwordController.text = 'password';
+  }
+
+  void _setMessage(String newMessage) {
+    setState(() {
+      message = newMessage;
+    });
+  }
   clearInput() {
     phoneController.clear();
     passwordController.clear();
@@ -93,7 +109,7 @@ class _LoginState extends State<Login> {
                             TextButton(
                               onPressed: () {
                                 Get.to(
-                                  () => const Register(),
+                                      () => const Register(),
                                   transition: Transition.rightToLeft,
                                 );
                               },
@@ -122,7 +138,7 @@ class _LoginState extends State<Login> {
                             TextButton(
                               onPressed: () {
                                 Get.to(
-                                  () => const PasswordReset(),
+                                      () => const PasswordReset(),
                                   transition: Transition.rightToLeft,
                                 );
                               },
@@ -156,7 +172,7 @@ class _LoginState extends State<Login> {
                                   password: passwordController.text.trim(),
                                   phone: phoneController.text.trim(),
                                 );
-                                clearInput();
+                                // clearInput();
                               } else {
                                 showMessage(
                                   type: 'error',

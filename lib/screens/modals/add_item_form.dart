@@ -52,16 +52,15 @@ class _MyFormState extends State<MyForm> {
     final message = await DatabaseProvider().getMessage();
     _setMessage(message);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    });
+    // Display message using GetX snackbar
+    Get.snackbar(
+      'Message',
+      message ?? 'Error loading message',
+      snackPosition: SnackPosition.BOTTOM,
+      duration: const Duration(seconds: 2),
+    );
 
-    //  clear message
+    // Clear message
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('message');
 

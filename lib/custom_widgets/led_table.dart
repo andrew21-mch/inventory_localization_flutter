@@ -4,6 +4,8 @@ import 'package:SmartShop/providers/ledProvider.dart';
 import 'package:SmartShop/providers/sharePreference.dart';
 import 'package:SmartShop/screens/components/search_bar.dart';
 import 'package:SmartShop/styles/colors.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LedTableWidget extends StatefulWidget {
@@ -26,20 +28,15 @@ class LedTableWidgetState extends State<LedTableWidget> {
 
   void _loadMessage() async {
     final message = await DatabaseProvider().getMessage();
-     _setMessage(message);
+    _setMessage(message);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          duration: const Duration(seconds: 2),
-          backgroundColor: smartShopYellow,
-
-
-
-        ),
-      );
-    });
+    Get.snackbar(
+      'Message',
+      message ?? 'Error loading message',
+      snackPosition: SnackPosition.BOTTOM,
+      maxWidth: 600.0,
+      duration: const Duration(seconds: 2),
+    );
 
     //  clear message
     SharedPreferences prefs = await SharedPreferences.getInstance();

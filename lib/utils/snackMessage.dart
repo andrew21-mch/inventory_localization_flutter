@@ -29,3 +29,4 @@ void storeMessageToInMemory(String? message) {
 reloadPage(BuildContext context) {
   Navigator.pushReplacementNamed(context, dashboard);
 }
+

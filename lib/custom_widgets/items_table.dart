@@ -10,6 +10,7 @@ import 'package:SmartShop/screens/modals/add_item_form.dart';
 import 'package:SmartShop/styles/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/message_helper.dart';
 import 'CustomText.dart';
 
 class DataTableWidget extends StatefulWidget {
@@ -23,10 +24,20 @@ class DataTableWidgetState extends State<DataTableWidget> {
   List<Map<String, dynamic>>? _items;
   String? message;
 
+
   @override
   void initState() {
     super.initState();
     _loadItems();
+    // MessageHelper().loadMessage((newMessage) {
+    //   _setMessage(newMessage!);
+    // });
+  }
+
+  void _setMessage(String newMessage) {
+    setState(() {
+      message = newMessage;
+    });
   }
 
   void _loadItems() async {
@@ -56,29 +67,7 @@ class DataTableWidgetState extends State<DataTableWidget> {
     }
   }
 
-  void _setMessage(String newMessage) {
-    setState(() {
-      message = newMessage;
-    });
-  }
 
-  void _loadMessage() async {
-    final message = await DatabaseProvider().getMessage();
-    _setMessage(message);
-
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    });
-
-    //  clear message
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('message');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -264,7 +253,9 @@ class DataTableWidgetState extends State<DataTableWidget> {
                                                       'id']
                                                   : '');
                                               _loadItems();
-                                              _loadMessage();
+                                              MessageHelper().loadMessage((newMessage) {
+                                                _setMessage(newMessage!);
+                                              });
                                             });
                                           },
                                         ),
@@ -289,9 +280,13 @@ class DataTableWidgetState extends State<DataTableWidget> {
                                           onPressed: () async {
                                             if (await ItemProvider()
                                                 .deleteItem(item['id'])) {
-                                              _loadMessage();
+                                              MessageHelper().loadMessage((newMessage) {
+                                                _setMessage(newMessage!);
+                                              });
                                             } else {
-                                              _loadMessage();
+                                              MessageHelper().loadMessage((newMessage) {
+                                                _setMessage(newMessage!);
+                                              });
                                             }
                                            _loadItems();
                                           },

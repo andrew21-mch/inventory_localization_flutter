@@ -8,7 +8,11 @@ import 'package:SmartShop/screens/dashboard/pagescafold.dart';
 import 'package:SmartShop/screens/modals/add_item_form.dart';
 import 'package:SmartShop/screens/modals/restock_form.dart';
 import 'package:SmartShop/styles/colors.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../utils/message_helper.dart';
 
 class AuthHome extends StatefulWidget {
   const AuthHome({super.key});
@@ -27,7 +31,9 @@ class AuthHomeState extends State<AuthHome> {
   @override
   void initState() {
     super.initState();
-    _loadMessage();
+    MessageHelper().loadMessage((newMessage) {
+      _setMessage(newMessage!);
+    });
     _loadSalesData();
     _loadStatisticsData();
     _loadLoggedInUserName();
@@ -39,23 +45,6 @@ class AuthHomeState extends State<AuthHome> {
     });
   }
 
-  void _loadMessage() async {
-    final message = await DatabaseProvider().getMessage();
-    _setMessage(message);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    });
-
-    // clear message
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('message');
-  }
 
   Future<void> _loadStatisticsData() async {
     setState(() {

@@ -34,7 +34,7 @@ class _NoConnectionScreenState extends State<NoConnectionScreen> {
     final message = await DatabaseProvider().getMessage();
     _setMessage(message);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: smartShopYellow,

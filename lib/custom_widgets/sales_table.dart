@@ -1,7 +1,10 @@
+import 'package:SmartShop/utils/message_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartShop/providers/sharePreference.dart';
 import 'package:SmartShop/screens/components/search_bar.dart';
 import 'package:SmartShop/styles/colors.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
@@ -19,30 +22,23 @@ class SalesTableWidget extends StatefulWidget {
 class _SalesTableWidgetState extends State<SalesTableWidget> {
   late Future<List<Map<String, dynamic>>> _itemsFuture;
   List<Map<String, dynamic>> _sales = [];
+  String? message;
 
   @override
   void initState() {
     super.initState();
     _loadItems();
-    _loadMessage();
+    // MessageHelper().loadMessage((newMessage) {
+    //   _setMessage(newMessage!);
+    // });
   }
 
-  void _loadMessage() async {
-    final message = await DatabaseProvider().getMessage();
-
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
+  void _setMessage(String newMessage) {
+    setState(() {
+      message = newMessage;
     });
-
-    //  clear message
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('message');
   }
+
 
   void _loadItems() async {
     final items = await SalesProvider().getSales();
@@ -127,6 +123,12 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                   ),
                   DataColumn(
                     label: CustomText(
+                      placeholder: 'BOUGHT BY',
+                      color: smartShopWhite,
+                    ),
+                  ),
+                  DataColumn(
+                    label: CustomText(
                         placeholder: 'DATE SOLD', color: smartShopWhite),
                   ),
                 ],
@@ -134,6 +136,7 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                     ? const [
                         DataRow(
                           cells: [
+                            DataCell(Text('No Data')),
                             DataCell(Text('No Data')),
                             DataCell(Text('No Data')),
                             DataCell(Text('No Data')),
@@ -161,6 +164,16 @@ class _SalesTableWidgetState extends State<SalesTableWidget> {
                                 width: isMobile ? 60 : 150,
                                 child: CustomText(
                                   placeholder: '${item['total_price']} XAF',
+                                  textAlign: TextAlign.center,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              SizedBox(
+                                width: isMobile ? 60 : 150,
+                                child: CustomText(
+                                  placeholder: item['buyer'] ?? 'N/A',
                                   textAlign: TextAlign.center,
                                   fontWeight: FontWeight.bold,
                                 ),

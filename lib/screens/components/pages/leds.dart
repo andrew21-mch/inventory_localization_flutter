@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:SmartShop/custom_widgets/CustomText.dart';
 import 'package:SmartShop/screens/dashboard/pagescafold.dart';
 import 'package:SmartShop/styles/colors.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../utils/message_helper.dart';
 
 class Leds extends StatefulWidget {
   const Leds({Key? key}) : super(key: key);
@@ -25,6 +30,9 @@ class _LedsState extends State<Leds> {
     super.initState();
     _loadMessage();
     _loadLedTotal();
+    MessageHelper().loadMessage((newMessage) {
+      _setMessage(newMessage!);
+    });
   }
 
   void _setMessage(String newMessage) {
@@ -44,20 +52,18 @@ class _LedsState extends State<Leds> {
     final message = await DatabaseProvider().getMessage();
     _setMessage(message);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    });
+    Get.snackbar(
+      'Message',
+      message ?? 'Error loading message',
+      snackPosition: SnackPosition.BOTTOM,
+      maxWidth: 600.0,
+      duration: const Duration(seconds: 2),
+    );
 
-  //  clear message
+    //  clear message
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('message');
   }
-
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;

@@ -7,6 +7,8 @@ import 'package:SmartShop/providers/statisticsProvider.dart';
 import 'package:SmartShop/custom_widgets/SalesLineChart.dart';
 import 'package:SmartShop/screens/dashboard/pagescafold.dart';
 import 'package:SmartShop/styles/colors.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Sales extends StatefulWidget {
@@ -60,14 +62,14 @@ class _SalesState extends State<Sales> {
     final message = await DatabaseProvider().getMessage();
     _setMessage(message);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    });
+    Get.snackbar(
+      'Message',
+      message ?? 'Error loading message',
+      snackPosition: SnackPosition.BOTTOM,
+      maxWidth: 600.0,
+
+      duration: const Duration(seconds: 2),
+    );
 
     //  clear message
     SharedPreferences prefs = await SharedPreferences.getInstance();

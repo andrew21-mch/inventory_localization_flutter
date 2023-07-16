@@ -29,6 +29,7 @@ class _OutOfStockTableWidgetState extends State<OutOfStockTableWidget> {
     });
   }
 
+
   void _onSearch(String query) async {
     final searchResults = await OutOfStockProvider().search(query);
     setState(() {

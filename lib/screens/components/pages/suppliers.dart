@@ -4,6 +4,8 @@ import 'package:SmartShop/custom_widgets/supplier_table.dart';
 import 'package:SmartShop/providers/sharePreference.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartShop/screens/dashboard/pagescafold.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Suppliers extends StatefulWidget {
@@ -32,14 +34,13 @@ class _SuppliersState extends State<Suppliers> {
     final message = await DatabaseProvider().getMessage();
     _setMessage(message);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    });
+    Get.snackbar(
+      'Message',
+      message ?? 'Error loading message',
+      snackPosition: SnackPosition.BOTTOM,
+      maxWidth: 600.0,
+      duration: const Duration(seconds: 2),
+    );
 
     //  clear message
     SharedPreferences prefs = await SharedPreferences.getInstance();

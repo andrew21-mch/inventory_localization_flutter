@@ -14,6 +14,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/message_helper.dart';
+
 class SupplierTableWidget extends StatefulWidget {
   const SupplierTableWidget({Key? key}) : super(key: key);
 
@@ -26,36 +28,22 @@ class SupplierTableWidgetState extends State<SupplierTableWidget> {
   List<Map<String, dynamic>> _items = [];
   String? message;
 
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+    MessageHelper().loadMessage((newMessage) {
+      _setMessage(newMessage!);
+    });
+  }
+
   void _setMessage(String newMessage) {
     setState(() {
       message = newMessage;
     });
   }
 
-  void _loadMessage() async {
-    final message = await DatabaseProvider().getMessage();
-    _setMessage(message);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          duration: const Duration(seconds: 2),
-          backgroundColor: smartShopYellow,
-        ),
-      );
-    });
-
-    //  clear message
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('message');
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadItems();
-  }
 
   void _loadItems() async {
     final items = await UserProvider().getUsers();
@@ -181,9 +169,13 @@ class SupplierTableWidgetState extends State<SupplierTableWidget> {
                                         _itemsFuture =
                                             UserProvider().getUsers();
                                       });
-                                      _loadMessage();
+                                      MessageHelper().loadMessage((newMessage) {
+                                        _setMessage(newMessage!);
+                                      });
                                     } else {
-                                      _loadMessage();
+                                      MessageHelper().loadMessage((newMessage) {
+                                        _setMessage(newMessage!);
+                                      });
                                       setState(() {
                                         _itemsFuture =
                                             UserProvider().getUsers();

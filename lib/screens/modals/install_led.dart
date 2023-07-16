@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:SmartShop/custom_widgets/CustomText.dart';
 import 'package:SmartShop/providers/ledProvider.dart';
-import 'package:SmartShop/screens/components/pages/led_page_view.dart';
+import 'package:SmartShop/screens/components/pages/leds.dart';
 import 'package:SmartShop/screens/customs/button.dart';
 import 'package:SmartShop/styles/colors.dart';
 import 'package:SmartShop/utils/snackMessage.dart';
@@ -34,27 +34,26 @@ class _LedFormState extends State<LedForm> {
     });
   }
 
-  void _loadMessage() async {
-    final message = await DatabaseProvider().getMessage();
-    _setMessage(message);
+    void _loadMessage() async {
+      final message = await DatabaseProvider().getMessage();
+      _setMessage(message);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 2),
-        ),
+      // Display message using GetX snackbar
+      Get.snackbar(
+        'Message',
+        message ?? 'Error loading message',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 2),
       );
-    });
 
-    // Clear message
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('message');
+      // Clear message
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.remove('message');
 
-    Get.to(() => const Leds(),
-        transition: Transition.rightToLeftWithFade,
-        duration: const Duration(milliseconds: 100));
-  }
+      Get.to(() => const Leds(),
+          transition: Transition.rightToLeftWithFade,
+          duration: const Duration(milliseconds: 100));
+    }
 
   _loadLeds() async {
     final leds = await LedProvider().getMicroControllers();

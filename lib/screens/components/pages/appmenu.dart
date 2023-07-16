@@ -13,7 +13,7 @@ import 'package:SmartShop/screens/modals/logout.dart';
 import 'package:SmartShop/styles/colors.dart';
 
 import 'home.dart';
-import 'led_page_view.dart';
+import 'leds.dart';
 
 final _availablePages = <String, WidgetBuilder>{
   'Home, home': (_) => const AuthHome(),

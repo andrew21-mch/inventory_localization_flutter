@@ -36,16 +36,15 @@ class _AddSalesFormState extends State<AddSalesForm> {
     final message = await DatabaseProvider().getMessage();
     _setMessage(message);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    });
+    // Display message using GetX snackbar
+    Get.snackbar(
+      'Message',
+      message ?? 'Error loading message',
+      snackPosition: SnackPosition.BOTTOM,
+      duration: const Duration(seconds: 2),
+    );
 
-    //  clear message
+    // Clear message
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('message');
 
@@ -53,6 +52,7 @@ class _AddSalesFormState extends State<AddSalesForm> {
         transition: Transition.rightToLeftWithFade,
         duration: const Duration(milliseconds: 100));
   }
+
 
   final formKey = GlobalKey<FormState>();
   TextEditingController itemController = TextEditingController();
@@ -62,6 +62,7 @@ class _AddSalesFormState extends State<AddSalesForm> {
   clearInput() {
     itemController.clear();
     quantityController.clear();
+    buyerController.clear();
   }
 
   String? selectedItem;

@@ -38,7 +38,7 @@ class SalesProvider extends ChangeNotifier {
     final body = {
       'component_id': componentId,
       'quantity': quantity,
-      'buyer': quantity,
+      'buyer': buyer,
     };
 
     try {

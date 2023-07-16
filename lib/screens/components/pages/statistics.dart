@@ -14,6 +14,9 @@ import 'package:SmartShop/custom_widgets/items_table.dart';
 import 'package:SmartShop/screens/dashboard/pagescafold.dart';
 import 'package:SmartShop/screens/modals/add_item_form.dart';
 import 'package:SmartShop/screens/modals/restock_form.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,6 +40,7 @@ class _StatisticsState extends State<Statistics> {
   @override
   void initState() {
     super.initState();
+    _loadMessage();
     _loadSalesData();
     _loadStatisticsData();
     _loadSalesStatisticsData();
@@ -82,7 +86,7 @@ class _StatisticsState extends State<Statistics> {
                   return const Center(child: Text('No recommendations found'));
                 } else {
                   return SizedBox(
-                    height: 200,
+                    height: 230,
                     width: double.infinity,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -149,19 +153,20 @@ class _StatisticsState extends State<Statistics> {
     final message = await DatabaseProvider().getMessage();
     _setMessage(message);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message ?? 'Error loading message'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    });
+    Get.snackbar(
+      'Message',
+      message ?? 'Error loading message',
+      snackPosition: SnackPosition.BOTTOM,
+      maxWidth: 600.0,
 
-    // clear message
+      duration: const Duration(seconds: 2),
+    );
+
+    //  clear message
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('message');
   }
+
 
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
     final DateTime? selectedDate = await showDatePicker(
